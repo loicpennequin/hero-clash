@@ -1,0 +1,39 @@
+.profile-heroes
+  padding: 10px
+  background-color: $white-ter
+
+.profile-hero
+  padding: 15px
+  border: solid $dark 2px
+  border-radius: 10px
+  display: flex
+  flex-direction: row
+
+  .portrait
+    border: solid $dark 1px
+    border-radius: 10px
+    margin-right: 10px
+    align-self: flex-start
+
+
+  .stats
+    display: flex
+    flex-direction: row
+    ul
+      margin-right: 100px
+
+  .skills
+    li
+      position: relative
+    i
+      cursor: pointer
+    .skill-description
+      background-color: white
+      border: solid $dark 1px
+      border-radius: 5px
+      padding: 5px
+      font-size: 0.7em
+      position: absolute
+      top: -100%
+      left: 100%
+      width: 200%

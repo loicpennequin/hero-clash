@@ -1,0 +1,38 @@
+<div ng-include="'views/components/navbar.html'"></div>
+<div ng-controller="profileCtrl">
+  <h1 class="title has-text-centered">{{user.login}}</h1>
+  <div class="has-text-centered">
+    {{user.gold}} gold
+  </div>
+  <div class="profile-heroes">
+    <h2 class="title is-2">Your Heroes</h2>
+    <div ng-repeat="hero in user.heroes" class="profile-hero">
+      <img ng-src="{{hero.class.portrait}}" alt="pyromancer icon" class="portrait">
+      <div>
+        <h3 class="title is-3">{{hero.class.name}}</h3>
+        <div class="stats">
+          <ul>
+            <li>HP : {{hero.class.health}}</li>
+            <li>ATK : {{hero.class.atk}}</li>
+            <li>DEF : {{hero.class.def}}</li>
+          </ul>
+          <ul>
+            <li>MP : {{hero.class.mana}}</li>
+            <li>MATK : {{hero.class.matk}}</li>
+            <li>MDEF : {{hero.class.mdef}}</li>
+          </ul>
+        </div>
+      </div>
+      <div class="skills">
+        <h4 class="title is-4">Skills</h4>
+        <ul>
+          <li ng-repeat="skill in hero.skills">
+            {{skill.name}}
+            <i class="fa fa-info-circle" ng-mouseover="infos = true" ng-mouseleave="infos = false"></i>
+            <div ng-if="infos" class="skill-description" ng-bind-html="skill.description"></div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

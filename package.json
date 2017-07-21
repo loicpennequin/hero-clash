@@ -1,0 +1,23 @@
+{
+  "name": "Hero Clash",
+  "version": "0.1.0",
+  "description": "Prototype de jeu de combat d'equipe de heros en tour par tour",
+  "main": "app.js",
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.17.2",
+    "bookshelf": "^0.10.3",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.15.3",
+    "express-session": "^1.15.3",
+    "formidable": "^1.1.1",
+    "knex": "^0.12.9",
+    "lodash": "^4.17.4",
+    "mysql": "^2.13.0",
+    "node-fetch": "^1.7.1",
+    "slugify": "^1.1.0"
+  },
+  "devDependencies": {},
+  "author": "",
+  "license": "ISC"
+}

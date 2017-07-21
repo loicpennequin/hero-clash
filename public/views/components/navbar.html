@@ -1,0 +1,21 @@
+<nav class="navbar">
+  <div class="navbar-brand">
+    <h1 class="title is-2">Hero Clash !</h1>
+  </div>
+  <div class="navbar-menu">
+    <div class="navbar-start">
+      <a href="#" class="navbar-item">Hero Shop</a>
+      <a href="#" class="navbar-item">Play !</a>
+      <a href="#" class="navbar-item">Leaderboards</a>
+    </div>
+    <div class="navbar-end" ng-controller="loginCtrl">
+      <div class="navbar-item">
+        <h1>Hello, {{user.login}}</h1>
+      </div>
+      <a href="#" class="navbar-item">Profile</a>
+      <div class="navbar-item">
+        <button class="button is-dark" ng-click="signOff()">logout</button>
+      </div>
+    </div>
+  </div>
+</nav>
