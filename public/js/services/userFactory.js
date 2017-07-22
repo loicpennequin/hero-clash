@@ -1,6 +1,6 @@
 app.factory('userFactory', function($http, $q){
   return{
-    getUSers : function(){
+    getUsers : function(){
       let deferred = $q.defer();
       $http.get('http://localhost:8080/api/users')
         .then(function(response){
@@ -50,7 +50,7 @@ app.factory('userFactory', function($http, $q){
         });
       return deferred.promise;
     },
-    isLoggedIn : function(){
+    loginCheck : function(){
       let deferred = $q.defer();
       $http.get('http://localhost:8080/api/loggedin')
         .then(function(response){

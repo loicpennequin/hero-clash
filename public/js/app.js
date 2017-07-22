@@ -7,7 +7,7 @@ app.config(function($routeProvider){
     .when('/login', {templateUrl: 'views/login.html'})
 })
 .run(function(userFactory, $location){
-  userFactory.isLoggedIn()
+  userFactory.loginCheck()
     .then(function(response){
       if (!response.data.user){
         $location.path('/login')

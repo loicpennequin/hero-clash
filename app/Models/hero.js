@@ -3,7 +3,7 @@ let Bookshelf = require('../../database');
 require('./class');
 require('./skill');
 
-var Hero = Bookshelf.Model.extend({
+let Hero = Bookshelf.Model.extend({
 	tableName: "heroes",
 	class : function(){
 		return this.belongsTo('Class');

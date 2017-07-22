@@ -4828,7 +4828,8 @@ label.panel-block {
   border: solid #363636 2px;
   border-radius: 10px;
   display: flex;
-  flex-direction: row; }
+  flex-direction: row;
+  margin-bottom: 20px; }
   .profile-hero .portrait {
     border: solid #363636 1px;
     border-radius: 10px;
@@ -4853,6 +4854,9 @@ label.panel-block {
     top: -100%;
     left: 100%;
     width: 200%; }
+
+.not-owned {
+  opacity: 0.5; }
 
 * {
   box-sizing: border-box; }

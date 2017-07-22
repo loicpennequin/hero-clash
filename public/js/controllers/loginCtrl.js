@@ -6,7 +6,7 @@ app.controller('loginCtrl', function($scope, userFactory, $location){
   $scope.loggedIn = false;
   $scope.user = {};
 
-  userFactory.isLoggedIn().then(function(response){
+  userFactory.loginCheck().then(function(response){
     if (response.data.user){
       $scope.loggedIn = true;
       $scope.user = response.data.user;

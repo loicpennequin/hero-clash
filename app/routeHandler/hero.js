@@ -1,5 +1,5 @@
-const express = require('express'),
-    Heros = require('../collections/heroes'),
+let express = require('express'),
+    Heroes = require('../collections/heroes'),
     Hero = require('../models/hero'),
     Class = require('../models/class'),
     Skill = require('../models/skill'),

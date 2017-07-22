@@ -2,7 +2,7 @@
 <div ng-controller="profileCtrl">
   <h1 class="title has-text-centered">{{user.login}}</h1>
   <div class="has-text-centered">
-    {{user.gold}} gold
+    <i class="fa fa-diamond fa-5x"></i> {{user.gold}}
   </div>
   <div class="profile-heroes">
     <h2 class="title is-2">Your Heroes</h2>
@@ -26,9 +26,12 @@
       <div class="skills">
         <h4 class="title is-4">Skills</h4>
         <ul>
-          <li ng-repeat="skill in hero.skills">
-            {{skill.name}}
+          <li ng-repeat="skill in hero.class.skills">
+            <span ng-class="{'not-owned' : !isOwnedSkill(skill, hero)}">{{skill.name}}</span>
             <i class="fa fa-info-circle" ng-mouseover="infos = true" ng-mouseleave="infos = false"></i>
+            <span ng-if="!isOwnedSkill(skill, hero)" ng-click="buySkill(skill, hero)">
+              <span style="cursor: pointer;">Buy({{skill.price}}<i class="fa fa-diamond">)</i></span>
+            </span>
             <div ng-if="infos" class="skill-description" ng-bind-html="skill.description"></div>
           </li>
         </ul>

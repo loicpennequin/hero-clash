@@ -1,4 +1,4 @@
-const express = require('express'),
+let express = require('express'),
     Users = require('../collections/users'),
     User = require('../models/user'),
     Hero = require('../models/hero'),
@@ -45,7 +45,7 @@ exports.list = function(req, res){
 
 exports.show = function(req, res){
   User.forge({id : req.params.id})
-  .fetch({withRelated: ['heroes.skills', 'heroes.class'] })
+  .fetch({withRelated: ['heroes.skills', 'heroes.class.skills'] })
   .then(function (user) {
     let data = user.toJSON();
     delete data.password;
