@@ -1,5 +1,4 @@
-# DariaBeatsJesus : projet de blog personnel avec CMS from scratch
-
+# HEROCLASH
 ## Installation
 
 ### installer nodeJS
