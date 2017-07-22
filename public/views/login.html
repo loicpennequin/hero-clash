@@ -1,7 +1,7 @@
 <div class="login-screen" ng-controller="loginCtrl">
       <section>
         <h2 class="subtitle is-2">Sign In</h2>
-        <form ng-submit="signIn()" name="signInForm">
+        <form ng-submit="signIn()" name="signInForm" novalidate>
 
           <div class="field">
             <label class="label">Username</label>
@@ -32,7 +32,7 @@
       <section>
         <h4 class="title is-4">Not a member yet ?</h4>
         <h2 class="title is-2">Sign Up</h2>
-        <form ng-submit="signUp()" name="signUpForm">
+        <form ng-submit="signUp()" name="signUpForm" novalidate>
 
           <div class="field">
             <label class="label">Username</label>
@@ -75,5 +75,6 @@
           {{errorMessage}}
         </div>
       </section>
+      {{formDebugText}}
 
 </div>

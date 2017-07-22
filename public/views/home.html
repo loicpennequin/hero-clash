@@ -1,13 +1,46 @@
 <div ng-include="'views/components/navbar.html'"></div>
 <div ng-controller="profileCtrl">
   <h1 class="title has-text-centered">{{user.login}}</h1>
-  <div class="has-text-centered">
-    <i class="fa fa-diamond fa-5x"></i> {{user.gold}}
+  <div class="has-text-centered subtitle">
+    <div class="subtitle">
+      ELO : {{user.elo}}
+    </div>
   </div>
-  <div class="profile-heroes">
+  <div class="profile-section">
+    <h2 class="title is-2">Your Stats</h2>
+    <div>Games played : {{user.games}}</div>
+    <div>Games won : {{user.wins}}</div>
+    <div>Games lost : {{user.losses}}</div>
+  </div>
+
+  <div class="profile-section">
+    <h2 class="title is-2">Your Team</h2>
+    <div class="team">
+      <div class="team-member">
+        <div class="team-member-btn" ng-click="teamPicker1 = !teamPicker1" ng-style="{'background-image':'url(' + user.teamHero1.class.portrait + ')'}"></div>
+        <div class="team-member-picker" ng-show="teamPicker1">
+          <img ng-repeat="hero in user.heroes" ng-src="{{hero.class.portrait}}" class="portrait" ng-click="setTeamMember(hero, '1')">
+        </div>
+      </div>
+      <div class="team-member">
+        <div class="team-member-btn" ng-click="teamPicker2 = !teamPicker2" ng-style="{'background-image':'url(' + user.teamHero2.class.portrait + ')'}"></div>
+        <div class="team-member-picker" ng-show="teamPicker2">
+          <img ng-repeat="hero in user.heroes" ng-src="{{hero.class.portrait}}" class="portrait" ng-click="setTeamMember(hero, '2')">
+        </div>
+      </div>
+      <div class="team-member">
+        <div class="team-member-btn" ng-click="teamPicker3 = !teamPicker3" ng-style="{'background-image':'url(' + user.teamHero3.class.portrait + ')'}"></div>
+        <div class="team-member-picker" ng-show="teamPicker3">
+          <img ng-repeat="hero in user.heroes" ng-src="{{hero.class.portrait}}" class="portrait" ng-click="setTeamMember(hero, '3')">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="profile-section">
     <h2 class="title is-2">Your Heroes</h2>
-    <div ng-repeat="hero in user.heroes" class="profile-hero">
-      <img ng-src="{{hero.class.portrait}}" alt="pyromancer icon" class="portrait">
+    <div ng-repeat="hero in user.heroes | orderBy : 'class.name'" class="profile-hero">
+      <img ng-src="{{hero.class.portrait}}" class="portrait">
       <div>
         <h3 class="title is-3">{{hero.class.name}}</h3>
         <div class="stats">
@@ -35,6 +68,31 @@
             <div ng-if="infos" class="skill-description" ng-bind-html="skill.description"></div>
           </li>
         </ul>
+      </div>
+      <div class="active-skills columns is-multiline">
+        <div class="column is-full">
+          <h4 class="title is-4">Active Skills</h4>
+        </div>
+        <div class="column is-half">
+          <select ng-model="activeSkill1" ng-change="setActiveSkill(1)">
+            <option value="skill" ng-repeat="skill in hero.skills">{{skill.name}}</option>
+          </select>
+        </div>
+        <div class="column is-half">
+          <select ng-model="activeSkill2" ng-change="setActiveSkill(2)">
+            <option value="skill" ng-repeat="skill in hero.skills">{{skill.name}}</option>
+          </select>
+        </div>
+        <div class="column is-half">
+          <select ng-model="activeSkill3" ng-change="setActiveSkill(3)">
+            <option value="skill" ng-repeat="skill in hero.skills">{{skill.name}}</option>
+          </select>
+        </div>
+        <div class="column is-half">
+          <select ng-model="activeSkill4" ng-change="setActiveSkill(4)">
+            <option value="skill" ng-repeat="skill in hero.skills">{{skill.name}}</option>
+          </select>
+        </div>
       </div>
     </div>
   </div>

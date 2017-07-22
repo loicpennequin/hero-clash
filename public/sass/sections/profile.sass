@@ -1,6 +1,39 @@
-.profile-heroes
-  padding: 10px
-  background-color: $white-ter
+.profile-section
+  padding: 15px
+
+.team
+  display: flex
+  flex-direction: row
+  justify-content: space-around
+
+.team-member
+  position: relative
+
+  .team-member-btn
+    width: 100px
+    height: 100px
+    border: solid 2px $dark
+    border-radius: 10px
+    cursor: pointer
+    position: relative
+    background-position: center
+    background-size: cover
+
+.team-member-picker
+  display: flex
+  flex-direction: row
+  flex-wrap: wrap
+  z-index: 5
+  width: 300%
+  position: absolute
+  top: 100%
+  left: 0
+  transform: translateX(-33%)
+
+  img
+    border: solid $dark 1px
+    width: 100px
+
 
 .profile-hero
   padding: 15px
@@ -9,25 +42,34 @@
   display: flex
   flex-direction: row
   margin-bottom: 20px
-
+  +mobile
+    flex-direction: column
   .portrait
     border: solid $dark 1px
     border-radius: 10px
     margin-right: 10px
     align-self: flex-start
 
-
   .stats
     display: flex
     flex-direction: row
     ul
       margin-right: 100px
+      +mobile
+        margin-right: 0
+        margin-bottom: 10px
+      li
+        min-width: 80px
 
   .skills
+    min-width: 250px
     li
       position: relative
+      +mobile
+        font-size: 1.1em
     i
       cursor: pointer
+
     .skill-description
       background-color: white
       border: solid $dark 1px
@@ -36,8 +78,13 @@
       font-size: 0.7em
       position: absolute
       top: -100%
-      left: 100%
-      width: 200%
-
+      left: 75%
+      width: 150%
+      z-index: 5
+      +mobile
+        position: relative
+        top: 0
+        left: 0
+        width: 100%
 .not-owned
   opacity: 0.5

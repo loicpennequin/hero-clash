@@ -4819,9 +4819,39 @@ label.panel-block {
     .login-screen section h2 {
       font-weight: bolder; }
 
-.profile-heroes {
-  padding: 10px;
-  background-color: whitesmoke; }
+.profile-section {
+  padding: 15px; }
+
+.team {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around; }
+
+.team-member {
+  position: relative; }
+  .team-member .team-member-btn {
+    width: 100px;
+    height: 100px;
+    border: solid 2px #363636;
+    border-radius: 10px;
+    cursor: pointer;
+    position: relative;
+    background-position: center;
+    background-size: cover; }
+
+.team-member-picker {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  z-index: 5;
+  width: 300%;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  transform: translateX(-33%); }
+  .team-member-picker img {
+    border: solid #363636 1px;
+    width: 100px; }
 
 .profile-hero {
   padding: 15px;
@@ -4830,6 +4860,9 @@ label.panel-block {
   display: flex;
   flex-direction: row;
   margin-bottom: 20px; }
+  @media screen and (max-width: 768px) {
+    .profile-hero {
+      flex-direction: column; } }
   .profile-hero .portrait {
     border: solid #363636 1px;
     border-radius: 10px;
@@ -4840,20 +4873,38 @@ label.panel-block {
     flex-direction: row; }
     .profile-hero .stats ul {
       margin-right: 100px; }
-  .profile-hero .skills li {
-    position: relative; }
-  .profile-hero .skills i {
-    cursor: pointer; }
-  .profile-hero .skills .skill-description {
-    background-color: white;
-    border: solid #363636 1px;
-    border-radius: 5px;
-    padding: 5px;
-    font-size: 0.7em;
-    position: absolute;
-    top: -100%;
-    left: 100%;
-    width: 200%; }
+      @media screen and (max-width: 768px) {
+        .profile-hero .stats ul {
+          margin-right: 0;
+          margin-bottom: 10px; } }
+      .profile-hero .stats ul li {
+        min-width: 80px; }
+  .profile-hero .skills {
+    min-width: 250px; }
+    .profile-hero .skills li {
+      position: relative; }
+      @media screen and (max-width: 768px) {
+        .profile-hero .skills li {
+          font-size: 1.1em; } }
+    .profile-hero .skills i {
+      cursor: pointer; }
+    .profile-hero .skills .skill-description {
+      background-color: white;
+      border: solid #363636 1px;
+      border-radius: 5px;
+      padding: 5px;
+      font-size: 0.7em;
+      position: absolute;
+      top: -100%;
+      left: 75%;
+      width: 150%;
+      z-index: 5; }
+      @media screen and (max-width: 768px) {
+        .profile-hero .skills .skill-description {
+          position: relative;
+          top: 0;
+          left: 0;
+          width: 100%; } }
 
 .not-owned {
   opacity: 0.5; }

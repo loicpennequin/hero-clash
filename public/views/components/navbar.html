@@ -12,7 +12,10 @@
       <div class="navbar-item">
         <h1>Hello, {{user.login}}</h1>
       </div>
-      <a href="#" class="navbar-item">Profile</a>
+      <div class="navbar-item" ng-controller="profileCtrl">
+        <i class="fa fa-diamond fa-5x"></i> {{user.gold}}
+      </div>
+      <a href="#!/" class="navbar-item">Profile</a>
       <div class="navbar-item">
         <button class="button is-dark" ng-click="signOff()">logout</button>
       </div>

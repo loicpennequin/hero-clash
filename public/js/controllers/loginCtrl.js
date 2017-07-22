@@ -5,6 +5,7 @@ app.controller('loginCtrl', function($scope, userFactory, $location){
 
   $scope.loggedIn = false;
   $scope.user = {};
+  $scope.newUSer = {};
 
   userFactory.loginCheck().then(function(response){
     if (response.data.user){
@@ -16,16 +17,18 @@ app.controller('loginCtrl', function($scope, userFactory, $location){
     };
   });
 
-
   $scope.signUp = function(){
-    if (this.newUser.password != this.newUser.passwordConfirm){
+    if ($scope.newUser.password != $scope.newUser.passwordConfirm){
       $scope.signInError = true;
       $scope.errorMessage = "your passwords don't match";
     } else {
-      userFactory.addUser(this.newUser)
+      userFactory.addUser($scope.newUser)
         .then(function(response){
           $scope.signInError = true;
           $scope.errorMessage = "signup success";
+          $scope.newUser = {};
+          $scope.signUpForm.$setPristine();
+          $scope.signUpForm.$setUntouched();
         }, function(error){
           $scope.signInError = true;
           $scope.errorMessage = error;

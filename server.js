@@ -32,6 +32,7 @@ app.get('/api/loggedin', user.logincheck)
 
 app.get('/api/heroes', hero.list);
 app.get('/api/heroes/:id', hero.show);
+app.put('/api/heroes/team/:slot', hero.setTeamMember);
 
 app.get('/api/skills/buy', skill.buy)
 
