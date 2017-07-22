@@ -1,13 +1,20 @@
 # HEROCLASH
 ## Installation
 
-### installer nodeJS
+### installer nodeJS et mettre à jour npm
 
-google est votre pote
+linux : apt install nodejs
+windows : https://nodejs.org/en/
+
+puis :
+npm install -g npm
+npm update
 
 ### Installation des dépendances
 
 à la racine du projet, npm install
+
+Si vous n'avez pas MYSQL d'installé baaaaaah installez le (je vous avoue avoir la flemme de regarder comment faire sur linux. Ouais je code sur windows at the moment, Philippe ne me brûle pas stp)
 
 ### créer un fichier password.js à la racine du projet avec le contnu suivant :
 
@@ -20,9 +27,8 @@ dans le fichier database.js, remplissez vos champs utilisateurs, host etc. ne to
 
 ### installation de la base de données
 
-dans le dossier data , mysql -u root -p < dariabeatsjesus.sql
+dans le dossier data , mysql -u root -p < heroclash.sql
 ou dans phpmyadmin : importer
-Si vous n'avez pas MYSQL d'installé baaaaaah installez le
 
 ### lancement du serveur node
 

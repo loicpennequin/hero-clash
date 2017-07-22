@@ -4913,7 +4913,7 @@ label.panel-block {
   display: flex;
   flex-direction: row; }
   .classes-wrapper .class-wrapper {
-    background: linear-gradient(130DEG, #fafafa, #b5b5b5);
+    background: linear-gradient(130DEG, #fafafa, #dbdbdb);
     padding: 15px;
     border: solid #363636 1px;
     border-radius: 10px;
