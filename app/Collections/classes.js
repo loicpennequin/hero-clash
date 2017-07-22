@@ -4,4 +4,4 @@ let Bookshelf = require('../../database'),
 			model: Class
 		});
 
-module.exports = Bookshelf.collection('Class', Class);
+module.exports = Bookshelf.collection('Classes', Classes);

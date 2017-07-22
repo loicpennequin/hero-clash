@@ -1,0 +1,15 @@
+<div ng-include="'views/components/navbar.html'"></div>
+<div ng-controller="shopCtrl">
+  <h1 class="title is-1 has-text-centered">Hero Shop</h1>
+  <div class="classes-wrapper">
+    <div class="class-wrapper has-text-centered" ng-repeat="class in classes">
+      <img ng-src="{{class.portrait}}" alt="" ng-disabled="!isOwnedClass(class)">
+      <h3 class="title is-4">{{class.name}}</h3>
+      <button class="button is-info" ng-if="isOwnedClass(class)">OWNED</button>
+      <button class="button is-primary" ng-if="!isOwnedClass(class)">
+        {{class.price}} &nbsp;
+        <i class="fa fa-diamond"></i>
+      </button>
+    </div>
+  </div>
+</div>

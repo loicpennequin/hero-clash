@@ -4909,6 +4909,20 @@ label.panel-block {
 .not-owned {
   opacity: 0.5; }
 
+.classes-wrapper {
+  display: flex;
+  flex-direction: row; }
+  .classes-wrapper .class-wrapper {
+    background: linear-gradient(130DEG, #fafafa, #b5b5b5);
+    padding: 15px;
+    border: solid #363636 1px;
+    border-radius: 10px;
+    margin: 15px; }
+    .classes-wrapper .class-wrapper img {
+      border: solid #363636 2px; }
+  .classes-wrapper .class-wrapper img[disabled] {
+    filter: grayscale(80%); }
+
 * {
   box-sizing: border-box; }
 
