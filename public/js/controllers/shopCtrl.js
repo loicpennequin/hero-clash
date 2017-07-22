@@ -15,7 +15,6 @@ app.controller('shopCtrl', function($scope, userFactory, skillFactory, heroFacto
       classFactory.getClasses()
         .then(function(response){
           $scope.classes = response.data
-          console.log($scope.classes);
         }, function(error){
           console.log(error);
         })
@@ -38,6 +37,16 @@ app.controller('shopCtrl', function($scope, userFactory, skillFactory, heroFacto
       if (heroes) {
         return heroes.some(isOwned);
       }
+    }
+
+    $scope.buyClass=function(job){
+      classFactory.buy(job)
+        .then(function(response){
+          $scope.getUser($scope.user.id);
+          $scope.getClasses();
+        }, function(error){
+          console.log(error);
+        })
     }
 
 

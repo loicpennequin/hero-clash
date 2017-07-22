@@ -9,6 +9,16 @@ app.factory('classFactory', function($http, $q){
           deferred.reject(error)
         });
       return deferred.promise;
+    },
+    buy : function(data){
+      let deferred = $q.defer();
+      $http.post('http://localhost:8080/api/classes/buy', data)
+        .then(function(response){
+          deferred.resolve(response.data)
+        }, function(error){
+          deferred.reject(error)
+        });
+      return deferred.promise;
     }
   }
 });

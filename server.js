@@ -38,6 +38,7 @@ app.put('/api/heroes/team/:slot', hero.setTeamMember);
 app.get('/api/skills/buy', skill.buy)
 
 app.get('/api/classes', job.list)
+app.post('/api/classes/buy', job.buy)
 
 //////// 404
 // app.use(function(req, res, next){
