@@ -1,0 +1,108 @@
+<div ng-include="'views/components/navbar.html'"></div>
+<main ng-controller="trainingCtrl">
+  <h1 class="title is-1 has-text-centered">Training</h1>
+  <div class="battlefield columns is-multiline">
+    <div class="column is-5 is-offset-1 user-team">
+      <section class="team-member" ng-repeat="hero in userTeam">
+        <div class="menu">
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label class="label">target</label>
+            </div>
+            <div class="field-body">
+              <div class="field is-narrow">
+                <div class="control">
+                  <div class="select is-fullwidth">
+                    <select ng-model="hero.target">
+                      <option ng-repeat="target in roster track by $index" ng-value="target" >
+                        {{target.class.name}}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label class="label">skill</label>
+            </div>
+            <div class="field-body">
+              <div class="field is-narrow">
+                <div class="control">
+                  <div class="select is-fullwidth">
+                    <select ng-model="hero.skillAction">
+                      <option ng-value="hero.activeSkill1">{{hero.activeSkill1.name}}</option>
+                      <option ng-value="hero.activeSkill2">{{hero.activeSkill2.name}}</option>
+                      <option ng-value="hero.activeSkill3">{{hero.activeSkill3.name}}</option>
+                      <option ng-value="hero.activeSkill4">{{hero.activeSkill4.name}}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="actions-wrapper">
+            <button class="button is-small is-dark action-btn"
+                    ng-click="setAction(this, hero, 'attack'); atkActive = true; skillActive = false; defActive = false; waitActive = false"
+                    ng-class="{'is-active': atkActive}">
+                    Attack
+            </button>
+            <button class="button is-small is-dark action-btn"
+                    ng-click="setAction(this, hero, 'skill', hero.skillAction); atkActive = false; skillActive = true; defActive = false; waitActive = false"
+                    ng-class="{'is-active': skillActive}">
+                    Skill
+            </button>
+            <button class="button is-small is-dark action-btn"
+                    ng-click="setAction(this, hero, 'defend'); atkActive = false; skillActive = false; defActive = true; waitActive = false"
+                    ng-class="{'is-active': defActive}">
+                    Defend
+            </button>
+            <button class="button is-small is-dark action-btn"
+                    ng-click="setAction(this, hero, 'wait'); atkActive = false; skillActive = false; defActive = false; waitActive = true"
+                    ng-class="{'is-active': waitActive}">
+                    Wait
+            </button>
+          </div>
+        </div>
+        <div class="hero-infos">
+          <h4>{{hero.class.name}}</h4>
+          <img ng-src="{{hero.class.portrait}}" alt="">
+          <div class="HPBar" ng-style="setHPBar(hero)"></div>
+          <div class="MPBar" ng-style="setMPBar(hero)"></div>
+          <div class="hero-stats">
+            <div class="wrapper">
+              <ul>
+                <li>HP : {{hero.hp}}</li>
+                <li>ATK : {{hero.atk}}</li>
+                <li>DEF : {{hero.def}}</li>
+                <li>SPE : {{hero.speed}}</li>
+              </ul>
+              <ul>
+                <li>MP : {{hero.mp}}</li>
+                <li>MATK : {{hero.matk}}</li>
+                <li>MDEF : {{hero.mdef}}</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+    <div class="column is-3 is-offset-2 opponent">
+      <section class="team-member" ng-repeat="hero in oppTeam track by $index">
+        <div>
+          <h4>{{hero.class.name}}</h4>
+          <img ng-src="{{hero.class.portrait}}" alt="">
+          <div class="HPBar" ng-style="setHPBar(hero)"></div>
+        </div>
+      </section>
+    </div>
+    <div class="column is-offset-1">
+      <button class="button is-large is-info" ng-click="resolveTurn()">Confirm turn</button>
+    </div>
+  </div>
+
+  <div class="combat-log">
+    <p ng-repeat="log in combatLog track by $index">{{log}}</p>
+  </div>
+</main>

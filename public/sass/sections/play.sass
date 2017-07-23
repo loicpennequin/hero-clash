@@ -1,0 +1,70 @@
+.battlefield
+  display: flex
+
+  section
+    margin: 10px auto
+    min-height: 135px
+
+  .menu
+    padding: 5px
+    border: solid $dark 1px
+    margin-right: 5px
+
+    button.is-active
+      filter: brightness(200%)
+      font-weight: normal
+    .actions-wrapper
+      display: flex
+      justify-content: space-around
+
+  .team-member
+    display: flex
+    flex-direction: row
+    align-items: center
+
+  img
+    width: 100px
+    height: 100px
+    border: solid $dark 2px
+    border-radius: 5px
+    &:hover ~ .hero-stats .wrapper
+      transform: none
+
+  .hero-infos
+    position: relative
+
+    .hero-stats
+      position: absolute
+      top: 50%
+      transform: translateY(-50%)
+      left: calc(100% + 2px)
+      width: 200%
+      overflow: hidden
+
+      .wrapper
+        display: flex
+        flex-direction: row
+        justify-content: space-around
+        transform: translateX(-200%)
+        transition: all 0.3s
+        padding: 5px
+        border: solid $dark 1px
+        border-radius: 5px
+
+      ul
+        margin-right: 10px
+
+  .opponent img
+    transform: rotateY(180deg)
+
+.HPBar
+  background: linear-gradient(to right, black, #555), $success
+  background-blend-mode: screen
+  height: 10px
+  border: solid $dark 1px
+  transition: all 0.3s
+  margin-bottom: 3px
+
+.MPBar
+  @extend .HPBar
+  background: linear-gradient(to right, black, #555), $info

@@ -4874,7 +4874,7 @@ label.panel-block {
     border: solid #363636 1px;
     border-radius: 10px;
     margin-right: 10px;
-    align-self: flex-start; }
+    align-self: center; }
   .profile-hero .stats {
     display: flex;
     flex-direction: row; }
@@ -4926,7 +4926,8 @@ label.panel-block {
     padding: 15px;
     border: solid #363636 1px;
     border-radius: 10px;
-    margin: 15px; }
+    margin: 15px;
+    perspective: 200px; }
     .classes-wrapper .class-wrapper img {
       border: solid #363636 2px; }
   .classes-wrapper .class-wrapper img[disabled] {
@@ -4944,6 +4945,66 @@ label.panel-block {
 .lb-table td {
   vertical-align: middle; }
 
+.battlefield {
+  display: flex; }
+  .battlefield section {
+    margin: 10px auto;
+    min-height: 135px; }
+  .battlefield .menu {
+    padding: 5px;
+    border: solid #363636 1px;
+    margin-right: 5px; }
+    .battlefield .menu button.is-active {
+      filter: brightness(200%);
+      font-weight: normal; }
+    .battlefield .menu .actions-wrapper {
+      display: flex;
+      justify-content: space-around; }
+  .battlefield .team-member {
+    display: flex;
+    flex-direction: row;
+    align-items: center; }
+  .battlefield img {
+    width: 100px;
+    height: 100px;
+    border: solid #363636 2px;
+    border-radius: 5px; }
+    .battlefield img:hover ~ .hero-stats .wrapper {
+      transform: none; }
+  .battlefield .hero-infos {
+    position: relative; }
+    .battlefield .hero-infos .hero-stats {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      left: calc(100% + 2px);
+      width: 200%;
+      overflow: hidden; }
+      .battlefield .hero-infos .hero-stats .wrapper {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        transform: translateX(-200%);
+        transition: all 0.3s;
+        padding: 5px;
+        border: solid #363636 1px;
+        border-radius: 5px; }
+      .battlefield .hero-infos .hero-stats ul {
+        margin-right: 10px; }
+  .battlefield .opponent img {
+    transform: rotateY(180deg); }
+
+.HPBar, .MPBar {
+  background: linear-gradient(to right, black, #555), #23d160;
+  background-blend-mode: screen;
+  height: 10px;
+  border: solid #363636 1px;
+  transition: all 0.3s;
+  margin-bottom: 3px; }
+
+.MPBar {
+  background: linear-gradient(to right, black, #555), #3273dc; }
+
 * {
   box-sizing: border-box; }
 
@@ -4952,12 +5013,20 @@ html, body {
   padding: 0;
   background-color: #fafafa; }
 
-.view {
+main {
+  padding-top: 80px;
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto; }
 
-main {
-  padding-top: 50px; }
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  border-bottom: solid 1px #7a7a7a;
+  z-index: 999; }
+
+.view {
+  min-height: 100vh; }
 
 /*# sourceMappingURL=main.css.map */

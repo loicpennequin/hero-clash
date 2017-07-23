@@ -19,6 +19,16 @@ app.factory('heroFactory', function($http, $q){
           deferred.reject(error)
         });
       return deferred.promise;
+    },
+    getHeroesFromUser : function(id){
+      let deferred = $q.defer();
+      $http.get('http://localhost:8080/api/heroes/user/' + id)
+        .then(function(response){
+          deferred.resolve(response.data)
+        }, function(error){
+          deferred.reject(error)
+        });
+      return deferred.promise;
     }
   }
 });

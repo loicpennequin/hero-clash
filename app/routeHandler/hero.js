@@ -63,7 +63,6 @@ exports.setActiveSkill = function(req, res){
   Hero.forge({id : req.body.hero})
   .fetch()
   .then(function(hero){
-    console.log(req.params.slot);
     if(req.params.slot == '1'){
       hero.save({
         skill1 : req.body.skill
@@ -82,5 +81,13 @@ exports.setActiveSkill = function(req, res){
       });
     };
     res.json({error: false, data: {message: 'active skill set successfully'}})
+  })
+}
+
+exports.listFromUser = function(req, res){
+  Hero.query({where: {user_id : req.params.id}})
+  .fetchAll({withRelated : ['class']})
+  .then(function(heroes){
+    res.json({error: false, data: heroes.toJSON()});
   })
 }
