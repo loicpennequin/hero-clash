@@ -18,21 +18,28 @@
     position: relative
     background-position: center
     background-size: cover
+    transition: background-image 0.5s ease-in-out
 
 .team-member-picker
   display: flex
   flex-direction: row
   flex-wrap: wrap
   z-index: 5
-  width: 300%
+  width: calc(300% + 15px)
   position: absolute
-  top: 100%
+  top: calc(100% + 2px)
   left: 0
   transform: translateX(-33%)
+  background-color: $white-bis
+  border: solid 1px $dark
+  padding: 5px
 
   img
     border: solid $dark 1px
     width: 100px
+    filter: grayscale(25%)
+    &:hover
+      filter: none
 
 
 .profile-hero

@@ -69,7 +69,6 @@ app.controller('profileCtrl', function($scope, userFactory, skillFactory, heroFa
     };
 
     $scope.setActiveSkill = function(hero, skill, slot){
-      console.log(slot);
       let data = {};
       data.hero = hero.id,
       data.skill = skill.id;

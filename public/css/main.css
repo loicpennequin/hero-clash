@@ -4837,21 +4837,28 @@ label.panel-block {
     cursor: pointer;
     position: relative;
     background-position: center;
-    background-size: cover; }
+    background-size: cover;
+    transition: background-image 0.5s ease-in-out; }
 
 .team-member-picker {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   z-index: 5;
-  width: 300%;
+  width: calc(300% + 15px);
   position: absolute;
-  top: 100%;
+  top: calc(100% + 2px);
   left: 0;
-  transform: translateX(-33%); }
+  transform: translateX(-33%);
+  background-color: #fafafa;
+  border: solid 1px #363636;
+  padding: 5px; }
   .team-member-picker img {
     border: solid #363636 1px;
-    width: 100px; }
+    width: 100px;
+    filter: grayscale(25%); }
+    .team-member-picker img:hover {
+      filter: none; }
 
 .profile-hero {
   padding: 15px;
@@ -4931,9 +4938,9 @@ label.panel-block {
   width: 60px; }
 
 .lb-table thead {
-  background-color: #3273dc; }
+  background-color: #363636; }
   .lb-table thead td {
-    color: #fff; }
+    color: whitesmoke; }
 .lb-table td {
   vertical-align: middle; }
 
@@ -4949,5 +4956,8 @@ html, body {
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto; }
+
+main {
+  padding-top: 50px; }
 
 /*# sourceMappingURL=main.css.map */
