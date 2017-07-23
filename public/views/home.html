@@ -74,23 +74,35 @@
           <h4 class="title is-4">Active Skills</h4>
         </div>
         <div class="column is-half">
-          <select ng-model="activeSkill1" ng-change="setActiveSkill(1)">
-            <option value="skill" ng-repeat="skill in hero.skills">{{skill.name}}</option>
+          <div>
+            {{hero.activeSkill1.name}} &nbsp;
+          </div>
+          <select ng-model="activeSkill1" ng-change="setActiveSkill(hero, activeSkill1, 1)">
+            <option ng-value="skill" ng-repeat="skill in hero.skills">{{skill.name}}</option>
           </select>
         </div>
         <div class="column is-half">
-          <select ng-model="activeSkill2" ng-change="setActiveSkill(2)">
-            <option value="skill" ng-repeat="skill in hero.skills">{{skill.name}}</option>
+          <div>
+            {{hero.activeSkill2.name}} &nbsp;
+          </div>
+          <select ng-model="activeSkill2" ng-change="setActiveSkill(hero, activeSkill2, 2)">
+            <option ng-value="skill" ng-repeat="skill in hero.skills">{{skill.name}}</option>
           </select>
         </div>
         <div class="column is-half">
-          <select ng-model="activeSkill3" ng-change="setActiveSkill(3)">
-            <option value="skill" ng-repeat="skill in hero.skills">{{skill.name}}</option>
+          <div>
+            {{hero.activeSkill3.name}} &nbsp;
+          </div>
+          <select ng-model="activeSkill3" ng-change="setActiveSkill(hero, activeSkill3, 3)">
+            <option ng-value="skill" ng-repeat="skill in hero.skills">{{skill.name}}</option>
           </select>
         </div>
         <div class="column is-half">
-          <select ng-model="activeSkill4" ng-change="setActiveSkill(4)">
-            <option value="skill" ng-repeat="skill in hero.skills">{{skill.name}}</option>
+          <div>
+            {{hero.activeSkill4.name}} &nbsp;
+          </div>
+          <select ng-model="activeSkill4" ng-change="setActiveSkill(hero, activeSkill4, 4)">
+            <option ng-value="skill" ng-repeat="skill in hero.skills">{{skill.name}}</option>
           </select>
         </div>
       </div>

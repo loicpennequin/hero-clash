@@ -4905,6 +4905,8 @@ label.panel-block {
           top: 0;
           left: 0;
           width: 100%; } }
+  .profile-hero .active-skills select {
+    width: 150px; }
 
 .not-owned {
   opacity: 0.5; }
