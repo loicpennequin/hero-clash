@@ -6,6 +6,7 @@ app.config(function($routeProvider){
     .when('/', {templateUrl: 'views/home.html'})
     .when('/login', {templateUrl: 'views/login.html'})
     .when('/shop', {templateUrl: 'views/shop.html'})
+    .when('/leaderboards', {templateUrl: 'views/leaderboards.html'})
 })
 .run(function(userFactory, $location){
   userFactory.loginCheck()

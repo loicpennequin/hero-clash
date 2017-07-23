@@ -4923,6 +4923,18 @@ label.panel-block {
   .classes-wrapper .class-wrapper img[disabled] {
     filter: grayscale(80%); }
 
+.lb-portrait {
+  display: inline-block;
+  border: solid 1px #363636;
+  width: 60px; }
+
+.lb-table thead {
+  background-color: #3273dc; }
+  .lb-table thead td {
+    color: #fff; }
+.lb-table td {
+  vertical-align: middle; }
+
 * {
   box-sizing: border-box; }
 

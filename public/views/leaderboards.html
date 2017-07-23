@@ -1,0 +1,26 @@
+<div ng-include="'views/components/navbar.html'"></div>
+<div ng-controller="lbCtrl">
+  <h1 class="title is-1 has-text-centered">Leaderboards</h1>
+  <div class="columns">
+    <div class="column is-6 is-offset-3">
+      <table class="table lb-table is-bordered os-striped">
+        <thead>
+          <td>Name</td>
+          <td>ELO</td>
+          <td>Team</td>
+        </thead>
+        <tbody>
+          <tr ng-repeat="user in users">
+            <td>{{user.login}}</td>
+            <td>{{user.elo}}</td>
+            <td>
+              <img class="lb-portrait" ng-src="{{user.teamHero1.class.portrait}}"/>
+              <img class="lb-portrait" ng-src="{{user.teamHero2.class.portrait}}"/>
+              <img class="lb-portrait" ng-src="{{user.teamHero3.class.portrait}}"/>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

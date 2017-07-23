@@ -34,7 +34,7 @@ let addBasic = function(user){
 
 exports.list = function(req, res){
   Users.forge()
-  .fetch()
+  .fetch({withRelated: ['heroes.class']})
   .then(function (collection) {
     res.json({error: false, data: collection.toJSON()});
   })
