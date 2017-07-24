@@ -3,7 +3,6 @@ app.controller('profileCtrl', function($scope, userFactory, skillFactory, heroFa
   $scope.teamPicker1 = false;
   $scope.teamPicker2 = false;
   $scope.teamPicker3 = false;
-
   userFactory.loginCheck()
     .then(function(response){
       $scope.getUser(response.data.user.id)

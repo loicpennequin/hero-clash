@@ -9,6 +9,7 @@
     padding: 5px
     border: solid $dark 1px
     margin-right: 5px
+    width: 250px
 
     button.is-active
       filter: brightness(200%)
@@ -68,3 +69,7 @@
 .MPBar
   @extend .HPBar
   background: linear-gradient(to right, black, #555), $info
+
+#combat-log
+  display: flex
+  flex-direction: column-reverse

@@ -4953,7 +4953,8 @@ label.panel-block {
   .battlefield .menu {
     padding: 5px;
     border: solid #363636 1px;
-    margin-right: 5px; }
+    margin-right: 5px;
+    width: 250px; }
     .battlefield .menu button.is-active {
       filter: brightness(200%);
       font-weight: normal; }
@@ -5004,6 +5005,10 @@ label.panel-block {
 
 .MPBar {
   background: linear-gradient(to right, black, #555), #3273dc; }
+
+#combat-log {
+  display: flex;
+  flex-direction: column-reverse; }
 
 * {
   box-sizing: border-box; }

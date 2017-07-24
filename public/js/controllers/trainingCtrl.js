@@ -1,4 +1,4 @@
-app.controller('trainingCtrl', function($scope, $q, classFactory, userFactory, skillFactory, heroFactory, battleFactory){
+app.controller('trainingCtrl', function($scope, $q, classFactory, userFactory, skillFactory, heroFactory, battleFactory, socket){
   $scope.user = {};
   $scope.roster = [];
   $scope.userTeam = [];
@@ -107,29 +107,65 @@ app.controller('trainingCtrl', function($scope, $q, classFactory, userFactory, s
   };
 
   $scope.resolveTurn = function(){
+    //set dummies actions;
     $scope.oppTeam.forEach(function(dummy, index){
       dummy.action = 'wait';
     });
+
+    //Setup roster;
     $scope.roster = $scope.userTeam.concat($scope.oppTeam);
-    $scope.roster.sort(function(a,b) {
-      return b.speed - a.speed
-    });
-    $scope.roster.forEach(function(hero, index){
-      switch (hero.action){
-        case 'attack':
-          $scope.combatLog.push(hero.class.name + ' attacked ' + hero.target.class.name + '.');
-          break;
-        case 'skill':
-          $scope.combatLog.push(hero.class.name + ' used ' + hero.skillAction.name + ' on ' + hero.target.class.name + '.');
-          break;
-        case 'defend' :
-          $scope.combatLog.push(hero.class.name + ' defends.');
-          break;
-        case 'wait' :
-          $scope.combatLog.push(hero.class.name + ' waits.');
-          break;
-      }
-    })
-  }
+
+    //sort array by speed then put defending heroes first;
+    sortHeroes($scope.roster);
+    resolveAction(0);
+
+    function sortHeroes(arr){
+      arr.sort(function(a,b) {
+        return b.speed - a.speed
+      });
+      arrCopy = arr.slice(0);
+      arrCopy.forEach(function(hero, index){
+        if(hero.action == 'defend'){
+          console.log('defends');
+          let oldIndex = arrCopy.indexOf(hero),
+              newIndex = 0;
+          arr.splice(oldIndex, 1);
+          arr.splice(newIndex, 0, hero);
+        };
+      });
+    };
+
+    function resolveAction(index){
+      socket.emit('action', {actor : $scope.roster[index], heroes : $scope.roster}, (response) =>{
+        $scope.combatLog.push(response.combatLog);
+        $scope.roster = response.heroes;
+        index++;
+        if (index < $scope.roster.length){
+          resolveAction(index);
+        }else{
+          $scope.userTeam = [];
+          $scope.oppTeam = [];
+          let rosterCopy = $scope.roster.slice(0);
+          rosterCopy.forEach(function(hero, index){
+            if (hero.hp <= 0){
+                let index = rosterCopy.indexOf(hero);
+                $scope.roster.splice(index, 1);
+                $scope.combatLog.push(hero.class.name + ' has been defeated!')
+            } else {
+              hero.skillAction = {};
+              hero.target = {};
+              if(hero.user_id == $scope.user.id){
+                $scope.userTeam.push(hero)
+              }else{
+                $scope.oppTeam.push(hero)
+              };
+            };
+          });
+          $scope.combatLog.push('End of the Turn');
+        };
+      });
+    };
+  };
+
 
 });

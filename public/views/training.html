@@ -3,7 +3,7 @@
   <h1 class="title is-1 has-text-centered">Training</h1>
   <div class="battlefield columns is-multiline">
     <div class="column is-5 is-offset-1 user-team">
-      <section class="team-member" ng-repeat="hero in userTeam">
+      <section class="team-member" ng-repeat="hero in userTeam | orderBy : 'class.name' ">
         <div class="menu">
           <div class="field is-horizontal">
             <div class="field-label is-normal">
@@ -102,7 +102,7 @@
     </div>
   </div>
 
-  <div class="combat-log">
+  <div id="combat-log">
     <p ng-repeat="log in combatLog track by $index">{{log}}</p>
   </div>
 </main>

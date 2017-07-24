@@ -1,4 +1,4 @@
-app.controller('loginCtrl', function($scope, userFactory, $location){
+app.controller('loginCtrl', function($scope, userFactory, $location, socket){
   $scope.signInError = false;
   $scope.signUpError = false;
   $scope.ErrorMessage = "";
