@@ -152,6 +152,9 @@ app.controller('trainingCtrl', function($scope, $q, classFactory, userFactory, s
                 $scope.roster.splice(index, 1);
                 $scope.combatLog.push(hero.class.name + ' has been defeated!')
             } else {
+              if(hero.action == 'defend'){
+                hero.def -= 20;
+              }
               hero.skillAction = {};
               hero.target = {};
               if(hero.user_id == $scope.user.id){

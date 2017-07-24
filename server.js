@@ -54,29 +54,45 @@ io.on('connection', function(socket){
   socket.on('action', function (data, ackFn) {
     let combatLog = "",
         heroes = data.heroes,
-        actor = data.actor;
+        actor = data.actor,
+        actorIndex = heroes.findIndex(item => item.id === actor.id),
+        response,
+        skillAction = require('./app/skillActions/skillActions');
 
     switch (actor.action){
       case 'attack':
-        let dmg = actor.atk - actor.target.def;
+        let dmg = actor.atk - actor.target.def,
+            target = heroes.findIndex(item => item.id === actor.target.id);
+
         if(dmg < 10){
           dmg = 10;
         }
-        let target = heroes.findIndex(item => item.id === actor.target.id);
+
         heroes[target].hp -= dmg;
         combatLog = (actor.class.name + ' attacked ' + actor.target.class.name + ', dealing ' + dmg + ' damage.');
+        response = {heroes: heroes, combatLog: combatLog};
         break;
+
       case 'skill':
-        combatLog = (actor.class.name + ' used ' + actor.skillAction.name + ' on ' + actor.target.class.name + '.');
+        response = skillAction.skill(actor.skillAction, actor, heroes);
         break;
+
       case 'defend' :
-        combatLog = (actor.class.name + ' defends.');
+        heroes[actorIndex].def += 20;
+        combatLog = (actor.class.name + ' defends, gaining 20 DEF for the turn.');
+        response = {heroes: heroes, combatLog: combatLog}
         break;
+
       case 'wait' :
-        combatLog = (actor.class.name + ' waits.');
+        heroes[actorIndex].mp += 10;
+        if(heroes[actorIndex].mp > heroes[actorIndex].class.mana){
+          heroes[actorIndex].mp = heroes[actorIndex].class.mana
+        };
+        combatLog = (actor.class.name + ' waits, regaining 10 MP.');
+        response = {heroes: heroes, combatLog: combatLog}
         break;
     };
-    let response = {heroes: heroes, combatLog: combatLog}
+
     ackFn(response)
   });
 });
