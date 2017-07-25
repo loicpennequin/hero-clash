@@ -32,7 +32,7 @@ SkillAction.prototype.setTarget = function(){
           that.targets.push(that.heroes[i]);
         };
       };
-      that.combatLog = (that.actor.class.name + ' casted ' + that.skill.name + ' on enemy team');
+      that.combatLog = (that.actor.class.name + ' casted ' + that.skill.name + ' on enemy team.');
 
     break;
 
@@ -42,7 +42,7 @@ SkillAction.prototype.setTarget = function(){
           that.targets.push(that.heroes[i]);
         };
       };
-      that.combatLog = (that.actor.class.name + ' casted ' + that.skill.name + ' on ally team');
+      that.combatLog = (that.actor.class.name + ' casted ' + that.skill.name + ' on ally team.');
     break
   };
 };
@@ -100,6 +100,31 @@ SkillAction.prototype.hot = function(){
       applyHot(that.skill, that.actor, that.targets[i], that.logs);
     };
   };
+};
+
+SkillAction.prototype.buff = function(){
+  let that = this;
+  that.combatLog = that.combatLog.slice(0, -1);
+  that.combatLog += ', increasing'
+
+  for (let i = 1 ; i <= 4 ; i++){
+    if ( that.skill['buff' + i + 'value'] != null){
+      let skillPower = that.skill['buff' + i + 'value'] + (that.actor.matk * that.skill.statmodifierratio);
+      that.combatLog += ' ' + (that.skill['buff' + i + 'stat'].toUpperCase()) + ' by ' + skillPower + ',';
+      that.targets.forEach(function(target, index){
+        let stat = that.skill['buff' + i + 'stat'],
+            targetIndex = that.heroes.findIndex(item => item.id === target.id);
+        that.heroes[targetIndex][stat] += skillPower;
+        that.heroes[targetIndex].buffCounter = that.skill.statmodifierduration;
+        that.heroes[targetIndex].buffOrigin = that.skill.name;
+        that.heroes[targetIndex]['buff' + i + 'stat'] = that.skill['buff' + i + 'stat'];
+        that.heroes[targetIndex]['buff' + i + 'value'] = skillPower;
+      });
+    };
+  };
+
+  that.combatLog = that.combatLog.slice(0, -1);
+  that.combatLog += '.'
 };
 
 exports.skill = function(skill, actor, heroes){

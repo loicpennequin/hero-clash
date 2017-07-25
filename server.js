@@ -63,8 +63,8 @@ io.on('connection', function(socket){
         targetIndex = heroes.findIndex(item => item.id === data.actor.target),
         target = heroes[targetIndex],
         skillAction = require('./app/skillActions/skillActions');
-        
-        //checking for dots
+
+    //checking for dots
     if (actor.dotCounter){
       let dotOriginIndex = heroes.findIndex(item => item.id === actor.dotOrigin);
       skillAction.applyDot(false, actor.dotOrigin, heroes[actorIndex], combatLog)
@@ -130,11 +130,28 @@ io.on('connection', function(socket){
       response;
 
       heroesCopy.forEach(function(hero, index){
+        //decrease buff and deletes them if 0
+        if (hero.buffCounter){
+          hero.buffCounter --;
+          if (hero.buffCounter <= 0){
+            combatLog.push(hero.buffOrigin + ' has ended on ' + hero.class.name + '.')
+            delete hero.buffCounter;
+            delete hero.buffOrigin;
+            for (let i = 1 ; i <= 4 ; i++){
+              hero[hero['buff' + i + 'stat']] -= hero['buff' + i + 'value'];
+              delete hero['buff' + i + 'stat'];
+              delete hero['buff' + i + 'value'];
+            }
+          }
+        };
+
+        //remove dead heroes
         if (hero.hp <= 0){
           let index = heroesCopy.indexOf(hero);
           heroes.splice(index, 1);
           combatLog.push(hero.class.name + ' has been defeated!')
         } else {
+        //remove 'defend' buff
           if(hero.action == 'defend'){
             hero.def -= 20;
           }
