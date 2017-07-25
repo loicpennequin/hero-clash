@@ -109,23 +109,26 @@ exports.skill = function(skill, actor, heroes){
 
     //set target(s)
     action.setTarget();
-
-    //apply skill effects
+    
+    // apply skill effects
     effects.forEach(function(effect, index){
-        switch(effect){
-          case 'damage' :
-            action.damage();
-          break
-
-          case 'heal' :
-            action.heal();
-          break
-
-          case 'dot' :
-            action.dot();
-          break
-        };
-    });
+      action[effect]();
+    })
+    // effects.forEach(function(effect, index){
+    //     switch(effect){
+    //       case 'damage' :
+    //         action.damage();
+    //       break
+    //
+    //       case 'heal' :
+    //         action.heal();
+    //       break
+    //
+    //       case 'dot' :
+    //         action.dot();
+    //       break
+    //     };
+    // });
   };
   action.logs.push(action.combatLog)
   result = {heroes : action.heroes, combatLog : action.logs}

@@ -38,7 +38,8 @@ app.controller('trainingCtrl', function($scope, $q, classFactory, userFactory, s
         deferred = $q.defer();
     heroes.forEach(function(hero, index){
       for(let i = 1; i <=4 ; i++){
-        hero['activeSkill' +i] = hero.skills[i-1];
+        let s = hero.skills.findIndex(item => item.id === hero['skill' + i]);
+        hero['activeSkill' +i] = hero.skills[s];
       }
       hero.target = {};
       hero.skillAction = {};
