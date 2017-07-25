@@ -8,6 +8,8 @@ const SkillAction = function(skill, actor, heroes){
   that.logs = [];
   that.combatLog = [];
   that.targets = [];
+  that.targetIndex = that.heroes.findIndex(item => item.id === that.actor.target);
+  that.target = that.heroes[that.targetIndex];
 }
 
 SkillAction.prototype.setTarget = function(){
@@ -15,14 +17,12 @@ SkillAction.prototype.setTarget = function(){
 
   switch(that.skill.target){
     case 'single':
-      that.targets.push(that.actor.target);
-      that.actor.target = that.targets;
+      that.targets.push(that.target);
       that.combatLog = (that.actor.class.name + ' casted ' + that.skill.name + ' on ' + that.targets[0].class.name + '.');
     break;
 
     case 'self':
       that.targets.push(that.actor);
-      that.actor.target = that.targets;
       that.combatLog = (that.actor.class.name + ' casted ' + that.skill.name + ' on himself.');
     break;
 
@@ -32,7 +32,6 @@ SkillAction.prototype.setTarget = function(){
           that.targets.push(that.heroes[i]);
         };
       };
-      that.actor.target = that.targets;
       that.combatLog = (that.actor.class.name + ' casted ' + that.skill.name + ' on enemy team');
 
     break;
@@ -43,7 +42,6 @@ SkillAction.prototype.setTarget = function(){
           that.targets.push(that.heroes[i]);
         };
       };
-      that.actor.target = that.targets;
       that.combatLog = (that.actor.class.name + ' casted ' + that.skill.name + ' on ally team');
     break
   };
@@ -94,6 +92,16 @@ SkillAction.prototype.dot = function(){
   };
 };
 
+SkillAction.prototype.hot = function(){
+  let that = this;
+  for ( let i = 0 ; i < that.targets.length; i++){
+    that.targets[i].hotCounter = that.skill.hotduration;
+    if ( that.targets[i].speed >= that.actor.speed){
+      applyHot(that.skill, that.actor, that.targets[i], that.logs);
+    };
+  };
+};
+
 exports.skill = function(skill, actor, heroes){
   let action = new SkillAction(skill, actor, heroes),
       effects = action.skill.effects.split(" "),
@@ -109,26 +117,11 @@ exports.skill = function(skill, actor, heroes){
 
     //set target(s)
     action.setTarget();
-    
+
     // apply skill effects
     effects.forEach(function(effect, index){
       action[effect]();
     })
-    // effects.forEach(function(effect, index){
-    //     switch(effect){
-    //       case 'damage' :
-    //         action.damage();
-    //       break
-    //
-    //       case 'heal' :
-    //         action.heal();
-    //       break
-    //
-    //       case 'dot' :
-    //         action.dot();
-    //       break
-    //     };
-    // });
   };
   action.logs.push(action.combatLog)
   result = {heroes : action.heroes, combatLog : action.logs}
@@ -137,6 +130,10 @@ exports.skill = function(skill, actor, heroes){
 
 exports.applyDot = function(skill, actor, target, log){
   applyDot(skill, actor, target, log);
+};
+
+exports.applyHot = function(skill, actor, target, log){
+  applyHot(skill, actor, target, log);
 };
 
 function applyDot(skill, actor, target, log){
@@ -162,4 +159,29 @@ function applyDot(skill, actor, target, log){
     delete target.dotDmg;
   };
   log.push(target.class.name + ' is suffering from' + skill.name + ' and takes ' + damageDealt + ' damage.' );
-}
+};
+
+function applyHot(skill, actor, target, log){
+  let damageHealed;
+  if (skill){
+    let skillPower = skill.hotvalue + (actor.matk * skill.hotratio);
+    damageHealed  = skillPower;
+    target.hotOrigin = skill.name;
+    target.hotHeal = damageHealed;
+  }else if (skill == false){
+    skill = {};
+    skill.name = target.hotOrigin;
+    damageHealed = target.hotHeal;
+  }
+  target.hp += damageHealed;
+  if(target.hp > target.class.health){
+    target.hp = target.class.health;
+  };
+  target.hotCounter--;
+  if (target.hotCounter == 0){
+    delete target.hotCounter;
+    delete target.hotOrigin;
+    delete target.hotHeal;
+  };
+  log.push(target.class.name + ' is healed for ' + damageHealed + ' by ' + skill.name + '.' );
+};

@@ -129,7 +129,11 @@ app.controller('trainingCtrl', function($scope, $q, classFactory, userFactory, s
     //this function resolve an action, starting from the fastest hero's action, then indescending order.
     function resolveAction(index){
       //sends the message to the server
-      socket.emit('action', {actor : $scope.roster[index], heroes : $scope.roster}, (response) =>{
+      let data = {actor : $scope.roster[index], heroes : $scope.roster};
+      data = JSON.stringify(data);
+      socket.emit('action', data, (response) =>{
+
+        response = JSON.parse(response);
         //updates combat log
         response.combatLog.forEach(function(log, index){
           $scope.combatLog.push(log);
@@ -143,7 +147,10 @@ app.controller('trainingCtrl', function($scope, $q, classFactory, userFactory, s
         if (index < $scope.roster.length){
           resolveAction(index);
         }else{
-          socket.emit('endTurn', {heroes : $scope.roster}, (response) =>{
+          data = {heroes : $scope.roster};
+          data = JSON.stringify(data);
+          socket.emit('endTurn', data, (response) =>{
+            response = JSON.parse(response);
             $scope.roster = response.heroes;
             $scope.userTeam = response.userTeam;
             $scope.oppTeam = response.oppTeam;

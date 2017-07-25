@@ -48,7 +48,7 @@
       </div>
     </div>
     <div ng-repeat="hero in user.heroes | orderBy : 'class.name' |  filter: {class: {name: heroFilter}}" class="profile-hero">
-      <img ng-src="{{hero.class.portrait}}" class="portrait">
+      <img ng-src="{{hero.class.portrait}}" class="portrait" alt="class portrait">
       <div>
         <h3 class="title is-3">{{hero.class.name}}</h3>
         <div class="stats">

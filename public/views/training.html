@@ -14,7 +14,7 @@
                 <div class="control">
                   <div class="select is-fullwidth">
                     <select ng-model="hero.target">
-                      <option ng-repeat="target in roster track by $index" ng-value="target" >
+                      <option ng-repeat="target in roster track by $index" ng-value="target.id" >
                         {{target.class.name}}
                       </option>
                     </select>
@@ -79,7 +79,11 @@
           </div>
         </div>
         <div class="hero-infos">
-          <h4>{{hero.class.name}}</h4>
+          <h4>
+            {{hero.class.name}}
+            <span class="dot-alert" ng-if="hero.dotCounter" ng-attr-title="damage : {{hero.dotDmg}}">DOT</span>
+            <span class="hot-alert" ng-if="hero.hotCounter" ng-attr-title="heal : {{hero.hotHeal}}">HOT</span>
+          </h4>
           <img ng-src="{{hero.class.portrait}}" alt="">
           <div class="HPBar" ng-style="setHPBar(hero)"></div>
           <div class="MPBar" ng-style="setMPBar(hero)"></div>
@@ -104,7 +108,11 @@
     <div class="column is-3 is-offset-2 opponent">
       <section class="team-member" ng-repeat="hero in oppTeam track by $index">
         <div class="hero-infos">
-          <h4>{{hero.class.name}}</h4>
+          <h4>
+            {{hero.class.name}}
+            <span class="dot-alert" ng-if="hero.dotCounter" ng-attr-title="damage : {{hero.dotDmg}}">DOT</span>
+            <span class="hot-alert" ng-if="hero.hotCounter" ng-attr-title="heal : {{hero.hotHeal}}">HOT</span>
+          </h4>
           <img ng-src="{{hero.class.portrait}}" alt="">
           <div class="HPBar" ng-style="setHPBar(hero)"></div>
           <div class="MPBar" ng-style="setMPBar(hero)"></div>

@@ -2056,6 +2056,7 @@ input[type="submit"].button {
     vertical-align: middle; }
 
 .title {
+  font-family: "Aclonica", sans-serif;
   color: #363636;
   font-size: 2rem;
   font-weight: 300;
@@ -4920,7 +4921,8 @@ label.panel-block {
 
 .classes-wrapper {
   display: flex;
-  flex-direction: row; }
+  flex-direction: row;
+  flex-wrap: wrap; }
   .classes-wrapper .class-wrapper {
     background: linear-gradient(130DEG, #fafafa, #dbdbdb);
     padding: 15px;
@@ -5017,13 +5019,23 @@ label.panel-block {
   display: flex;
   flex-direction: column-reverse; }
 
+.dot-alert {
+  color: #ff3860;
+  font-weight: bold;
+  padding: 5px; }
+
+.hot-alert {
+  color: #23d160;
+  font-weight: bold;
+  padding: 5px; }
+
 * {
   box-sizing: border-box; }
 
 html, body {
   margin: 0;
   padding: 0;
-  background-color: #fafafa; }
+  background: whitesmoke; }
 
 main {
   padding-top: 80px;

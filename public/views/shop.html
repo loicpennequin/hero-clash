@@ -4,7 +4,7 @@
   <div class="classes-wrapper">
     <div class="class-wrapper has-text-centered" ng-repeat="class in classes">
       <img ng-src="{{class.portrait}}" alt="" ng-disabled="!isOwnedClass(class)">
-      <h3 class="title is-4">{{class.name}}</h3>
+      <h4>{{class.name}}</h4>
       <button class="button is-info" ng-if="isOwnedClass(class)">OWNED</button>
       <button class="button is-primary" ng-if="!isOwnedClass(class)" ng-click="buyClass(class)">
         {{class.price}} &nbsp;

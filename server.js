@@ -54,31 +54,39 @@ app.post('/api/classes/buy', job.buy)
 io.on('connection', function(socket){
 
   socket.on('action', function (data, ackFn) {
+    data = JSON.parse(data);
     let combatLog = [],
         heroes = data.heroes,
         actor = data.actor,
         actorIndex = heroes.findIndex(item => item.id === actor.id),
         response = {},
+        targetIndex = heroes.findIndex(item => item.id === data.actor.target),
+        target = heroes[targetIndex],
         skillAction = require('./app/skillActions/skillActions');
-
-    //checking for dots
+        
+        //checking for dots
     if (actor.dotCounter){
       let dotOriginIndex = heroes.findIndex(item => item.id === actor.dotOrigin);
       skillAction.applyDot(false, actor.dotOrigin, heroes[actorIndex], combatLog)
     };
 
+    //checking for hots
+    if (actor.hotCounter){
+      let hotOriginIndex = heroes.findIndex(item => item.id === actor.hotOrigin);
+      skillAction.applyHot(false, actor.hotOrigin, heroes[actorIndex], combatLog)
+    };
+
 
     switch (actor.action){
       case 'attack':
-        let dmg = actor.atk - actor.target.def,
-            target = heroes.findIndex(item => item.id === actor.target.id);
+        let dmg = actor.atk - target.def;
 
         if(dmg < 10){
           dmg = 10;
         }
 
-        heroes[target].hp -= dmg;
-        combatLog.push(actor.class.name + ' attacked ' + actor.target.class.name + ', dealing ' + dmg + ' damage.');
+        target.hp -= dmg;
+        combatLog.push(actor.class.name + ' attacked ' + target.class.name + ', dealing ' + dmg + ' damage.');
         response = {heroes: heroes, combatLog: combatLog};
         break;
 
@@ -107,11 +115,13 @@ io.on('connection', function(socket){
         break;
     };
 
+    response = JSON.stringify(response);
     ackFn(response)
   });
 
   socket.on('endTurn', function (data, ackFn){
     socket.handshake.session.reload(function(err) {
+      data = JSON.parse(data);
       let userTeam = [],
       oppTeam = [],
       combatLog = [],
@@ -139,7 +149,7 @@ io.on('connection', function(socket){
       });
       combatLog.push('--------End of the Turn---------');
       response = {heroes: heroes, userTeam: userTeam, oppTeam: oppTeam, combatLog: combatLog};
-
+      response = JSON.stringify(response);
       ackFn(response)
     });
   });
