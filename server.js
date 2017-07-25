@@ -54,12 +54,19 @@ app.post('/api/classes/buy', job.buy)
 io.on('connection', function(socket){
 
   socket.on('action', function (data, ackFn) {
-    let combatLog = "",
+    let combatLog = [],
         heroes = data.heroes,
         actor = data.actor,
         actorIndex = heroes.findIndex(item => item.id === actor.id),
-        response,
+        response = {},
         skillAction = require('./app/skillActions/skillActions');
+
+    //checking for dots
+    if (actor.dotCounter){
+      let dotOriginIndex = heroes.findIndex(item => item.id === actor.dotOrigin);
+      skillAction.applyDot(false, actor.dotOrigin, heroes[actorIndex], combatLog)
+    };
+
 
     switch (actor.action){
       case 'attack':
@@ -71,17 +78,22 @@ io.on('connection', function(socket){
         }
 
         heroes[target].hp -= dmg;
-        combatLog = (actor.class.name + ' attacked ' + actor.target.class.name + ', dealing ' + dmg + ' damage.');
+        combatLog.push(actor.class.name + ' attacked ' + actor.target.class.name + ', dealing ' + dmg + ' damage.');
         response = {heroes: heroes, combatLog: combatLog};
         break;
 
       case 'skill':
-        response = skillAction.skill(actor.skillAction, actor, heroes);
+        let result = skillAction.skill(actor.skillAction, actor, heroes);
+        result.combatLog.forEach(function(log, index){
+          combatLog.push(log)
+        });
+        response.heroes = result.heroes;
+        response.combatLog = combatLog;
         break;
 
       case 'defend' :
         heroes[actorIndex].def += 20;
-        combatLog = (actor.class.name + ' defends, gaining 20 DEF for the turn.');
+        combatLog.push(actor.class.name + ' defends, gaining 20 DEF for the turn.');
         response = {heroes: heroes, combatLog: combatLog}
         break;
 
@@ -90,7 +102,7 @@ io.on('connection', function(socket){
         if(heroes[actorIndex].mp > heroes[actorIndex].class.mana){
           heroes[actorIndex].mp = heroes[actorIndex].class.mana
         };
-        combatLog = (actor.class.name + ' waits, regaining 10 MP.');
+        combatLog.push(actor.class.name + ' waits, regaining 10 MP.');
         response = {heroes: heroes, combatLog: combatLog}
         break;
     };
@@ -125,7 +137,7 @@ io.on('connection', function(socket){
           };
         };
       });
-      combatLog.push('End of the Turn');
+      combatLog.push('--------End of the Turn---------');
       response = {heroes: heroes, userTeam: userTeam, oppTeam: oppTeam, combatLog: combatLog};
 
       ackFn(response)

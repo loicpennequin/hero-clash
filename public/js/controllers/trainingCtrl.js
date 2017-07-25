@@ -93,15 +93,6 @@ app.controller('trainingCtrl', function($scope, $q, classFactory, userFactory, s
       return { width : (100 * hero.mp) / mp };
   };
 
-  $scope.attack = function(hero){
-    let damage = hero.class.atk - hero.target.class.def;
-    if (damage < 10){
-      damage = 10;
-    };
-    hero.target.hp -= damage;
-    $scope.combatLog.push(hero.class.name + ' attacked, dealing ' + damage + ' damage to ' + hero.target.class.name + '.')
-  };
-
   $scope.setAction = function(button, hero, command, skill = 0){
     hero.action = command;
   };
@@ -134,13 +125,14 @@ app.controller('trainingCtrl', function($scope, $q, classFactory, userFactory, s
       });
     };
 
-
     //this function resolve an action, starting from the fastest hero's action, then indescending order.
     function resolveAction(index){
       //sends the message to the server
       socket.emit('action', {actor : $scope.roster[index], heroes : $scope.roster}, (response) =>{
-        //display the action in the combat log
-        $scope.combatLog.push(response.combatLog);
+        //updates combat log
+        response.combatLog.forEach(function(log, index){
+          $scope.combatLog.push(log);
+        })
 
         //updates roster
         $scope.roster = response.heroes;
@@ -158,28 +150,6 @@ app.controller('trainingCtrl', function($scope, $q, classFactory, userFactory, s
               $scope.combatLog.push(log)
             });
           });
-          // $scope.userTeam = [];
-          // $scope.oppTeam = [];
-          // let rosterCopy = $scope.roster.slice(0);
-          // rosterCopy.forEach(function(hero, index){
-          //   if (hero.hp <= 0){
-          //       let index = rosterCopy.indexOf(hero);
-          //       $scope.roster.splice(index, 1);
-          //       $scope.combatLog.push(hero.class.name + ' has been defeated!')
-          //   } else {
-          //     if(hero.action == 'defend'){
-          //       hero.def -= 20;
-          //     }
-          //     hero.skillAction = {};
-          //     hero.target = {};
-          //     if(hero.user_id == $scope.user.id){
-          //       $scope.userTeam.push(hero)
-          //     }else{
-          //       $scope.oppTeam.push(hero)
-          //     };
-          //   };
-          // });
-          // $scope.combatLog.push('End of the Turn');
         };
       });
     };
