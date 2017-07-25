@@ -58,20 +58,20 @@ SkillAction.prototype.damage = function(){
   };
 }
 
-SkillAction.prototype.heal = function(){
-  let skillPower = this.skill.damagevalue + (this.actor.matk * this.skill.healratio);
-  this.combatLog = this.combatLog.slice(0, -1);
-  this.combatLog += ', healing';
-  for (let i = 0 ; i < this.targets.length ; i++){
-    let tIndex = this.heroes.findIndex(item => item.id === this.targets[i].id),
-    this.heroes[tIndex].hp += skillPower;
-    this.combatLog += ' ' this.targets[i].class.name + ' for ' + skillPower + ' HP,';
-    if (i == this.targets.length){
-      this.combatLog = this.combatLog.slice(0, -1);
-      this.combatLog += '.';
-    };
-  };
-}
+// SkillAction.prototype.heal = function(){
+//   let skillPower = this.skill.healvalue + (this.actor.matk * this.skill.healratio);
+//   this.combatLog = this.combatLog.slice(0, -1);
+//   this.combatLog += ', healing';
+//   for (let i = 0 ; i < this.targets.length ; i++){
+//     let tIndex = this.heroes.findIndex(item => item.id === this.targets[i].id),
+//     this.heroes[tIndex].hp += skillPower;
+//     this.combatLog += ' ' this.targets[i].class.name + ' for ' + skillPower + ' HP,';
+//     if (i == this.targets.length){
+//       this.combatLog = this.combatLog.slice(0, -1);
+//       this.combatLog += '.';
+//     };
+//   };
+// }
 
 exports.skill = function(skill, actor, heroes){
   let action = new SkillAction(skill, actor, heroes),
@@ -80,7 +80,7 @@ exports.skill = function(skill, actor, heroes){
 
   //check mana
   if(action.actor.mp < action.skill.cost){
-    action.combatLog = (action.actor.class.name + ' tried to use ' + action.skill.name + ", but he doesn't have enough mana !" )
+    action.combatLog = (action.actor.class.name + ' tried to use ' + action.skill.name + ", but he didn't have enough mana !" )
   }else{
     //consume mana
     let actorIndex = action.heroes.findIndex(item => item.id === action.actor.id);

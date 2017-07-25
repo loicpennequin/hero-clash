@@ -8,20 +8,22 @@ let express = require('express'),
     bcrypt = require('bcrypt-nodejs'),
     bodyParser = require('body-parser'),
     cookieParser = require('cookie-parser'),
+    secret = require("./password.js").secret,
     session = require('express-session'),
+    sessionParams = session({secret: secret, resave : false, saveUninitialized : true}),
+    ios = require('socket.io-express-session'),
 
     Bookshelf = require('./database'),
     fs = require('fs'),
 
-    port = 8080,
-    secret = require("./password.js").secret
+    port = 8080;
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(cookieParser());
-app.use(session({secret: secret, resave : false, saveUninitialized : true}))
+app.use(sessionParams)
 app.use(express.static('public'));
-
+io.use(ios(sessionParams));
 
 /*=========================================ROUTING======================================*/
 const user = require('./app/routeHandler/user'),
@@ -94,6 +96,40 @@ io.on('connection', function(socket){
     };
 
     ackFn(response)
+  });
+
+  socket.on('endTurn', function (data, ackFn){
+    socket.handshake.session.reload(function(err) {
+      let userTeam = [],
+      oppTeam = [],
+      combatLog = [],
+      heroes = data.heroes,
+      heroesCopy = data.heroes.slice(0),
+      response;
+
+      heroesCopy.forEach(function(hero, index){
+        if (hero.hp <= 0){
+          let index = heroesCopy.indexOf(hero);
+          heroes.splice(index, 1);
+          combatLog.push(hero.class.name + ' has been defeated!')
+        } else {
+          if(hero.action == 'defend'){
+            hero.def -= 20;
+          }
+          hero.skillAction = {};
+          hero.target = {};
+          if(hero.user_id == socket.handshake.session.user.id){
+            userTeam.push(hero)
+          }else{
+            oppTeam.push(hero)
+          };
+        };
+      });
+      combatLog.push('End of the Turn');
+      response = {heroes: heroes, userTeam: userTeam, oppTeam: oppTeam, combatLog: combatLog};
+
+      ackFn(response)
+    });
   });
 });
 
