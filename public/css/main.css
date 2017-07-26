@@ -4818,12 +4818,14 @@ label.panel-block {
   mask-image: linear-gradient(black, transparent);
   -webkit-mask-image: linear-gradient(black 25%, transparent); }
   .login-screen section {
-    background-color: whitesmoke;
+    background-color: rgba(245, 245, 245, 0.5);
     margin: 10px;
-    border: solid 2px #363636;
-    padding: 10px; }
-    .login-screen section h2 {
-      font-weight: bolder; }
+    border: solid 4px #0a0a0a;
+    padding: 10px;
+    font-size: 1.1em; }
+  .login-screen .title {
+    font-weight: bolder;
+    text-shadow: 2px 4px 0 #0a0a0a, -2px -4px 0 white; }
 
 .profile-section {
   padding: 15px; }
@@ -4927,6 +4929,7 @@ label.panel-block {
 .classes-wrapper {
   display: flex;
   flex-direction: row;
+  justify-content: center;
   flex-wrap: wrap; }
   .classes-wrapper .class-wrapper {
     background: linear-gradient(130DEG, #fafafa, #dbdbdb);
@@ -5040,7 +5043,7 @@ label.panel-block {
 html, body {
   margin: 0;
   padding: 0;
-  background: #0a0a0a; }
+  background: #121212; }
 
 main {
   padding: 20px;

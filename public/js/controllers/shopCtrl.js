@@ -1,4 +1,4 @@
-app.controller('shopCtrl', function($scope, userFactory, skillFactory, heroFactory, classFactory){
+app.controller('shopCtrl', function($scope, userFactory, skillFactory, heroFactory, classFactory, battleFactory){
 
   $scope.user = {};
   $scope.classes = {};

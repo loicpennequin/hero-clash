@@ -10,7 +10,7 @@
           <td>Team</td>
         </thead>
         <tbody>
-          <tr ng-repeat="user in users | orderBy : '-elo'">
+          <tr ng-repeat="user in usersArray | orderBy : '-elo'">
             <td>{{user.login}}</td>
             <td>{{user.elo}}</td>
             <td>

@@ -1,80 +1,80 @@
 <div class="login-screen" ng-controller="loginCtrl">
-      <section>
-        <h2 class="title is-2">Sign In</h2>
-        <form ng-submit="signIn()" name="signInForm" novalidate>
+  <section>
+    <h2 class="title is-2">Sign In</h2>
+    <form ng-submit="signIn()" name="signInForm" novalidate>
 
-          <div class="field">
-            <label class="label">Username</label>
-            <div class="control">
-              <input class="input" type="text" ng-model="user.login" required/>
-            </div>
-          </div>
-
-          <div class="field">
-            <label class="label">Password</label>
-            <div class="control">
-              <input class="input" type="password" ng-model="user.password" required/>
-            </div>
-          </div>
-
-          <div class="field">
-            <div class="control">
-              <input class="button is-dark" type="submit" value="Sign In" required/>
-            </div>
-          </div>
-
-        </form>
-        <div ng-if="signUpError">
-          {{errorMessage}}
+      <div class="field">
+        <label class="label">Username</label>
+        <div class="control">
+          <input class="input" type="text" ng-model="user.login" required/>
         </div>
-      </section>
+      </div>
 
-      <section>
-        <h4 class="subtitle is-4">Not a member yet ?</h4>
-        <h2 class="title is-2">Sign Up</h2>
-        <form ng-submit="signUp()" name="signUpForm" novalidate>
-
-          <div class="field">
-            <label class="label">Username</label>
-            <div class="control">
-              <input class="input" type="text" ng-model="newUser.login" required/>
-            </div>
-          </div>
-
-          <div class="field">
-            <label class="label">Password</label>
-            <div class="control">
-              <input class="input" type="password" ng-model="newUser.password" required/>
-            </div>
-          </div>
-
-          <div class="field">
-            <label class="label">Confirm Password</label>
-            <div class="control">
-              <input class="input" type="password" ng-model="newUser.passwordConfirm" required/>
-
-            </div>
-          </div>
-
-          <div class="field">
-            <label class="label">email</label>
-            <div class="control">
-              <input class="input" type="email" ng-model="newUser.email" required/>
-
-            </div>
-          </div>
-
-          <div class="field">
-            <div class="control">
-              <input class="button is-dark" type="submit" value="Sign Up" required/>
-            </div>
-          </div>
-
-        </form>
-        <div ng-if="signInError">
-          {{errorMessage}}
+      <div class="field">
+        <label class="label">Password</label>
+        <div class="control">
+          <input class="input" type="password" ng-model="user.password" required/>
         </div>
-      </section>
-      {{formDebugText}}
+      </div>
+
+      <div class="field">
+        <div class="control">
+          <input class="button is-dark" type="submit" value="Sign In" required/>
+        </div>
+      </div>
+
+    </form>
+    <div ng-if="signUpError">
+      {{errorMessage}}
+    </div>
+  </section>
+
+  <section>
+    <h4 class="subtitle is-4">Not a member yet ?</h4>
+    <h2 class="title is-2">Sign Up</h2>
+    <form ng-submit="signUp()" name="signUpForm" novalidate>
+
+      <div class="field">
+        <label class="label">Username</label>
+        <div class="control">
+          <input class="input" type="text" ng-model="newUser.login" required/>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="label">Password</label>
+        <div class="control">
+          <input class="input" type="password" ng-model="newUser.password" required/>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="label">Confirm Password</label>
+        <div class="control">
+          <input class="input" type="password" ng-model="newUser.passwordConfirm" required/>
+
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="label">email</label>
+        <div class="control">
+          <input class="input" type="email" ng-model="newUser.email" required/>
+
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="control">
+          <input class="button is-dark" type="submit" value="Sign Up" required/>
+        </div>
+      </div>
+
+    </form>
+    <div ng-if="signInError">
+      {{errorMessage}}
+    </div>
+  </section>
+  {{formDebugText}}
 
 </div>

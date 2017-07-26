@@ -29,7 +29,8 @@ io.use(ios(sessionParams));
 const user = require('./app/routeHandler/user'),
       hero = require('./app/routeHandler/hero'),
       skill = require('./app/routeHandler/skill'),
-      job = require('./app/routeHandler/class');
+      job = require('./app/routeHandler/class'),
+      game = require('./app/routeHandler/gamestate');
 
 app.get('/api/users', user.list);
 app.get('/api/users/:id', user.show);
@@ -48,6 +49,9 @@ app.get('/api/skills/buy', skill.buy)
 
 app.get('/api/classes', job.list)
 app.post('/api/classes/buy', job.buy)
+
+app.get('/api/gamestate', game.load)
+app.post('/api/gamestate', game.save)
 
 /*========================================SOCKET.IO=========================================*/
 
