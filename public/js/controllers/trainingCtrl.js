@@ -41,7 +41,7 @@ app.controller('trainingCtrl', function($scope, $q, classFactory, userFactory, s
         let s = hero.skills.findIndex(item => item.id === hero['skill' + i]);
         hero['activeSkill' +i] = hero.skills[s];
       }
-      hero.target = {};
+      hero.target = null;
       hero.skillAction = {};
     });
     for(let i = 1; i <=3 ; i++){
@@ -60,7 +60,7 @@ app.controller('trainingCtrl', function($scope, $q, classFactory, userFactory, s
         hero.def = hero.class.def;
         hero.mdef = hero.class.mdef;
         hero.speed = hero.class.speed;
-        hero.action = {};
+        hero.action = "";
       })
       heroFactory.getHeroesFromUser(0)
         .then(function(response){
@@ -74,7 +74,7 @@ app.controller('trainingCtrl', function($scope, $q, classFactory, userFactory, s
             dummy.def = dummy.class.def;
             dummy.mdef = dummy.class.mdef;
             dummy.speed = dummy.class.speed;
-            dummy.action = {};
+            dummy.action = "";
             dummy.class.name = 'dummy' + i;
             $scope.oppTeam.push(dummy)
           };
@@ -93,6 +93,40 @@ app.controller('trainingCtrl', function($scope, $q, classFactory, userFactory, s
       let mp = hero.class.mana;
       return { width : (100 * hero.mp) / mp };
   };
+
+  $scope.checkStatChange = function(hero, stat){
+    let result;
+    if (hero[stat] > hero.class[stat]){
+      result = {color: 'hsl(141, 71%,  48%)'}
+    } else if (hero.stat < hero.class[stat]){
+      result = {color: 'hsl(348, 100%, 61%)'}
+    };
+    return result;
+  };
+
+  $scope.isTurnInvalid = function(){
+    let result;
+    function hasAction(hero){
+      return hero.action.length == 0;
+    };
+
+    function needsTarget(hero){
+      return ( (hero.action == 'skill' &&
+                hero.skillAction.target == 'single' &&
+                hero.target == null) ||
+               (hero.action == 'attack' &&
+                hero.target == null));
+    };
+
+    function needsSkill(hero){
+      return (hero.action == 'skill' && hero.skillAction.id == undefined)
+    };
+
+    return ($scope.userTeam.some(hasAction) ||
+            $scope.userTeam.some(needsTarget) ||
+            $scope.userTeam.some(needsSkill));
+  }
+
 
   $scope.setAction = function(button, hero, command, skill = 0){
     hero.action = command;

@@ -57,7 +57,7 @@ SkillAction.prototype.damage = function(){
     let tIndex = that.heroes.findIndex(item => item.id === that.targets[i].id),
     damageDealt = skillPower - that.targets[i].mdef;
     that.heroes[tIndex].hp -= damageDealt;
-    that.combatLog += ' ' + damageDealt + ' to ' + that.targets[i].class.name + ',';
+    that.combatLog += ' ' + damageDealt + ' damage to ' + that.targets[i].class.name + ',';
     if (i == that.targets.length){
       that.combatLog = that.combatLog.slice(0, -1);
       that.combatLog += '.';
@@ -119,6 +119,31 @@ SkillAction.prototype.buff = function(){
         that.heroes[targetIndex].buffOrigin = that.skill.name;
         that.heroes[targetIndex]['buff' + i + 'stat'] = that.skill['buff' + i + 'stat'];
         that.heroes[targetIndex]['buff' + i + 'value'] = skillPower;
+      });
+    };
+  };
+
+  that.combatLog = that.combatLog.slice(0, -1);
+  that.combatLog += '.'
+};
+
+SkillAction.prototype.debuff = function(){
+  let that = this;
+  that.combatLog = that.combatLog.slice(0, -1);
+  that.combatLog += ', decreasing'
+
+  for (let i = 1 ; i <= 4 ; i++){
+    if ( that.skill['debuff' + i + 'value'] != null){
+      let skillPower = that.skill['debuff' + i + 'value'] + (that.actor.matk * that.skill.statmodifierratio);
+      that.combatLog += ' ' + (that.skill['debuff' + i + 'stat'].toUpperCase()) + ' by ' + skillPower + ',';
+      that.targets.forEach(function(target, index){
+        let stat = that.skill['debuff' + i + 'stat'],
+            targetIndex = that.heroes.findIndex(item => item.id === target.id);
+        that.heroes[targetIndex][stat] -= skillPower;
+        that.heroes[targetIndex].debuffCounter = that.skill.statmodifierduration;
+        that.heroes[targetIndex].debuffOrigin = that.skill.name;
+        that.heroes[targetIndex]['debuff' + i + 'stat'] = that.skill['debuff' + i + 'stat'];
+        that.heroes[targetIndex]['debuff' + i + 'value'] = skillPower;
       });
     };
   };

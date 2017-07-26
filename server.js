@@ -123,11 +123,11 @@ io.on('connection', function(socket){
     socket.handshake.session.reload(function(err) {
       data = JSON.parse(data);
       let userTeam = [],
-      oppTeam = [],
-      combatLog = [],
-      heroes = data.heroes,
-      heroesCopy = data.heroes.slice(0),
-      response;
+          oppTeam = [],
+          combatLog = [],
+          heroes = data.heroes,
+          heroesCopy = data.heroes.slice(0),
+          response;
 
       heroesCopy.forEach(function(hero, index){
         //decrease buff and deletes them if 0
@@ -145,6 +145,21 @@ io.on('connection', function(socket){
           }
         };
 
+        //decrease debuff and deletes them if 0
+        if (hero.debuffCounter){
+          hero.debuffCounter --;
+          if (hero.debuffCounter <= 0){
+            combatLog.push(hero.debuffOrigin + ' has ended on ' + hero.class.name + '.')
+            delete hero.debuffCounter;
+            delete hero.debuffOrigin;
+            for (let i = 1 ; i <= 4 ; i++){
+              hero[hero['debuff' + i + 'stat']] -= hero['debuff' + i + 'value'];
+              delete hero['debuff' + i + 'stat'];
+              delete hero['debuff' + i + 'value'];
+            }
+          }
+        };
+
         //remove dead heroes
         if (hero.hp <= 0){
           let index = heroesCopy.indexOf(hero);
@@ -156,7 +171,7 @@ io.on('connection', function(socket){
             hero.def -= 20;
           }
           hero.skillAction = {};
-          hero.target = {};
+          hero.target = null;
           if(hero.user_id == socket.handshake.session.user.id){
             userTeam.push(hero)
           }else{

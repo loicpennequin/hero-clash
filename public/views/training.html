@@ -91,14 +91,14 @@
             <div class="wrapper">
               <ul>
                 <li>HP : {{hero.hp}}</li>
-                <li>ATK : {{hero.atk}}</li>
-                <li>DEF : {{hero.def}}</li>
-                <li>SPE : {{hero.speed}}</li>
+                <li>ATK : <span ng-style="checkStatChange(hero, 'atk')">{{hero.atk}}</span></li>
+                <li>DEF : <span ng-style="checkStatChange(hero, 'def')">{{hero.def}}</span></li>
+                <li>SPE : <span ng-style="checkStatChange(hero, 'speed')">{{hero.speed}}</span></li>
               </ul>
               <ul>
                 <li>MP : {{hero.mp}}</li>
-                <li>MATK : {{hero.matk}}</li>
-                <li>MDEF : {{hero.mdef}}</li>
+                <li>MATK : <span ng-style="checkStatChange(hero, 'matk')">{{hero.matk}}</span></li>
+                <li>MDEF : <span ng-style="checkStatChange(hero, 'mdef')">{{hero.mdef}}</span></li>
               </ul>
             </div>
           </div>
@@ -135,7 +135,11 @@
       </section>
     </div>
     <div class="column is-offset-1">
-      <button class="button is-large is-info" ng-click="resolveTurn()">Confirm turn</button>
+      <button class="button is-large is-info"
+              ng-click="resolveTurn()"
+              ng-disabled="isTurnInvalid()">
+              Confirm turn
+      </button>
     </div>
   </div>
 
