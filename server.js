@@ -54,7 +54,6 @@ app.post('/api/classes/buy', job.buy)
 io.on('connection', function(socket){
 
   socket.on('action', function (data, ackFn) {
-    data = JSON.parse(data);
     let combatLog = [],
         heroes = data.heroes,
         actor = data.actor,
@@ -115,13 +114,11 @@ io.on('connection', function(socket){
         break;
     };
 
-    response = JSON.stringify(response);
     ackFn(response)
   });
 
   socket.on('endTurn', function (data, ackFn){
     socket.handshake.session.reload(function(err) {
-      data = JSON.parse(data);
       let userTeam = [],
           oppTeam = [],
           combatLog = [],
@@ -166,10 +163,13 @@ io.on('connection', function(socket){
           heroes.splice(index, 1);
           combatLog.push(hero.class.name + ' has been defeated!')
         } else {
+
         //remove 'defend' buff
-          if(hero.action == 'defend'){
-            hero.def -= 20;
-          }
+        if(hero.action == 'defend'){
+          hero.def -= 20;
+        }
+
+        //resets parameters
           hero.skillAction = {};
           hero.target = null;
           if(hero.user_id == socket.handshake.session.user.id){
@@ -181,7 +181,6 @@ io.on('connection', function(socket){
       });
       combatLog.push('--------End of the Turn---------');
       response = {heroes: heroes, userTeam: userTeam, oppTeam: oppTeam, combatLog: combatLog};
-      response = JSON.stringify(response);
       ackFn(response)
     });
   });

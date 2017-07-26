@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  127.0.0.1
--- Généré le :  Sam 22 Juillet 2017 à 14:01
+-- Généré le :  Mer 26 Juillet 2017 à 05:54
 -- Version du serveur :  5.7.14
 -- Version de PHP :  5.6.25
 
@@ -40,29 +40,27 @@ CREATE TABLE `classes` (
   `atk` int(11) NOT NULL,
   `matk` int(11) NOT NULL,
   `def` int(11) NOT NULL,
-  `mdef` int(11) NOT NULL
+  `mdef` int(11) NOT NULL,
+  `speed` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Contenu de la table `classes`
 --
 
-INSERT INTO `classes` (`id`, `name`, `portrait`, `basic`, `price`, `health`, `mana`, `atk`, `matk`, `def`, `mdef`) VALUES
-(1, 'Pyromancer', '/assets/img/pyromancer.png', 1, NULL, 150, 200, 20, 60, 20, 30),
-(2, 'Archer', '/assets/img/archer.png', 1, NULL, 180, 120, 50, 30, 20, 20),
-(3, 'Knight', '/assets/img/knight.png', 1, NULL, 270, 120, 40, 25, 45, 30);
-
--- --------------------------------------------------------
-
---
--- Structure de la table `effects`
---
-
-DROP TABLE IF EXISTS `effects`;
-CREATE TABLE `effects` (
-  `id` int(11) NOT NULL,
-  `name` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+INSERT INTO `classes` (`id`, `name`, `portrait`, `basic`, `price`, `health`, `mana`, `atk`, `matk`, `def`, `mdef`, `speed`) VALUES
+(1, 'Pyromancer', '/assets/img/pyromancer.png', 1, NULL, 150, 200, 20, 60, 20, 30, 50),
+(2, 'Archer', '/assets/img/archer.png', 1, NULL, 180, 120, 50, 30, 20, 20, 65),
+(3, 'Knight', '/assets/img/knight.png', 1, NULL, 270, 120, 40, 25, 45, 30, 40),
+(4, 'Assasin', '/assets/img/assasin.png', 0, 1000, 120, 120, 60, 50, 10, 10, 75),
+(5, 'Dummy', '/assets/img/dummy.png', 0, 0, 300, 0, 0, 0, 0, 0, 999),
+(6, 'barbarian', '/assets/img/barbarian.png', 0, 1000, 210, 80, 50, 10, 20, 0, 40),
+(7, 'Blood Lord', 'assets/img/bloodlord.png', 0, 1500, 140, 220, 10, 50, 20, 20, 0),
+(8, 'Fencer', 'assets/img/fencer.png', 0, 1500, 160, 130, 40, 40, 30, 20, 60),
+(9, 'Priest', '/assets/img/priest.png', 0, 1000, 130, 200, 20, 30, 30, 40, 50),
+(10, 'Champion', '/assets/img/champion.png', 0, 1500, 160, 150, 40, 40, 30, 30, 50),
+(11, 'Monk', '/assets/img/monk.png', 0, 1500, 220, 160, 20, 30, 40, 40, 20),
+(12, 'Sorceress', '/assets/img/sorceress.png', 0, 1500, 150, 250, 20, 70, 10, 30, 45);
 
 -- --------------------------------------------------------
 
@@ -75,7 +73,6 @@ CREATE TABLE `heroes` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `class_id` int(11) NOT NULL,
-  `active` tinyint(1) NOT NULL DEFAULT '0',
   `skill1` int(11) DEFAULT NULL,
   `skill2` int(11) DEFAULT NULL,
   `skill3` int(11) DEFAULT NULL,
@@ -86,10 +83,21 @@ CREATE TABLE `heroes` (
 -- Contenu de la table `heroes`
 --
 
-INSERT INTO `heroes` (`id`, `user_id`, `class_id`, `active`, `skill1`, `skill2`, `skill3`, `skill4`) VALUES
-(1, 1, 1, 0, NULL, NULL, NULL, NULL),
-(2, 1, 2, 0, NULL, NULL, NULL, NULL),
-(3, 1, 3, 0, NULL, NULL, NULL, NULL);
+INSERT INTO `heroes` (`id`, `user_id`, `class_id`, `skill1`, `skill2`, `skill3`, `skill4`) VALUES
+(1, 0, 5, NULL, NULL, NULL, NULL),
+(2, 0, 5, NULL, NULL, NULL, NULL),
+(3, 0, 5, NULL, NULL, NULL, NULL),
+(4, 1, 1, 6, 7, 8, NULL),
+(5, 1, 2, NULL, NULL, NULL, NULL),
+(6, 1, 3, NULL, NULL, NULL, NULL),
+(7, 1, 4, NULL, NULL, NULL, NULL),
+(8, 1, 6, NULL, NULL, NULL, NULL),
+(9, 1, 7, NULL, NULL, NULL, NULL),
+(10, 1, 8, 11, NULL, NULL, NULL),
+(11, 1, 9, NULL, NULL, NULL, NULL),
+(12, 1, 10, NULL, NULL, NULL, NULL),
+(13, 1, 11, 9, NULL, NULL, NULL),
+(14, 1, 12, 10, 12, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -109,8 +117,14 @@ CREATE TABLE `heroes_skills` (
 --
 
 INSERT INTO `heroes_skills` (`id`, `hero_id`, `skill_id`) VALUES
-(1, 1, 1),
-(2, 2, 4);
+(18, 14, 12),
+(17, 10, 11),
+(16, 14, 10),
+(15, 13, 9),
+(14, 4, 8),
+(13, 4, 7),
+(12, 4, 6),
+(11, 1, 6);
 
 -- --------------------------------------------------------
 
@@ -127,24 +141,51 @@ CREATE TABLE `skills` (
   `name` varchar(50) NOT NULL,
   `description` text NOT NULL,
   `cost` int(11) NOT NULL,
-  `attack` tinyint(1) DEFAULT NULL,
-  `heal` tinyint(1) DEFAULT NULL,
-  `effect` tinyint(1) DEFAULT NULL,
-  `effect_id` int(11) DEFAULT NULL,
-  `power` int(11) NOT NULL,
+  `damagevalue` int(11) DEFAULT NULL,
+  `damageratio` float DEFAULT NULL,
+  `healvalue` int(11) DEFAULT NULL,
+  `healratio` float DEFAULT NULL,
+  `dotvalue` int(11) DEFAULT NULL,
+  `dotduration` int(11) DEFAULT NULL,
+  `dotratio` float DEFAULT NULL,
+  `hotvalue` int(11) DEFAULT NULL,
+  `hotduration` int(11) DEFAULT NULL,
+  `hotratio` float DEFAULT NULL,
+  `buff1value` int(11) DEFAULT NULL,
+  `buff2value` int(11) DEFAULT NULL,
+  `buff3value` int(11) DEFAULT NULL,
+  `buff4value` int(11) DEFAULT NULL,
+  `buff1stat` varchar(11) DEFAULT NULL,
+  `buff2stat` varchar(11) DEFAULT NULL,
+  `buff3stat` varchar(11) DEFAULT NULL,
+  `buff4stat` varchar(11) DEFAULT NULL,
+  `debuff1value` int(11) DEFAULT NULL,
+  `debuff2value` int(11) DEFAULT NULL,
+  `debuff3value` int(11) DEFAULT NULL,
+  `debuff4value` int(11) DEFAULT NULL,
+  `debuff1stat` varchar(11) DEFAULT NULL,
+  `debuff2stat` varchar(11) DEFAULT NULL,
+  `debuff3stat` varchar(11) DEFAULT NULL,
+  `debuff4stat` varchar(11) DEFAULT NULL,
+  `statmodifierduration` int(11) DEFAULT NULL,
+  `statmodifierratio` float DEFAULT NULL,
   `cooldown` int(11) NOT NULL,
-  `ratio` float NOT NULL
+  `target` varchar(30) NOT NULL,
+  `effects` varchar(255) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Contenu de la table `skills`
 --
 
-INSERT INTO `skills` (`id`, `class_id`, `basic`, `price`, `name`, `description`, `cost`, `attack`, `heal`, `effect`, `effect_id`, `power`, `cooldown`, `ratio`) VALUES
-(1, 1, 1, NULL, 'Fire Ball', 'Target : Enemy <br>\r\nEffect : Throws a fireball at target, ealing 30+(60% of Matk) damage', 30, 1, NULL, NULL, NULL, 30, 1, 0.6),
-(2, 1, 0, 200, 'Flame Ground', 'Target : all ennemies <br>\r\nEffect : burn the ground beneath all ennemies, setting them ablaze. Ennemies are dealt 20(+30%) damage each turn for three turns.', 45, 1, NULL, NULL, NULL, 20, 4, 0.3),
-(3, 1, 0, 200, 'Fire Wall', 'Target: self <br>\r\nEffect: Summon a wall of flames in front of you that lasts for 2 turns. Any enemy attacking you takes 40(+60%Matk) damage.', 40, 0, NULL, 1, NULL, 40, 5, 0.6),
-(4, 2, 1, NULL, 'Power Shot', 'Target: Enemy\r\nEffect: launches a powerful arrow at target, dealing 60+(30%Matk)damage and reducing their Def by 10 for 2 turns.', 40, 1, NULL, 1, NULL, 60, 5, 0.3);
+INSERT INTO `skills` (`id`, `class_id`, `basic`, `price`, `name`, `description`, `cost`, `damagevalue`, `damageratio`, `healvalue`, `healratio`, `dotvalue`, `dotduration`, `dotratio`, `hotvalue`, `hotduration`, `hotratio`, `buff1value`, `buff2value`, `buff3value`, `buff4value`, `buff1stat`, `buff2stat`, `buff3stat`, `buff4stat`, `debuff1value`, `debuff2value`, `debuff3value`, `debuff4value`, `debuff1stat`, `debuff2stat`, `debuff3stat`, `debuff4stat`, `statmodifierduration`, `statmodifierratio`, `cooldown`, `target`, `effects`) VALUES
+(6, 1, 1, NULL, 'Fire Ball', 'Target : Enemy </br>\r\nCooldown : 2 turns </br>\r\nEffect : throw a fiery projectile at target enemy, dealing 30 +(60% Matk).', 40, 30, 0.6, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 3, 'single', 'damage'),
+(7, 1, 1, NULL, 'Flame Pillar', 'Target : Enemies </br>\r\nCooldown: 4 turns </br>\r\nEffect : Summon a pillar of raging flames, damaging all enemies for 30 + (30% MATK) damage.', 60, 30, 0.3, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 5, 'aoe', 'damage'),
+(8, 1, 1, NULL, 'Flame Ground', 'Target: Enemies </br>\r\nCooldown : 5 turns </br>\r\nEffect: Set the ground beneath the enemy team ablaze, damagin them for 15(+25% MATK) every turn for 3 turns.', 60, NULL, NULL, NULL, NULL, 15, 3, 0.25, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 6, 'aoe', 'dot'),
+(9, 11, 1, NULL, 'Tranquility', 'Target : Allies </br>\r\nCooldown: 7 turns </br>\r\nEffect: Monk channels his inner peacefulness and spreads it to nearby allies, healing them for 15+(30% of MATK) every turn for 5 turns.', 65, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 15, 5, 0.3, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 8, 'faoe', 'hot'),
+(10, 12, 1, NULL, 'Arcane Focus', 'Target: self </br>\r\nCooldown: 4 turns </br>\r\nEffect: Sorceress gather her Inner magical power, increasing her MATK by 50% for until the end of next turn.', 30, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, 'matk', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 0.5, 5, 'self', 'buff'),
+(11, 8, 1, NULL, 'Expose Weak Spots', 'Target : Enemy </br>\r\nCooldown : 4 turns </br>\r\nEffect : Using his duelist instincts, Fencer strikes his opponent for 25(+20% MATK) damage and reduce his DEF and MDEF by 10 + (15% MATK) for 3 turns.', 40, 25, 0.2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 10, 10, NULL, NULL, 'def', 'mdef', NULL, NULL, 3, 0.15, 5, 'single', 'damage debuff'),
+(12, 12, 1, NULL, 'Magic Missile', 'Target : Enemy </br>\r\nCooldown : 1turn\r\nEffect : Throw a powerful bolt of magic energy at target, dealing 15(+90% MATK) damage.', 40, 15, 0.9, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 'single', 'damage');
 
 -- --------------------------------------------------------
 
@@ -158,7 +199,7 @@ CREATE TABLE `users` (
   `login` varchar(24) NOT NULL,
   `password` varchar(100) NOT NULL,
   `email` varchar(50) NOT NULL,
-  `gold` int(11) NOT NULL DEFAULT '0',
+  `gold` int(11) NOT NULL DEFAULT '999999',
   `games` int(11) NOT NULL DEFAULT '0',
   `wins` int(11) NOT NULL DEFAULT '0',
   `losses` int(11) NOT NULL DEFAULT '0',
@@ -173,7 +214,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `login`, `password`, `email`, `gold`, `games`, `wins`, `losses`, `elo`, `team_slot1`, `team_slot2`, `team_slot3`) VALUES
-(1, 'Daria', '$2a$10$hlUnuz8iHQcZcLPMwSFi2OSqH91iQTNCAvzpVyd1M0QVXoPqP/21S', 'test@test.test', 0, 0, 0, 0, 1200, 1, 2, 3);
+(1, 'Daria', '$2a$10$qaGwKWAgmvjjmAW6fq8lWOKqIajQniJPVOBGAoC/fshJY0wJwfILO', 'test@test.test', 998499, 0, 0, 0, 1200, 4, 14, 10);
 
 --
 -- Index pour les tables exportées
@@ -183,12 +224,6 @@ INSERT INTO `users` (`id`, `login`, `password`, `email`, `gold`, `games`, `wins`
 -- Index pour la table `classes`
 --
 ALTER TABLE `classes`
-  ADD PRIMARY KEY (`id`);
-
---
--- Index pour la table `effects`
---
-ALTER TABLE `effects`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -223,27 +258,22 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT pour la table `classes`
 --
 ALTER TABLE `classes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
---
--- AUTO_INCREMENT pour la table `effects`
---
-ALTER TABLE `effects`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 --
 -- AUTO_INCREMENT pour la table `heroes`
 --
 ALTER TABLE `heroes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 --
 -- AUTO_INCREMENT pour la table `heroes_skills`
 --
 ALTER TABLE `heroes_skills`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 --
 -- AUTO_INCREMENT pour la table `skills`
 --
 ALTER TABLE `skills`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 --
 -- AUTO_INCREMENT pour la table `users`
 --

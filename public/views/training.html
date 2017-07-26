@@ -14,9 +14,15 @@
                 <div class="control">
                   <div class="select is-fullwidth">
                     <select ng-model="hero.target">
-                      <option ng-repeat="target in roster track by $index" ng-value="target.id" >
+                      <!-- <option ng-repeat="target in roster track by $index" ng-value="target.id">
                         {{target.class.name}}
-                      </option>
+                      </option> -->
+                      <option ng-value="ally1.id">{{ally1.name}}</option>
+                      <option ng-value="ally2.id">{{ally2.name}}</option>
+                      <option ng-value="ally3.id">{{ally3.name}}</option>
+                      <option ng-value="enemy1.id">{{enemy1.name}}</option>
+                      <option ng-value="enemy2.id">{{enemy2.name}}</option>
+                      <option ng-value="enemy3.id">{{enemy3.name}}</option>
                     </select>
                   </div>
                 </div>

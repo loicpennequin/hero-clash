@@ -5,6 +5,13 @@ app.controller('trainingCtrl', function($scope, $q, classFactory, userFactory, s
   $scope.oppTeam = [];
   $scope.combatLog = [];
 
+  $scope.ally1 = {};
+  $scope.ally2 = {};
+  $scope.ally3 = {};
+  $scope.enemy1 = {};
+  $scope.enemy2 = {};
+  $scope.enemy3 = {};
+
   userFactory.loginCheck()
     .then(function(response){
       Init(response.data.user.id);
@@ -62,6 +69,9 @@ app.controller('trainingCtrl', function($scope, $q, classFactory, userFactory, s
         hero.speed = hero.class.speed;
         hero.action = "";
       })
+      $scope.ally1 = {name : $scope.userTeam[0].class.name, id: $scope.userTeam[0].id}
+      $scope.ally2 = {name : $scope.userTeam[1].class.name, id: $scope.userTeam[1].id}
+      $scope.ally3 = {name : $scope.userTeam[2].class.name, id: $scope.userTeam[2].id}
       heroFactory.getHeroesFromUser(0)
         .then(function(response){
           for (var i = 1; i <= 3; i++) {
@@ -78,6 +88,9 @@ app.controller('trainingCtrl', function($scope, $q, classFactory, userFactory, s
             dummy.class.name = 'dummy' + i;
             $scope.oppTeam.push(dummy)
           };
+          $scope.enemy1 = {name : $scope.oppTeam[0].class.name, id: $scope.oppTeam[0].id}
+          $scope.enemy2 = {name : $scope.oppTeam[1].class.name, id: $scope.oppTeam[1].id}
+          $scope.enemy3 = {name : $scope.oppTeam[2].class.name, id: $scope.oppTeam[2].id}
           $scope.roster = $scope.userTeam.concat($scope.oppTeam);
         }, function(error){
           console.log(error);
@@ -127,7 +140,6 @@ app.controller('trainingCtrl', function($scope, $q, classFactory, userFactory, s
             $scope.userTeam.some(needsSkill));
   }
 
-
   $scope.setAction = function(button, hero, command, skill = 0){
     hero.action = command;
   };
@@ -164,10 +176,7 @@ app.controller('trainingCtrl', function($scope, $q, classFactory, userFactory, s
     function resolveAction(index){
       //sends the message to the server
       let data = {actor : $scope.roster[index], heroes : $scope.roster};
-      data = JSON.stringify(data);
       socket.emit('action', data, (response) =>{
-
-        response = JSON.parse(response);
         //updates combat log
         response.combatLog.forEach(function(log, index){
           $scope.combatLog.push(log);
@@ -182,9 +191,7 @@ app.controller('trainingCtrl', function($scope, $q, classFactory, userFactory, s
           resolveAction(index);
         }else{
           data = {heroes : $scope.roster};
-          data = JSON.stringify(data);
           socket.emit('endTurn', data, (response) =>{
-            response = JSON.parse(response);
             $scope.roster = response.heroes;
             $scope.userTeam = response.userTeam;
             $scope.oppTeam = response.oppTeam;
