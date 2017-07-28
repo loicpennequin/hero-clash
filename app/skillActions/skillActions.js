@@ -86,8 +86,19 @@ SkillAction.prototype.dot = function(){
   let that = this;
   for ( let i = 0 ; i < that.targets.length; i++){
     that.targets[i].dotCounter = that.skill.dotduration;
+    let skillPower = that.skill.dotvalue + (that.actor.matk * that.skill.dotratio),
+        damageDealt = skillPower - (that.targets[i].mdef / 2);
+    if ( damageDealt < 10){
+      damageDealt = 10;
+    };
+    that.targets[i].dotOrigin = that.skill.name;
+    that.targets[i].dotDmg = damageDealt;
+
     if ( that.targets[i].speed > that.actor.speed){
-      applyDot(that.skill, that.actor, that.targets[i], that.logs);
+      console.log('need to apply dot to ' + that.targets[i].class.name);
+      applyDot(that.targets[i], that.logs);
+    } else {
+
     };
   };
 };
@@ -186,29 +197,15 @@ exports.applyHot = function(skill, actor, target, log){
   applyHot(skill, actor, target, log);
 };
 
-function applyDot(skill, actor, target, log){
-  let damageDealt;
-  if (skill){
-    let skillPower = skill.dotvalue + (actor.matk * skill.dotratio);
-    damageDealt = skillPower - (target.mdef / 2);
-    if ( damageDealt < 10){
-      damageDealt = 10;
-    };
-    target.dotOrigin = skill.name;
-    target.dotDmg = damageDealt;
-  }else if (skill == false){
-    skill = {};
-    skill.name = target.dotOrigin;
-    damageDealt = target.dotDmg;
-  }
-  target.hp -= damageDealt;
+function applyDot(target, log){
+  target.hp -= target.dotDmg;
   target.dotCounter--;
-  if (target.dotCounter == 0){
+  if (target.dotCounter <= 0){
     delete target.dotCounter;
     delete target.dotOrigin;
     delete target.dotDmg;
   };
-  log.push(target.class.name + ' is suffering from' + skill.name + ' and takes ' + damageDealt + ' damage.' );
+  log.push(target.class.name + ' is suffering from' + target.dotOrigin + ' and takes ' + target.dotDmg + ' damage.' );
 };
 
 function applyHot(skill, actor, target, log){

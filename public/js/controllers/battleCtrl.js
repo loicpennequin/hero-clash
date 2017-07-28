@@ -51,6 +51,22 @@ app.controller('battleCtrl', function($scope, $q, classFactory, userFactory, ski
 
             } else {
 
+              $scope.roster = response.data.game;
+              $scope.roster.forEach(function(hero, index){
+                if (hero.user_id == $scope.user.id){
+                  $scope.userTeam.push(hero);
+                } else{
+                  $scope.oppTeam.push(hero)
+                };
+              });
+              $scope.ally1 = {name : $scope.userTeam[0].class.name, id: $scope.userTeam[0].id};
+              $scope.ally2 = {name : $scope.userTeam[1].class.name, id: $scope.userTeam[1].id};
+              $scope.ally3 = {name : $scope.userTeam[2].class.name, id: $scope.userTeam[2].id};
+              $scope.enemy1 = {name : $scope.oppTeam[0].class.name, id: $scope.oppTeam[0].id};
+              $scope.enemy2 = {name : $scope.oppTeam[1].class.name, id: $scope.oppTeam[1].id};
+              $scope.enemy3 = {name : $scope.oppTeam[2].class.name, id: $scope.oppTeam[2].id};
+              console.log('game loaded');
+
             };
           }, function(error){
             console.log(error);
@@ -192,7 +208,7 @@ app.controller('battleCtrl', function($scope, $q, classFactory, userFactory, ski
     })
     $scope.userTeam = userTeam;
     $scope.oppTeam = oppTeam;
-    
+
     data.combatLog.forEach(function(log, index){
       $scope.combatLog.push(log)
     });

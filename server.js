@@ -26,6 +26,7 @@ app.use(express.static('public'));
 io.use(ios(sessionParams));
 
 /*=========================================ROUTING======================================*/
+
 const user = require('./app/routeHandler/user'),
       hero = require('./app/routeHandler/hero'),
       skill = require('./app/routeHandler/skill'),
@@ -62,7 +63,6 @@ io.on('connection', function(socket){
 /*========================================LOBBY=============================================*/
 
   socket.on('joinLobby', function(user){
-
     socket.handshake.session.reload(function(err) {
       socket.user = socket.handshake.session.user;
       socket.user.socketID = socket.id;
@@ -84,18 +84,19 @@ io.on('connection', function(socket){
 
   socket.on('leaveLobby', function(data){
     socket.leave('lobby');
+
     let lobbySockets = io.sockets.adapter.rooms['lobby'];
-        if(lobbySockets && lobbySockets.length > 0){
-          let lobby = Object.keys(lobbySockets.sockets),
-              members = [];
 
-          lobby.forEach(function(member, key){
-            members.push(io.sockets.connected[member].user)
-          })
+    if(lobbySockets && lobbySockets.length > 0){
+      let lobby = Object.keys(lobbySockets.sockets),
+          members = [];
 
+      lobby.forEach(function(member, key){
+        members.push(io.sockets.connected[member].user)
+      });
 
-          io.emit('userLeftLobby', members)
-        }
+      io.emit('userLeftLobby', members)
+    };
 
   })
 
@@ -168,17 +169,18 @@ io.on('connection', function(socket){
     if (gameRoomPlayers.some(waitingForPlayerTurns)){
       console.log('waiting for other player turn')
     }else{
+      console.log("let's resolve");
       gameRoomPlayers.forEach(function(player, index){
         heroes = heroes.concat(io.sockets.connected[player].turnData)
-        console.log("let's resolve");
       })
 
       sortHeroes(heroes);
 
       heroes.forEach(function(hero, index){
-        let actionData = {actor: hero , heroes: heroes};
-        heroes = resolveTurn(actionData).heroes;
-        io.to(data.room).emit('actionResolved', resolveTurn(actionData));
+        let actionData = {actor: hero , heroes: heroes},
+            turn = resolveTurn(actionData);
+        heroes = turn.heroes
+        io.to(data.room).emit('actionResolved', turn);
         console.log('action resolved for ' + hero.class.name);
       });
 
@@ -220,7 +222,7 @@ function resolveTurn(data){
   //checking for dots
   if (actor.dotCounter){
     let dotOriginIndex = heroes.findIndex(item => item.id === actor.dotOrigin);
-    skillAction.applyDot(false, actor.dotOrigin, heroes[actorIndex], combatLog)
+    skillAction.applyDot(heroes[actorIndex], combatLog)
   };
 
   //checking for hots
@@ -238,6 +240,7 @@ function resolveTurn(data){
       }
 
       target.hp -= dmg;
+      console.log(target.class.name + ' takes ' + dmg + 'damage');
       combatLog.push(actor.class.name + ' attacked ' + target.class.name + ', dealing ' + dmg + ' damage.');
       response = {heroes: heroes, combatLog: combatLog};
       break;
@@ -292,7 +295,7 @@ function endTurn(data){
       response;
 
   heroesCopy.forEach(function(hero, index){
-    //decrease buff and deletes them if 0
+    //decrease buff and deletes them if the counter is at 0
     if (hero.buffCounter){
       hero.buffCounter --;
       if (hero.buffCounter <= 0){
