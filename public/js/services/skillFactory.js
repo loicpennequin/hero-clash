@@ -2,7 +2,7 @@ app.factory('skillFactory', function($http, $q){
   return{
     buy : function(skill, hero){
       let deferred = $q.defer();
-      $http.get('http://192.168.0.11:8080/api/skills/buy', {
+      $http.get('/api/skills/buy', {
         params: {
           skill: skill,
           hero: hero

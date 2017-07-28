@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  127.0.0.1
--- Généré le :  Mer 26 Juillet 2017 à 05:54
+-- Généré le :  Ven 28 Juillet 2017 à 23:25
 -- Version du serveur :  5.7.14
 -- Version de PHP :  5.6.25
 
@@ -97,7 +97,11 @@ INSERT INTO `heroes` (`id`, `user_id`, `class_id`, `skill1`, `skill2`, `skill3`,
 (11, 1, 9, NULL, NULL, NULL, NULL),
 (12, 1, 10, NULL, NULL, NULL, NULL),
 (13, 1, 11, 9, NULL, NULL, NULL),
-(14, 1, 12, 10, 12, NULL, NULL);
+(14, 1, 12, 10, 12, NULL, NULL),
+(15, 2, 2, NULL, NULL, NULL, NULL),
+(16, 2, 3, NULL, NULL, NULL, NULL),
+(17, 2, 1, 6, 8, 7, NULL),
+(18, 2, 12, 10, NULL, 12, NULL);
 
 -- --------------------------------------------------------
 
@@ -124,7 +128,12 @@ INSERT INTO `heroes_skills` (`id`, `hero_id`, `skill_id`) VALUES
 (14, 4, 8),
 (13, 4, 7),
 (12, 4, 6),
-(11, 1, 6);
+(11, 1, 6),
+(19, 17, 6),
+(20, 17, 7),
+(21, 17, 8),
+(22, 18, 10),
+(23, 18, 12);
 
 -- --------------------------------------------------------
 
@@ -214,7 +223,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `login`, `password`, `email`, `gold`, `games`, `wins`, `losses`, `elo`, `team_slot1`, `team_slot2`, `team_slot3`) VALUES
-(1, 'Daria', '$2a$10$qaGwKWAgmvjjmAW6fq8lWOKqIajQniJPVOBGAoC/fshJY0wJwfILO', 'test@test.test', 998499, 0, 0, 0, 1200, 4, 14, 10);
+(1, 'Daria', '$2a$10$qaGwKWAgmvjjmAW6fq8lWOKqIajQniJPVOBGAoC/fshJY0wJwfILO', 'test@test.test', 998499, 0, 0, 0, 1200, 8, 14, 13),
+(2, 'Test', '$2a$10$SF1mKJ7bdnlKfJTzaqRCvuNaNiAw4WrKq1MEQaUh4w7oM.pS.L4uW', 'test@test.com', 998499, 0, 0, 0, 1200, 15, 16, 17);
 
 --
 -- Index pour les tables exportées
@@ -263,12 +273,12 @@ ALTER TABLE `classes`
 -- AUTO_INCREMENT pour la table `heroes`
 --
 ALTER TABLE `heroes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 --
 -- AUTO_INCREMENT pour la table `heroes_skills`
 --
 ALTER TABLE `heroes_skills`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 --
 -- AUTO_INCREMENT pour la table `skills`
 --
@@ -278,7 +288,7 @@ ALTER TABLE `skills`
 -- AUTO_INCREMENT pour la table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

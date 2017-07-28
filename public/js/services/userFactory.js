@@ -2,7 +2,7 @@ app.factory('userFactory', function($http, $q){
   return{
     getUsers : function(){
       let deferred = $q.defer();
-      $http.get('http://192.168.0.11:8080/api/users')
+      $http.get('/api/users')
         .then(function(response){
           deferred.resolve(response.data)
         }, function(error){
@@ -12,7 +12,7 @@ app.factory('userFactory', function($http, $q){
     },
     getUser : function(id){
       let deferred = $q.defer();
-      $http.get('http://192.168.0.11:8080/api/users/' + id)
+      $http.get('/api/users/' + id)
         .then(function(response){
           deferred.resolve(response.data)
         }, function(error){
@@ -22,7 +22,7 @@ app.factory('userFactory', function($http, $q){
     },
     addUser : function(data){
       let deferred = $q.defer();
-      $http.post('http://192.168.0.11:8080/api/users', data)
+      $http.post('/api/users', data)
         .then(function(response){
           deferred.resolve(response.data)
         }, function(error){
@@ -32,7 +32,7 @@ app.factory('userFactory', function($http, $q){
     },
     signIn : function(data){
       let deferred = $q.defer();
-      $http.post('http://192.168.0.11:8080/api/signin', data)
+      $http.post('/api/signin', data)
         .then(function(response){
           deferred.resolve(response.data)
         }, function(error){
@@ -42,7 +42,7 @@ app.factory('userFactory', function($http, $q){
     },
     signOff : function(){
       let deferred = $q.defer();
-      $http.get('http://192.168.0.11:8080/api/signoff')
+      $http.get('/api/signoff')
         .then(function(response){
           deferred.resolve(response.data)
         }, function(error){
@@ -52,7 +52,7 @@ app.factory('userFactory', function($http, $q){
     },
     loginCheck : function(){
       let deferred = $q.defer();
-      $http.get('http://192.168.0.11:8080/api/loggedin')
+      $http.get('/api/loggedin')
         .then(function(response){
           deferred.resolve(response.data)
         }, function(error){
