@@ -1,4 +1,4 @@
-app.controller('lobbyCtrl', function($scope, $q, classFactory, userFactory, skillFactory, heroFactory, battleFactory, socket, $route, $location){
+app.controller('lobbyCtrl', function($scope, $q, classFactory, userFactory, skillFactory, heroFactory, battleFactory, socket, $route, $location, $rootScope){
   $scope.user = {};
   $scope.roster = [];
   $scope.userTeam = [];
@@ -75,7 +75,8 @@ app.controller('lobbyCtrl', function($scope, $q, classFactory, userFactory, skil
     $scope.notificationDisplay = true;
   });
 
-  socket.on('gameStart', function(){
+  socket.on('gameStart', function(response){
+    $rootScope.gameData = response;
     $location.path('/play/game');
   });
 

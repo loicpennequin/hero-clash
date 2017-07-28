@@ -3,6 +3,7 @@
   <h1 class="title is-1 has-text-centered">{{gameType}}</h1>
   <div class="battlefield columns is-multiline">
     <div class="column is-5 is-offset-1 user-team">
+      <h2 class="title is-2 has-text-centered">{{user.login}}</h2>
       <section class="team-member" ng-repeat="hero in userTeam | orderBy : 'class.name' ">
         <div class="menu">
           <div class="field is-horizontal">
@@ -17,12 +18,12 @@
                       <!-- <option ng-repeat="target in roster track by $index" ng-value="target.id">
                         {{target.class.name}}
                       </option> -->
-                      <option ng-value="ally1.id">{{ally1.name}}</option>
-                      <option ng-value="ally2.id">{{ally2.name}}</option>
-                      <option ng-value="ally3.id">{{ally3.name}}</option>
-                      <option ng-value="enemy1.id">{{enemy1.name}}</option>
-                      <option ng-value="enemy2.id">{{enemy2.name}}</option>
-                      <option ng-value="enemy3.id">{{enemy3.name}}</option>
+                      <option class="target-ally" ng-value="ally1.id">{{ally1.name}}</option>
+                      <option class="target-ally" ng-value="ally2.id">{{ally2.name}}</option>
+                      <option class="target-ally" ng-value="ally3.id">{{ally3.name}}</option>
+                      <option class="target-enemy" ng-value="enemy1.id">{{enemy1.name}}</option>
+                      <option class="target-enemy" ng-value="enemy2.id">{{enemy2.name}}</option>
+                      <option class="target-enemy" ng-value="enemy3.id">{{enemy3.name}}</option>
                     </select>
                   </div>
                 </div>
@@ -112,6 +113,7 @@
       </section>
     </div>
     <div class="column is-3 is-offset-2 opponent">
+      <h2 class="title is-2 has-text-centered">{{opp.login}}</h2>
       <section class="team-member" ng-repeat="hero in oppTeam track by $index">
         <div class="hero-infos">
           <h4>
@@ -142,10 +144,11 @@
     </div>
     <div class="column is-offset-1">
       <button class="button is-large is-info"
-              ng-click="resolveTurn()"
+              ng-click="confirmTurn()"
               ng-disabled="isTurnInvalid()">
               Confirm turn
       </button>
+      <div ng-if="waitingForOpp">Waiting for Opponent...</div>
     </div>
   </div>
 

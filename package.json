@@ -16,6 +16,7 @@
     "lodash": "^4.17.4",
     "mysql": "^2.13.0",
     "node-fetch": "^1.7.1",
+    "promise": "^8.0.1",
     "slugify": "^1.1.0",
     "socket.io": "^2.0.3"
   },

@@ -169,6 +169,10 @@ app.controller('trainingCtrl', function($scope, $q, classFactory, userFactory, s
     hero.action = command;
   };
 
+  $scope.confirmTurn = function(){
+    $scope.resolveTurn();
+  }
+
   $scope.resolveTurn = function(){
     //set dummies actions;
     $scope.oppTeam.forEach(function(dummy, index){
@@ -186,7 +190,7 @@ app.controller('trainingCtrl', function($scope, $q, classFactory, userFactory, s
       arr.sort(function(a,b) {
         return b.speed - a.speed
       });
-      arrCopy = arr.slice(0);
+      let arrCopy = arr.slice(0);
       arrCopy.forEach(function(hero, index){
         if(hero.action == 'defend'){
           let oldIndex = arrCopy.indexOf(hero),
@@ -218,8 +222,18 @@ app.controller('trainingCtrl', function($scope, $q, classFactory, userFactory, s
           data = {heroes : $scope.roster};
           socket.emit('endTurn', data, (response) =>{
             $scope.roster = response.heroes;
-            $scope.userTeam = response.userTeam;
-            $scope.oppTeam = response.oppTeam;
+            let userTeam = [],
+                oppTeam = [];
+
+            $scope.roster.forEach(function(hero, index){
+              if (hero.user_id == $scope.user.id){
+                userTeam.push(hero);
+              } else {
+                oppTeam.push(hero)
+              }
+            });
+            $scope.userTeam = userTeam;
+            $scope.oppTeam = oppTeam;
             response.combatLog.forEach(function(log, index){
               $scope.combatLog.push(log)
             });

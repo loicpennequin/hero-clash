@@ -5033,6 +5033,12 @@ label.panel-block {
   font-weight: bold;
   padding: 5px; }
 
+.target-ally {
+  color: #23d160; }
+
+.target-enemy {
+  color: #ff3860; }
+
 .lobby .modal-content {
   background-color: #fafafa;
   padding: 15px; }
