@@ -42,13 +42,11 @@ app.controller('lobbyCtrl', function($scope, $q, classFactory, userFactory, skil
   });
 
   socket.on('lobbyJoined', function(data){
-    console.log('test join');
     $scope.users = data.members;
     $scope.user = data.user;
   });
 
   socket.on('updateMembers', function(data){
-    console.log('test update');
     $scope.users = data;
   });
 
@@ -57,15 +55,14 @@ app.controller('lobbyCtrl', function($scope, $q, classFactory, userFactory, skil
   };
 
   socket.on('challengePending', function(user){
-    console.log(user);
     $scope.challengePending = true;
     $scope.challenger = user;
   });
 
 
   $scope.acceptChallenge = function(){
-    console.log($scope.user, $scope.challenger);
-    socket.emit('challengeAccepted', [$scope.user, $scope.challenger])
+    let room = $scope.user.login + '-' + $scope.challenger.login;
+    socket.emit('challengeAccepted', {users : [$scope.user, $scope.challenger], room : room});
   };
 
   $scope.declineChallenge = function(){

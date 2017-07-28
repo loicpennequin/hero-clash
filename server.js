@@ -52,6 +52,8 @@ app.post('/api/classes/buy', job.buy)
 
 app.get('/api/gamestate/training', game.trainingLoad)
 app.post('/api/gamestate/training', game.trainingSave)
+app.get('/api/gamestate/mp', game.mpLoad)
+app.post('/api/gamestate/mp', game.mpSave)
 
 /*========================================SOCKET.IO=========================================*/
 
@@ -65,8 +67,6 @@ io.on('connection', function(socket){
       socket.user = socket.handshake.session.user;
       socket.user.socketID = socket.id;
       socket.join('lobby');
-
-      // console.log(io.sockets.connected[socket.id].user);
 
       let lobbySockets = io.sockets.adapter.rooms['lobby'],
           lobby = Object.keys(lobbySockets.sockets),
@@ -106,11 +106,21 @@ io.on('connection', function(socket){
     socket.broadcast.to(data.socketID).emit('challengeDeclined', {message : data.login + ' has refused your challenge.'});
   });
 
+
+  // Ranked Game Initialization
   socket.on('challengeAccepted', function(data){
-    data.forEach(function(user, index){
-      io.to(user.socketID).emit('gameStart');
+    let room = data.room,
+        users = data.users;
+
+    users.forEach(function(user, index){
+      io.sockets.connected[user.socketID].join(room)
+      io.to(user.socketID).emit('gameStart', data.users);
     })
 
+    socket.on('rdyToInit', function(data, ackFn){
+      let sessionID = socket.handshake.session.user.id;
+      ackFn({users : users, sessionID : sessionID});
+    })
   });
 
 
