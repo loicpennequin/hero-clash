@@ -169,7 +169,6 @@ io.on('connection', function(socket){
     if (gameRoomPlayers.some(waitingForPlayerTurns)){
       console.log('waiting for other player turn')
     }else{
-      console.log("let's resolve");
       gameRoomPlayers.forEach(function(player, index){
         heroes = heroes.concat(io.sockets.connected[player].turnData)
       })
@@ -181,7 +180,6 @@ io.on('connection', function(socket){
             turn = resolveTurn(actionData);
         heroes = turn.heroes
         io.to(data.room).emit('actionResolved', turn);
-        console.log('action resolved for ' + hero.class.name);
       });
 
       gameRoomPlayers.forEach(function(player, index){
@@ -228,7 +226,7 @@ function resolveTurn(data){
   //checking for hots
   if (actor.hotCounter){
     let hotOriginIndex = heroes.findIndex(item => item.id === actor.hotOrigin);
-    skillAction.applyHot(false, actor.hotOrigin, heroes[actorIndex], combatLog)
+    skillAction.applyHot(heroes[actorIndex], combatLog)
   };
 
   switch (actor.action){
@@ -240,7 +238,6 @@ function resolveTurn(data){
       }
 
       target.hp -= dmg;
-      console.log(target.class.name + ' takes ' + dmg + 'damage');
       combatLog.push(actor.class.name + ' attacked ' + target.class.name + ', dealing ' + dmg + ' damage.');
       response = {heroes: heroes, combatLog: combatLog};
       break;

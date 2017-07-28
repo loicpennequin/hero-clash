@@ -85,17 +85,16 @@ SkillAction.prototype.heal = function(){
 SkillAction.prototype.dot = function(){
   let that = this;
   for ( let i = 0 ; i < that.targets.length; i++){
-    that.targets[i].dotCounter = that.skill.dotduration;
     let skillPower = that.skill.dotvalue + (that.actor.matk * that.skill.dotratio),
         damageDealt = skillPower - (that.targets[i].mdef / 2);
     if ( damageDealt < 10){
       damageDealt = 10;
     };
+    that.targets[i].dotCounter = that.skill.dotduration;
     that.targets[i].dotOrigin = that.skill.name;
     that.targets[i].dotDmg = damageDealt;
 
     if ( that.targets[i].speed > that.actor.speed){
-      console.log('need to apply dot to ' + that.targets[i].class.name);
       applyDot(that.targets[i], that.logs);
     } else {
 
@@ -106,9 +105,15 @@ SkillAction.prototype.dot = function(){
 SkillAction.prototype.hot = function(){
   let that = this;
   for ( let i = 0 ; i < that.targets.length; i++){
+    let skillPower = that.skill.hotvalue + (that.actor.matk * that.skill.hotratio),
+        damageHealed  = skillPower;
+
     that.targets[i].hotCounter = that.skill.hotduration;
+    that.targets[i].hotOrigin = that.skill.name;
+    that.targets[i].hotHeal = damageHealed;
+
     if ( that.targets[i].speed >= that.actor.speed){
-      applyHot(that.skill, that.actor, that.targets[i], that.logs);
+      applyHot(that.targets[i], that.logs);
     };
   };
 };
@@ -200,35 +205,24 @@ exports.applyHot = function(skill, actor, target, log){
 function applyDot(target, log){
   target.hp -= target.dotDmg;
   target.dotCounter--;
+  log.push(target.class.name + ' is suffering from' + target.dotOrigin + ' and takes ' + target.dotDmg + ' damage.' );
   if (target.dotCounter <= 0){
     delete target.dotCounter;
     delete target.dotOrigin;
     delete target.dotDmg;
   };
-  log.push(target.class.name + ' is suffering from' + target.dotOrigin + ' and takes ' + target.dotDmg + ' damage.' );
 };
 
-function applyHot(skill, actor, target, log){
-  let damageHealed;
-  if (skill){
-    let skillPower = skill.hotvalue + (actor.matk * skill.hotratio);
-    damageHealed  = skillPower;
-    target.hotOrigin = skill.name;
-    target.hotHeal = damageHealed;
-  }else if (skill == false){
-    skill = {};
-    skill.name = target.hotOrigin;
-    damageHealed = target.hotHeal;
-  }
-  target.hp += damageHealed;
+function applyHot(target, log){
+  target.hp += target.hotHeal;
   if(target.hp > target.class.health){
     target.hp = target.class.health;
   };
+  log.push(target.class.name + ' is healed for ' + target.hotDmg + ' by ' + target.hotOrigin + '.' );
   target.hotCounter--;
   if (target.hotCounter == 0){
     delete target.hotCounter;
     delete target.hotOrigin;
     delete target.hotHeal;
   };
-  log.push(target.class.name + ' is healed for ' + damageHealed + ' by ' + skill.name + '.' );
 };

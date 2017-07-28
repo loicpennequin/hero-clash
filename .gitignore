@@ -1,3 +1,4 @@
 node_modules/
 public/.sass-cache
 password.js
+package-lock.json

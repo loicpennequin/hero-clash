@@ -25,11 +25,11 @@
           <td></td>
         </thead>
         <tbody>
-          <tr ng-repeat="user in users | orderBy : '-elo'">
-            <td>{{user.login}}</td>
-            <td>{{user.elo}}</td>
+          <tr ng-repeat="u in users | orderBy : '-elo'">
+            <td>{{u.login}}</td>
+            <td>{{u.elo}}</td>
             <td>
-              <button class="button is-dark" ng-click="challenge(user)">CHALLENGE</button>
+              <button class="button is-dark" ng-click="challenge(u)" ng-if="u.login != user.login">CHALLENGE</button>
             </td>
           </tr>
         </tbody>
