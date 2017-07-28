@@ -1,4 +1,5 @@
 app.controller('trainingCtrl', function($scope, $q, classFactory, userFactory, skillFactory, heroFactory, battleFactory, socket){
+  $scope.gameType = "training";
   $scope.user = {};
   $scope.roster = [];
   $scope.userTeam = [];
@@ -19,20 +20,20 @@ app.controller('trainingCtrl', function($scope, $q, classFactory, userFactory, s
       console.log(error);
     });
 
-    $scope.getUser = function(id){
-      userFactory.getUser(id)
-        .then(function(response){
-          $scope.user = response.data;
-        }, function(error){
-          console.log(error);
-        });
-    };
+  $scope.getUser = function(id){
+    userFactory.getUser(id)
+      .then(function(response){
+        $scope.user = response.data;
+      }, function(error){
+        console.log(error);
+      });
+  };
 
   function Init(id){
     userFactory.getUser(id)
       .then(function(response){
         $scope.user = response.data;
-        battleFactory.getGameState()
+        battleFactory.getGameState("training")
           .then(function(response){
             if (response.data.state == false){
               setMembersAndSkills();
@@ -222,7 +223,7 @@ app.controller('trainingCtrl', function($scope, $q, classFactory, userFactory, s
             response.combatLog.forEach(function(log, index){
               $scope.combatLog.push(log)
             });
-            battleFactory.setGameState($scope.roster)
+            battleFactory.setGameState($scope.roster, "training")
               .then(function(response){
                 console.log('game saved');
               }, function(error){

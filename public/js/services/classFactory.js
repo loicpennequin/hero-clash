@@ -2,7 +2,7 @@ app.factory('classFactory', function($http, $q){
   return{
     getClasses : function(){
       let deferred = $q.defer();
-      $http.get('http://localhost:8080/api/classes')
+      $http.get('http://192.168.0.11:8080/api/classes')
         .then(function(response){
           deferred.resolve(response.data)
         }, function(error){
@@ -12,7 +12,7 @@ app.factory('classFactory', function($http, $q){
     },
     buy : function(data){
       let deferred = $q.defer();
-      $http.post('http://localhost:8080/api/classes/buy', data)
+      $http.post('http://192.168.0.11:8080/api/classes/buy', data)
         .then(function(response){
           deferred.resolve(response.data)
         }, function(error){

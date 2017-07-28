@@ -1,8 +1,8 @@
-exports.load = function(req,res){
-    res.json({error: false, data: req.session.game});
+exports.trainingLoad = function(req,res){
+    res.json({error: false, data: req.session.trainingGame});
 }
 
-exports.save = function(req, res){
-  req.session.game = { game : req.body, state : true}
+exports.trainingSave = function(req, res){
+  req.session.trainingGame = { game : req.body, state : true}
   res.json({error: false, data: {message : "game saved"}});
 }

@@ -1,0 +1,38 @@
+<div ng-include="'views/components/navbar.html'"></div>
+<main ng-controller="lobbyCtrl">
+    <section class="lobby">
+
+      <div class="modal" ng-class="{'is-active': challengePending}">
+        <div class="modal-background"></div>
+        <div class="modal-content has-text-centered">
+          {{challenger.login}} challenges you to a game !  </br>
+          <button class="button is-dark" ng-click="acceptChallenge()">ACCEPT</button>
+          <button class="button is-dark" ng-click="declineChallenge()">DECLINE</button>
+        </div>
+      </div>
+
+      <div class="notification is-danger" ng-if="notificationDisplay">
+        <button class="delete" ng-click="closeNotification()"></button>
+        {{notification}}
+      </div>
+
+
+      <h1 class="title is-1 has-text-centered">{{user.login}}</h1>
+      <table class="table lb-table is-bordered os-striped">
+        <thead>
+          <td>Name</td>
+          <td>ELO</td>
+          <td></td>
+        </thead>
+        <tbody>
+          <tr ng-repeat="user in users | orderBy : '-elo'">
+            <td>{{user.login}}</td>
+            <td>{{user.elo}}</td>
+            <td>
+              <button class="button is-dark" ng-click="challenge(user)">CHALLENGE</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+</mainW

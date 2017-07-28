@@ -1,0 +1,85 @@
+app.controller('lobbyCtrl', function($scope, $q, classFactory, userFactory, skillFactory, heroFactory, battleFactory, socket, $route, $location){
+  $scope.user = {};
+  $scope.roster = [];
+  $scope.userTeam = [];
+  $scope.oppTeam = [];
+  $scope.combatLog = [];
+  $scope.challenger = "";
+  $scope.challengePending = false;
+  $scope.notification = ""
+  $scope.notificationDisplay = false;
+
+  $scope.users = [];
+
+  $scope.closeNotification = function(){
+    $scope.notificationDisplay = false;
+  }
+
+  userFactory.loginCheck()
+    .then(function(response){
+      $scope.getUser(response.data.user.id)
+      // Init(response.data.user.id);
+    }, function(error){
+      console.log(error);
+    });
+
+  $scope.getUser = function(id){
+    userFactory.getUser(id)
+      .then(function(response){
+        $scope.user = response.data;
+        socket.emit('joinLobby', $scope.user);
+      }, function(error){
+        console.log(error);
+      });
+  };
+
+  $scope.$on('$routeChangeStart', function(){
+    socket.emit('leaveLobby')
+  });
+
+  socket.on('userLeftLobby', function(data){
+      $scope.users = data;
+  });
+
+  socket.on('lobbyJoined', function(data){
+    console.log('test join');
+    $scope.users = data.members;
+    $scope.user = data.user;
+  });
+
+  socket.on('updateMembers', function(data){
+    console.log('test update');
+    $scope.users = data;
+  });
+
+  $scope.challenge = function(user){
+    socket.emit('challenge', {challenger : $scope.user, challenged : user})
+  };
+
+  socket.on('challengePending', function(user){
+    console.log(user);
+    $scope.challengePending = true;
+    $scope.challenger = user;
+  });
+
+
+  $scope.acceptChallenge = function(){
+    console.log($scope.user, $scope.challenger);
+    socket.emit('challengeAccepted', [$scope.user, $scope.challenger])
+  };
+
+  $scope.declineChallenge = function(){
+    $scope.challengePending = false;
+    socket.emit('challengeDeclined', $scope.challenger)
+  };
+
+  socket.on('challengeDeclined', function(data){
+    $scope.notification = data.message
+    $scope.notificationDisplay = true;
+  });
+
+  socket.on('gameStart', function(){
+    $location.path('/play/game');
+  });
+
+});

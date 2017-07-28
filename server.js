@@ -50,12 +50,71 @@ app.get('/api/skills/buy', skill.buy)
 app.get('/api/classes', job.list)
 app.post('/api/classes/buy', job.buy)
 
-app.get('/api/gamestate', game.load)
-app.post('/api/gamestate', game.save)
+app.get('/api/gamestate/training', game.trainingLoad)
+app.post('/api/gamestate/training', game.trainingSave)
 
 /*========================================SOCKET.IO=========================================*/
 
 io.on('connection', function(socket){
+
+/*========================================LOBBY=============================================*/
+
+  socket.on('joinLobby', function(user){
+
+    socket.handshake.session.reload(function(err) {
+      socket.user = socket.handshake.session.user;
+      socket.user.socketID = socket.id;
+      socket.join('lobby');
+
+      // console.log(io.sockets.connected[socket.id].user);
+
+      let lobbySockets = io.sockets.adapter.rooms['lobby'],
+          lobby = Object.keys(lobbySockets.sockets),
+          members = [];
+
+      lobby.forEach(function(member, key){
+        members.push(io.sockets.connected[member].user)
+      })
+
+      io.to(socket.id).emit('lobbyJoined', {user: socket.user, members : members});
+      socket.broadcast.emit('updateMembers', members);
+    });
+  });
+
+  socket.on('leaveLobby', function(data){
+    socket.leave('lobby');
+    let lobbySockets = io.sockets.adapter.rooms['lobby'];
+        if(lobbySockets && lobbySockets.length > 0){
+          let lobby = Object.keys(lobbySockets.sockets),
+              members = [];
+
+          lobby.forEach(function(member, key){
+            members.push(io.sockets.connected[member].user)
+          })
+
+
+          io.emit('userLeftLobby', members)
+        }
+
+  })
+
+  socket.on('challenge', function(data){
+    socket.broadcast.to(data.challenged.socketID).emit('challengePending', data.challenger);
+  });
+
+  socket.on('challengeDeclined', function(data){
+    socket.broadcast.to(data.socketID).emit('challengeDeclined', {message : data.login + ' has refused your challenge.'});
+  });
+
+  socket.on('challengeAccepted', function(data){
+    data.forEach(function(user, index){
+      io.to(user.socketID).emit('gameStart');
+    })
+
+  });
+
+
+/*=======================================GAME LOGIC===========================================*/
 
   socket.on('action', function (data, ackFn) {
     let combatLog = [],

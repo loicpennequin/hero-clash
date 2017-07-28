@@ -4812,11 +4812,7 @@ label.panel-block {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  background: url("../assets/img/login-bg.jpg");
-  background-size: cover;
-  mask-image: linear-gradient(black, transparent);
-  -webkit-mask-image: linear-gradient(black 25%, transparent); }
+  height: 100vh; }
   .login-screen section {
     background-color: rgba(245, 245, 245, 0.5);
     margin: 10px;
@@ -5037,13 +5033,19 @@ label.panel-block {
   font-weight: bold;
   padding: 5px; }
 
+.lobby .modal-content {
+  background-color: #fafafa;
+  padding: 15px; }
+
 * {
   box-sizing: border-box; }
 
 html, body {
   margin: 0;
   padding: 0;
-  background: #121212; }
+  background: url("../assets/img/login-bg.jpg");
+  background-size: cover;
+  background-attachment: fixed; }
 
 main {
   padding: 20px;
@@ -5052,7 +5054,9 @@ main {
   margin-left: auto;
   margin-right: auto;
   background: whitesmoke;
-  min-height: 100vh; }
+  min-height: 100vh;
+  border-left: solid #363636 3px;
+  border-right: solid #363636 3px; }
 
 .navbar {
   position: fixed;

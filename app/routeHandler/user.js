@@ -86,7 +86,8 @@ exports.signin = function(req,res){
           let userData = user.toJSON();
           delete userData.password;
           req.session.user = userData;
-          req.session.game = {state : false};
+          req.session.trainingGame = {state : false};
+          req.session.MPGame = {state : false};
           res.json({error: false, data: userData});
         } else {
           res.json({error: false, data: {message: 'wrong password'}});
