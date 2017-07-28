@@ -4,6 +4,7 @@
 ### installer nodeJS et mettre à jour npm
 
 linux : apt install nodejs
+
 windows : https://nodejs.org/en/
 
 puis :
@@ -18,8 +19,9 @@ Si vous n'avez pas MYSQL d'installé baaaaaah installez le (je vous avoue avoir 
 
 ### créer un fichier password.js à la racine du projet avec le contnu suivant :
 
-exports.password = 'votre-mot-de-passe-mySQL'
-exports.secret = 'ce que vous voulez' (c'est pas important, ça doit juste ne pas être vide)
+exports.password = 'votre-mot-de-passe-mySQL';
+
+exports.secret = 'ce que vous voulez'; (c'est pas important, ça doit juste ne pas être vide)
 
 ### insérez vos identifiants mySQL :
 

@@ -7,9 +7,9 @@ app.controller('lbCtrl', function($scope, userFactory, $location){
         $scope.users = response.data;
 
         $scope.users.forEach(function(user,key){
-          let index1 = user.heroes.findIndex(item => item.id === $scope.user.team_slot1);
-              index2 = user.heroes.findIndex(item => item.id === $scope.user.team_slot2),
-              index3 = user.heroes.findIndex(item => item.id === $scope.user.team_slot3);
+          let index1 = user.heroes.findIndex(item => item.id === user.team_slot1);
+              index2 = user.heroes.findIndex(item => item.id === user.team_slot2),
+              index3 = user.heroes.findIndex(item => item.id === user.team_slot3);
           user.teamHero1 = user.heroes[index1]
           user.teamHero2 = user.heroes[index2]
           user.teamHero3 = user.heroes[index3]

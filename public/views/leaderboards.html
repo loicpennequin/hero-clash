@@ -10,13 +10,13 @@
           <td>Team</td>
         </thead>
         <tbody>
-          <tr ng-repeat="user in usersArray | orderBy : '-elo'">
-            <td>{{user.login}}</td>
-            <td>{{user.elo}}</td>
+          <tr ng-repeat="u in usersArray | orderBy : '-elo'">
+            <td>{{u.login}}</td>
+            <td>{{u.elo}}</td>
             <td>
-              <img class="lb-portrait" ng-src="{{user.teamHero1.class.portrait}}"/>
-              <img class="lb-portrait" ng-src="{{user.teamHero2.class.portrait}}"/>
-              <img class="lb-portrait" ng-src="{{user.teamHero3.class.portrait}}"/>
+              <img class="lb-portrait" ng-src="{{u.teamHero1.class.portrait}}"/>
+              <img class="lb-portrait" ng-src="{{u.teamHero2.class.portrait}}"/>
+              <img class="lb-portrait" ng-src="{{u.teamHero3.class.portrait}}"/>
             </td>
           </tr>
         </tbody>
