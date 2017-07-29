@@ -1,27 +1,40 @@
-exports.resolveAction = function(heroes){
-  heroes.forEach(function(hero, index){
+let skillAction = require('./skillActions');
+
+exports.resolveAction = function(heroes, hero){
     let actionData = {actor: hero , heroes: heroes},
         turn = resolveTurn(actionData);
     heroes = turn.heroes
-    io.to(data.room).emit('actionResolved', turn);
-  });
+
+    return turn
 };
 
-exports.dotCheck = function(actor, heroes, combatLog){
+exports.dotCheck = function(actor, actorIndex, heroes, combatLog){
+  dotCheck(actor, heroes, combatLog);
+};
+
+function dotCheck(actor, actorIndex, heroes, combatLog){
   if (actor.dotCounter){
     let dotOriginIndex = heroes.findIndex(item => item.id === actor.dotOrigin);
     skillAction.applyDot(heroes[actorIndex], combatLog)
   };
 };
 
-exports.hotCheck = function(actor, heroes, combatLog){
+exports.hotCheck = function(actor, actorIndex, heroes, combatLog){
+  hotCheck(actor, heroes, combatLog);
+};
+
+function hotCheck(actor, actorIndex, heroes, combatLog){
   if (actor.hotCounter){
     let hotOriginIndex = heroes.findIndex(item => item.id === actor.hotOrigin);
     skillAction.applyHot(heroes[actorIndex], combatLog)
   };
 };
 
-exports.attack = function(actor, target, combatLog){
+exports.attack = function(heroes, actor, target, combatLog){
+  attack(heroes, actor, target, combatLog);
+};
+
+function attack(heroes, actor, target, combatLog){
   let dmg = actor.atk - target.def;
 
   if(dmg < 10){
@@ -33,34 +46,64 @@ exports.attack = function(actor, target, combatLog){
   return {heroes: heroes, combatLog: combatLog};
 };
 
-exports.skill = function(actor, heroes, combatLog){
+exports.skill = function(actor, actorIndex, heroes, combatLog){
+  skill(actor, actorIndex, heroes, combatLog);
+};
+
+function skill(actor, actorIndex, heroes, combatLog){
   let response = {},
       result = skillAction.skill(actor.skillAction, actor, heroes);
   result.combatLog.forEach(function(log, index){
     combatLog.push(log)
   });
+  switch (heroes[actorIndex].skillAction.id){
+    case heroes[actorIndex].skill1:
+      heroes[actorIndex].activeSkill1.cdCounter = actor.skillAction.cooldown
+    break
+    case heroes[actorIndex].skill2:
+      heroes[actorIndex].activeSkill2.cdCounter = actor.skillAction.cooldown
+    break
+    case heroes[actorIndex].skill3:
+      heroes[actorIndex].activeSkill3.cdCounter = actor.skillAction.cooldown
+    break
+    case heroes[actorIndex].skill4:
+      heroes[actorIndex].activeSkill4.cdCounter = actor.skillAction.cooldown
+    break
+  };
   response.heroes = result.heroes;
   response.combatLog = combatLog;
   return response;
-}
+};
 
 exports.defend = function(heroes, actor, actorIndex, combatLog){
+  defend(heroes,actor, actorIndex, combatLog);
+};
+
+function defend(heroes, actor, actorIndex, combatLog){
   heroes[actorIndex].def += 20;
   combatLog.push(actor.class.name + ' defends, gaining 20 DEF for the turn.');
   let response = {heroes: heroes, combatLog: combatLog}
   return response;
-}
+};
 
 exports.wait = function(heroes, actor, actorIndex, combatLog){
+  wait(heroes, actor, actorIndex, combatLog);
+};
+
+function wait(heroes, actor, actorIndex, combatLog){
   heroes[actorIndex].mp += 10;
   if(heroes[actorIndex].mp > heroes[actorIndex].class.mana){
     heroes[actorIndex].mp = heroes[actorIndex].class.mana
   };
   combatLog.push(actor.class.name + ' waits, regaining 10 MP.');
   return {heroes: heroes, combatLog: combatLog}
-}
+};
 
 exports.decreaseBuffCounter = function(hero, combatLog){
+  decreaseBuffCounter(hero, combatLog);
+};
+
+function decreaseBuffCounter(hero, combatLog){
   if (hero.buffCounter){
     hero.buffCounter --;
     if (hero.buffCounter <= 0){
@@ -74,9 +117,13 @@ exports.decreaseBuffCounter = function(hero, combatLog){
       }
     }
   };
-}
+};
 
 exports.decreaseDebuffCounter = function(hero, combatLog){
+  decreaseDebuffCounter(hero, combatLog);
+};
+
+function decreaseDebuffCounter(hero, combatLog){
   if (hero.debuffCounter){
     hero.debuffCounter --;
     if (hero.debuffCounter <= 0){
@@ -90,4 +137,61 @@ exports.decreaseDebuffCounter = function(hero, combatLog){
       }
     }
   };
-}
+};
+
+function resolveTurn(data){
+  let combatLog = [],
+      heroes = data.heroes,
+      actor = data.actor,
+      actorIndex = heroes.findIndex(item => item.id === actor.id),
+      response = {},
+      targetIndex = heroes.findIndex(item => item.id === data.actor.target),
+      target = heroes[targetIndex],
+      skillAction = require('./skillActions');
+
+  dotCheck(actor, actorIndex, heroes, combatLog)
+  hotCheck(actor, actorIndex, heroes, combatLog)
+
+  switch (actor.action){
+    case 'attack':
+        return (attack(heroes, actor, target, combatLog));
+      break;
+    case 'skill':
+        return (skill(actor, actorIndex, heroes, combatLog));
+      break;
+    case 'defend' :
+        return (defend(heroes, actor, actorIndex, combatLog));
+      break;
+    case 'wait' :
+        return (wait(heroes, actor, actorIndex, combatLog));
+      break;
+  };
+};
+
+function endTurn(data){
+  let combatLog = [],
+      heroes = data.heroes,
+      heroesCopy = data.heroes.slice(0),
+      response;
+
+  heroesCopy.forEach(function(hero, key){
+    decreaseBuffCounter(hero, combatLog);
+    decreaseDebuffCounter(hero, combatLog);
+
+    //remove dead heroes
+    if (hero.hp <= 0){
+      let index = heroesCopy.indexOf(hero);
+      heroes.splice(index, 1);
+      combatLog.push(hero.class.name + ' has been defeated!')
+    } else {
+      //remove 'defend' buff
+      if(hero.action === 'defend'){
+        hero.def -= 20;
+      }
+    };
+  });
+  combatLog.push('--------End of the Turn---------');
+  response = {heroes: heroes, combatLog: combatLog};
+
+  return response
+};

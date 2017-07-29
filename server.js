@@ -173,7 +173,9 @@ io.on('connection', function(socket){
     })
 
     sortHeroes(heroes);
-    gameplay.resolveAction(heroes);
+    heroes.forEach(function(hero, index){
+      io.to(data.room).emit('actionResolved', gameplay.resolveAction(heroes, hero));
+    })
 
     gameRoomPlayers.forEach(function(player, index){
       delete io.sockets.connected[player]['turnData'];
@@ -216,10 +218,10 @@ function resolveTurn(data){
 
   switch (actor.action){
     case 'attack':
-        return (gameplay.attack(actor, target, combatLog));
+        return (gameplay.attack(heroes, actor, target, combatLog));
       break;
     case 'skill':
-        return (gameplay.skill(actor, heroes, combatLog));
+        return (gameplay.skill(actor, actorIndex, heroes, combatLog));
       break;
     case 'defend' :
         return (gameplay.defend(heroes, actor, actorIndex, combatLog));
@@ -249,9 +251,11 @@ function endTurn(data){
   let combatLog = [],
       heroes = data.heroes,
       heroesCopy = data.heroes.slice(0),
+      gameplay = require('./app/gameplay/gameLogic'),
       response;
 
-  heroesCopy.forEach(function(hero, index){
+
+  heroesCopy.forEach(function(hero, key){
     gameplay.decreaseBuffCounter(hero, combatLog);
     gameplay.decreaseDebuffCounter(hero, combatLog);
 
