@@ -1,4 +1,6 @@
 'use strict';
+let requireDir = require('require-dir'),
+    effect = requireDir('./effects');
 
 const SkillAction = function(skill, actor, heroes){
   let that = this;
@@ -48,140 +50,37 @@ SkillAction.prototype.setTarget = function(){
 };
 
 SkillAction.prototype.damage = function(){
-  let that = this,
-      skillPower = that.skill.damagevalue + (that.actor.matk * that.skill.damageratio),
-      damageDealt;
-
-  that.combatLog = that.combatLog.slice(0, -1);
-  that.combatLog += ', dealing';
-  for (let i = 0 ; i < that.targets.length ; i++){
-    if (that.targets[i].mdef >= 0){
-      damageDealt = skillPower * ( 100 / (100 + that.targets[i].mdef));
-    } else {
-      damageDealt = skillPower * ( 2 - (100 / (100 - that.targets[i].mdef)));
-    }
-    that.targets[i].hp -= damageDealt;
-    that.combatLog += ' ' + damageDealt + ' damage to ' + that.targets[i].class.name + ',';
-    if (i == that.targets.length){
-      that.combatLog = that.combatLog.slice(0, -1);
-      that.combatLog += '.';
-    };
-  };
+  effect.damage(this.skill, this.actor, this.heroes, this.logs, this.combatLog, this.targets);
 };
 
 SkillAction.prototype.heal = function(){
-  let that = this;
-
-  let skillPower = that.skill.healvalue + (that.actor.matk * that.skill.healratio);
-  that.combatLog = that.combatLog.slice(0, -1);
-  that.combatLog += ', healing';
-  for (let i = 0 ; i < that.targets.length ; i++){
-    let tIndex = that.heroes.findIndex(item => item.id === that.targets[i].id);
-    that.heroes[tIndex].hp += skillPower;
-    that.combatLog += ' ' +  that.targets[i].class.name + ' for ' + skillPower + ' HP,';
-    if (i == that.targets.length){
-      that.combatLog = that.combatLog.slice(0, -1);
-      that.combatLog += '.';
-    };
-  };
+  effect.heal(this.skill, this.actor, this.heroes, this.logs, this.combatLog, this.targets);
 }
 
 SkillAction.prototype.dot = function(){
-  let that = this,
-      skillPower = that.skill.dotvalue + (that.actor.matk * that.skill.dotratio);
-      damageDealt;
-
-  for ( let i = 0 ; i < that.targets.length; i++){
-    if (that.targets[i].mdef >= 0){
-      damageDealt = skillPower * ( 100 / (100 + that.targets[i].mdef));
-    } else {
-      damageDealt = skillPower * ( 2 - (100 / (100 - that.targets[i].mdef)));
-    };
-    
-    that.targets[i].dotCounter = that.skill.dotduration;
-    that.targets[i].dotOrigin = that.skill.name;
-    that.targets[i].dotDmg = damageDealt;
-
-    if ( that.targets[i].speed > that.actor.speed){
-      applyDot(that.targets[i], that.logs);
-    } else {
-
-    };
-  };
+  effect.dot(this.skill, this.actor, this.heroes, this.logs, this.combatLog, this.targets);
 };
 
 SkillAction.prototype.hot = function(){
-  let that = this;
-  for ( let i = 0 ; i < that.targets.length; i++){
-    let skillPower = that.skill.hotvalue + (that.actor.matk * that.skill.hotratio),
-        damageHealed  = skillPower;
-
-    that.targets[i].hotCounter = that.skill.hotduration;
-    that.targets[i].hotOrigin = that.skill.name;
-    that.targets[i].hotHeal = damageHealed;
-
-    if ( that.targets[i].speed >= that.actor.speed){
-      applyHot(that.targets[i], that.logs);
-    };
-  };
+  effect.hot(this.skill, this.actor, this.heroes, this.logs, this.combatLog, this.targets);
 };
 
 SkillAction.prototype.buff = function(){
-  let that = this;
-  that.combatLog = that.combatLog.slice(0, -1);
-  that.combatLog += ', increasing'
-
-  for (let i = 1 ; i <= 4 ; i++){
-    if ( that.skill['buff' + i + 'value'] != null){
-      let skillPower = that.skill['buff' + i + 'value'] + (that.actor.matk * that.skill.statmodifierratio);
-      that.combatLog += ' ' + (that.skill['buff' + i + 'stat'].toUpperCase()) + ' by ' + skillPower + ',';
-      that.targets.forEach(function(target, index){
-        let stat = that.skill['buff' + i + 'stat'],
-            targetIndex = that.heroes.findIndex(item => item.id === target.id);
-        that.heroes[targetIndex][stat] += skillPower;
-        that.heroes[targetIndex].buffCounter = that.skill.statmodifierduration;
-        that.heroes[targetIndex].buffOrigin = that.skill.name;
-        that.heroes[targetIndex]['buff' + i + 'stat'] = that.skill['buff' + i + 'stat'];
-        that.heroes[targetIndex]['buff' + i + 'value'] = skillPower;
-      });
-    };
-  };
-
-  that.combatLog = that.combatLog.slice(0, -1);
-  that.combatLog += '.'
+  effect.buff(this.skill, this.actor, this.heroes, this.logs, this.combatLog, this.targets);
 };
 
 SkillAction.prototype.debuff = function(){
-  let that = this;
-  that.combatLog = that.combatLog.slice(0, -1);
-  that.combatLog += ', decreasing'
-
-  for (let i = 1 ; i <= 4 ; i++){
-    if ( that.skill['debuff' + i + 'value'] != null){
-      let skillPower = that.skill['debuff' + i + 'value'] + (that.actor.matk * that.skill.statmodifierratio);
-      that.combatLog += ' ' + (that.skill['debuff' + i + 'stat'].toUpperCase()) + ' by ' + skillPower + ',';
-      that.targets.forEach(function(target, index){
-        let stat = that.skill['debuff' + i + 'stat'],
-            targetIndex = that.heroes.findIndex(item => item.id === target.id);
-        that.heroes[targetIndex][stat] -= skillPower;
-        that.heroes[targetIndex].debuffCounter = that.skill.statmodifierduration;
-        that.heroes[targetIndex].debuffOrigin = that.skill.name;
-        that.heroes[targetIndex]['debuff' + i + 'stat'] = that.skill['debuff' + i + 'stat'];
-        that.heroes[targetIndex]['debuff' + i + 'value'] = skillPower;
-      });
-    };
-  };
-
-  that.combatLog = that.combatLog.slice(0, -1);
-  that.combatLog += '.'
+  effect.debuff(this.skill, this.actor, this.heroes, this.logs, this.combatLog, this.targets);
 };
 
 SkillAction.prototype.protect = function(){
-
+  effect.protect(this.skill, this.actor, this.heroes, this.logs, this.combatLog, this.targets);
 };
 
 SkillAction.prototype.taunt = function(){
-
+  that.targets.forEach(function(target, index){
+    target.taunted = that.actor.id
+  });
 };
 
 SkillAction.prototype.silence = function(){
