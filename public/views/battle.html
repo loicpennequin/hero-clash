@@ -3,7 +3,7 @@
   <h1 class="title is-1 has-text-centered">{{gameType}}</h1>
   <div class="battlefield columns is-multiline">
     <div class="column is-5 is-offset-1 user-team">
-      <h2 class="title is-2 has-text-centered">{{user.login}}</h2>
+      <h2 class="title is-2 has-text-centered" ng-if="!training">{{user.login}}</h2>
       <section class="team-member" ng-repeat="hero in userTeam | orderBy : 'class.name' ">
         <div class="menu">
           <div class="field is-horizontal">

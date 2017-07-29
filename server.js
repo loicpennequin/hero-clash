@@ -160,33 +160,26 @@ io.on('connection', function(socket){
     socket.handshake.session.save();
     let gameRoom = io.sockets.adapter.rooms[data.room],
         gameRoomPlayers = Object.keys(gameRoom.sockets),
-        heroes = [];
+        heroes = [],
+        gameplay = require('./app/gameplay/gameLogic');
 
     function waitingForPlayerTurns(elem){
       return !io.sockets.connected[elem].turnData
     }
 
-    if (gameRoomPlayers.some(waitingForPlayerTurns)){
-      console.log('waiting for other player turn')
-    }else{
+    if (!gameRoomPlayers.some(waitingForPlayerTurns)){
       gameRoomPlayers.forEach(function(player, index){
-        heroes = heroes.concat(io.sockets.connected[player].turnData)
-      })
+      heroes = heroes.concat(io.sockets.connected[player].turnData)
+    })
 
-      sortHeroes(heroes);
+    sortHeroes(heroes);
+    gameplay.resolveAction(heroes);
 
-      heroes.forEach(function(hero, index){
-        let actionData = {actor: hero , heroes: heroes},
-            turn = resolveTurn(actionData);
-        heroes = turn.heroes
-        io.to(data.room).emit('actionResolved', turn);
-      });
+    gameRoomPlayers.forEach(function(player, index){
+      delete io.sockets.connected[player]['turnData'];
+    });
 
-      gameRoomPlayers.forEach(function(player, index){
-        delete io.sockets.connected[player]['turnData'];
-      });
-
-      io.to(data.room).emit('endTurn', endTurn({heroes : heroes}));
+    io.to(data.room).emit('endTurn', endTurn({heroes : heroes}));
     };
   });
 
@@ -215,59 +208,26 @@ function resolveTurn(data){
       response = {},
       targetIndex = heroes.findIndex(item => item.id === data.actor.target),
       target = heroes[targetIndex],
-      skillAction = require('./app/skillActions/skillActions');
+      skillAction = require('./app/gameplay/skillActions'),
+      gameplay = require('./app/gameplay/gameLogic');
 
-  //checking for dots
-  if (actor.dotCounter){
-    let dotOriginIndex = heroes.findIndex(item => item.id === actor.dotOrigin);
-    skillAction.applyDot(heroes[actorIndex], combatLog)
-  };
-
-  //checking for hots
-  if (actor.hotCounter){
-    let hotOriginIndex = heroes.findIndex(item => item.id === actor.hotOrigin);
-    skillAction.applyHot(heroes[actorIndex], combatLog)
-  };
+  gameplay.dotCheck(actor, heroes, combatLog)
+  gameplay.hotCheck(actor, heroes, combatLog)
 
   switch (actor.action){
     case 'attack':
-      let dmg = actor.atk - target.def;
-
-      if(dmg < 10){
-        dmg = 10;
-      }
-
-      target.hp -= dmg;
-      combatLog.push(actor.class.name + ' attacked ' + target.class.name + ', dealing ' + dmg + ' damage.');
-      response = {heroes: heroes, combatLog: combatLog};
+        return (gameplay.attack(actor, target, combatLog));
       break;
-
     case 'skill':
-      let result = skillAction.skill(actor.skillAction, actor, heroes);
-      result.combatLog.forEach(function(log, index){
-        combatLog.push(log)
-      });
-      response.heroes = result.heroes;
-      response.combatLog = combatLog;
+        return (gameplay.skill(actor, heroes, combatLog));
       break;
-
     case 'defend' :
-      heroes[actorIndex].def += 20;
-      combatLog.push(actor.class.name + ' defends, gaining 20 DEF for the turn.');
-      response = {heroes: heroes, combatLog: combatLog}
+        return (gameplay.defend(heroes, actor, actorIndex, combatLog));
       break;
-
     case 'wait' :
-      heroes[actorIndex].mp += 10;
-      if(heroes[actorIndex].mp > heroes[actorIndex].class.mana){
-        heroes[actorIndex].mp = heroes[actorIndex].class.mana
-      };
-      combatLog.push(actor.class.name + ' waits, regaining 10 MP.');
-      response = {heroes: heroes, combatLog: combatLog}
+        return (gameplay.wait(heroes, actor, actorIndex, combatLog));
       break;
   };
-
-  return response
 };
 
 function sortHeroes(arr){
@@ -276,7 +236,7 @@ function sortHeroes(arr){
   });
   let arrCopy = arr.slice(0);
   arrCopy.forEach(function(hero, index){
-    if(hero.action == 'defend'){
+    if(hero.action === 'defend'){
       let oldIndex = arrCopy.indexOf(hero),
           newIndex = 0;
       arr.splice(oldIndex, 1);
@@ -292,35 +252,8 @@ function endTurn(data){
       response;
 
   heroesCopy.forEach(function(hero, index){
-    //decrease buff and deletes them if the counter is at 0
-    if (hero.buffCounter){
-      hero.buffCounter --;
-      if (hero.buffCounter <= 0){
-        combatLog.push(hero.buffOrigin + ' has ended on ' + hero.class.name + '.')
-        delete hero.buffCounter;
-        delete hero.buffOrigin;
-        for (let i = 1 ; i <= 4 ; i++){
-          hero[hero['buff' + i + 'stat']] -= hero['buff' + i + 'value'];
-          delete hero['buff' + i + 'stat'];
-          delete hero['buff' + i + 'value'];
-        }
-      }
-    };
-
-    //decrease debuff and deletes them if counter is at 0
-    if (hero.debuffCounter){
-      hero.debuffCounter --;
-      if (hero.debuffCounter <= 0){
-        combatLog.push(hero.debuffOrigin + ' has ended on ' + hero.class.name + '.')
-        delete hero.debuffCounter;
-        delete hero.debuffOrigin;
-        for (let i = 1 ; i <= 4 ; i++){
-          hero[hero['debuff' + i + 'stat']] -= hero['debuff' + i + 'value'];
-          delete hero['debuff' + i + 'stat'];
-          delete hero['debuff' + i + 'value'];
-        }
-      }
-    };
+    gameplay.decreaseBuffCounter(hero, combatLog);
+    gameplay.decreaseDebuffCounter(hero, combatLog);
 
     //remove dead heroes
     if (hero.hp <= 0){
@@ -328,12 +261,10 @@ function endTurn(data){
       heroes.splice(index, 1);
       combatLog.push(hero.class.name + ' has been defeated!')
     } else {
-
       //remove 'defend' buff
-      if(hero.action == 'defend'){
+      if(hero.action === 'defend'){
         hero.def -= 20;
       }
-
     };
   });
   combatLog.push('--------End of the Turn---------');

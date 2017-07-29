@@ -1,8 +1,8 @@
 {
-  "name": "Hero Clash",
+  "name": "hero-clash",
   "version": "0.1.0",
-  "description": "Prototype de jeu de combat d'equipe de heros en tour par tour",
-  "main": "app.js",
+  "description": "turn-based combat web application",
+  "main": "server.js",
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.17.2",
@@ -18,9 +18,14 @@
     "node-fetch": "^1.7.1",
     "promise": "^8.0.1",
     "slugify": "^1.1.0",
-    "socket.io": "^2.0.3"
+    "socket.io": "^2.0.3",
+    "socket.io-express-session": "^0.1.3"
   },
   "devDependencies": {},
-  "author": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Daria",
   "license": "ISC"
 }

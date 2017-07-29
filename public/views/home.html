@@ -17,21 +17,36 @@
     <h2 class="title is-2">Your Team</h2>
     <div class="team">
       <div class="team-member">
-        <div class="team-member-btn" ng-click="teamPicker1 = !teamPicker1" ng-style="{'background-image':'url(' + user.teamHero1.class.portrait + ')'}"></div>
+        <div class="team-member-btn"
+             ng-click="teamPicker1 = !teamPicker1"
+             ng-style="{'background-image':'url(' + user.teamHero1.class.portrait + ')'}"></div>
         <div class="team-member-picker" ng-show="teamPicker1">
-          <img ng-repeat="hero in user.heroes" ng-src="{{hero.class.portrait}}" class="portrait" ng-click="setTeamMember(hero, '1')">
+          <img ng-repeat="hero in user.heroes"
+               ng-src="{{hero.class.portrait}}"
+               class="portrait"
+               ng-click="setTeamMember(hero, '1')"/>
         </div>
       </div>
       <div class="team-member">
-        <div class="team-member-btn" ng-click="teamPicker2 = !teamPicker2" ng-style="{'background-image':'url(' + user.teamHero2.class.portrait + ')'}"></div>
+        <div class="team-member-btn"
+             ng-click="teamPicker2 = !teamPicker2"
+             ng-style="{'background-image':'url(' + user.teamHero2.class.portrait + ')'}"></div>
         <div class="team-member-picker" ng-show="teamPicker2">
-          <img ng-repeat="hero in user.heroes" ng-src="{{hero.class.portrait}}" class="portrait" ng-click="setTeamMember(hero, '2')">
+          <img ng-repeat="hero in user.heroes"
+               ng-src="{{hero.class.portrait}}"
+               class="portrait"
+               ng-click="setTeamMember(hero, '2')">
         </div>
       </div>
       <div class="team-member">
-        <div class="team-member-btn" ng-click="teamPicker3 = !teamPicker3" ng-style="{'background-image':'url(' + user.teamHero3.class.portrait + ')'}"></div>
+        <div class="team-member-btn"
+             ng-click="teamPicker3 = !teamPicker3"
+             ng-style="{'background-image':'url(' + user.teamHero3.class.portrait + ')'}"></div>
         <div class="team-member-picker" ng-show="teamPicker3">
-          <img ng-repeat="hero in user.heroes" ng-src="{{hero.class.portrait}}" class="portrait" ng-click="setTeamMember(hero, '3')">
+          <img ng-repeat="hero in user.heroes"
+               ng-src="{{hero.class.portrait}}"
+               class="portrait"
+               ng-click="setTeamMember(hero, '3')">
         </div>
       </div>
     </div>
@@ -69,7 +84,9 @@
         <ul>
           <li ng-repeat="skill in hero.class.skills">
             <span ng-class="{'not-owned' : !isOwnedSkill(skill, hero)}">{{skill.name}}</span>
-            <i class="fa fa-info-circle" ng-mouseover="infos = true" ng-mouseleave="infos = false"></i>
+            <i class="fa fa-info-circle"
+               ng-mouseover="infos = true"
+               ng-mouseleave="infos = false"></i>
             <span ng-if="!isOwnedSkill(skill, hero)" ng-click="buySkill(skill, hero)">
               <span style="cursor: pointer;">Buy({{skill.price}}<i class="fa fa-diamond">)</i></span>
             </span>

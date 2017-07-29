@@ -1,5 +1,5 @@
 app.controller('trainingCtrl', function($scope, $q, classFactory, userFactory, skillFactory, heroFactory, battleFactory, socket){
-  $scope.gameType = "training";
+  $scope.gameType = "Training";
   $scope.user = {};
   $scope.roster = [];
   $scope.userTeam = [];
@@ -12,6 +12,7 @@ app.controller('trainingCtrl', function($scope, $q, classFactory, userFactory, s
   $scope.enemy1 = {};
   $scope.enemy2 = {};
   $scope.enemy3 = {};
+  $scope.training = true;
 
   userFactory.loginCheck()
     .then(function(response){
