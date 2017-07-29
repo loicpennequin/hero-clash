@@ -162,7 +162,6 @@ app.controller('battleCtrl', function($scope, $q, classFactory, userFactory, ski
   };
 
   $scope.confirmTurn = function(){
-    console.log($scope.userTeam);
     socket.emit('confirmTurn', $rootScope.gameData.room);
   };
 
@@ -196,6 +195,7 @@ app.controller('battleCtrl', function($scope, $q, classFactory, userFactory, ski
 
   socket.on('endTurn', function(data){
     $scope.roster = data.heroes;
+    console.log($scope.roster);
 
     let userTeam = [],
         oppTeam = [];

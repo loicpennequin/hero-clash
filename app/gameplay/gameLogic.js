@@ -58,16 +58,16 @@ function skill(actor, actorIndex, heroes, combatLog){
   });
   switch (heroes[actorIndex].skillAction.id){
     case heroes[actorIndex].skill1:
-      heroes[actorIndex].activeSkill1.cdCounter = actor.skillAction.cooldown
+      heroes[actorIndex].activeSkill1.cdCounter = actor.skillAction.cooldown;
     break
     case heroes[actorIndex].skill2:
-      heroes[actorIndex].activeSkill2.cdCounter = actor.skillAction.cooldown
+      heroes[actorIndex].activeSkill2.cdCounter = actor.skillAction.cooldown;
     break
     case heroes[actorIndex].skill3:
-      heroes[actorIndex].activeSkill3.cdCounter = actor.skillAction.cooldown
+      heroes[actorIndex].activeSkill3.cdCounter = actor.skillAction.cooldown;
     break
     case heroes[actorIndex].skill4:
-      heroes[actorIndex].activeSkill4.cdCounter = actor.skillAction.cooldown
+      heroes[actorIndex].activeSkill4.cdCounter = actor.skillAction.cooldown;
     break
   };
   response.heroes = result.heroes;
@@ -139,6 +139,10 @@ function decreaseDebuffCounter(hero, combatLog){
   };
 };
 
+exports.resolveTurn = function(data){
+  return resolveTurn(data);
+}
+
 function resolveTurn(data){
   let combatLog = [],
       heroes = data.heroes,
@@ -149,24 +153,31 @@ function resolveTurn(data){
       target = heroes[targetIndex],
       skillAction = require('./skillActions');
 
-  dotCheck(actor, actorIndex, heroes, combatLog)
-  hotCheck(actor, actorIndex, heroes, combatLog)
+
+  dotCheck(actor, actorIndex, heroes, combatLog);
+  hotCheck(actor, actorIndex, heroes, combatLog);
 
   switch (actor.action){
     case 'attack':
-        return (attack(heroes, actor, target, combatLog));
+        response = attack(heroes, actor, target, combatLog);
       break;
     case 'skill':
-        return (skill(actor, actorIndex, heroes, combatLog));
+        response = skill(actor, actorIndex, heroes, combatLog);
       break;
     case 'defend' :
-        return (defend(heroes, actor, actorIndex, combatLog));
+        response = defend(heroes, actor, actorIndex, combatLog);
       break;
     case 'wait' :
-        return (wait(heroes, actor, actorIndex, combatLog));
+        response =  wait(heroes, actor, actorIndex, combatLog);
       break;
   };
+
+  return response
 };
+
+exports.endTurn = function(data){
+  return endTurn(data);
+}
 
 function endTurn(data){
   let combatLog = [],
@@ -190,7 +201,24 @@ function endTurn(data){
       }
     };
   });
+
+  //decrease all cooldown counters
+  heroes.forEach(function(hero, index){
+    for (let i = 1; i <= 4 ; i++){
+      let skill = hero['activeSkill' + i];
+      if (skill){
+        if(skill.cdCounter){
+          skill.cdCounter--;
+          if(skill.cdCounter <= 0){
+            delete skill.cdCounter;
+          };
+        };
+      };
+    };
+  });
+
   combatLog.push('--------End of the Turn---------');
+
   response = {heroes: heroes, combatLog: combatLog};
 
   return response

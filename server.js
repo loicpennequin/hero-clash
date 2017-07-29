@@ -181,7 +181,7 @@ io.on('connection', function(socket){
       delete io.sockets.connected[player]['turnData'];
     });
 
-    io.to(data.room).emit('endTurn', endTurn({heroes : heroes}));
+    io.to(data.room).emit('endTurn', gameplay.endTurn({heroes : heroes}));
     };
   });
 
@@ -189,49 +189,24 @@ io.on('connection', function(socket){
 /*====================================TRAINING GAME LOGIC=================================*/
 
   socket.on('action', function (data, ackFn) {
-    ackFn(resolveTurn(data))
+    let gameplay = require('./app/gameplay/gameLogic');
+        
+    ackFn(gameplay.resolveTurn(data))
   });
 
 /*=====================================END TURN LOGIC=====================================*/
 
   socket.on('endTurn', function (data, ackFn){
     socket.handshake.session.reload(function(err) {
-      ackFn(endTurn(data))
+      let gameplay = require('./app/gameplay/gameLogic'),
+          response = gameplay.endTurn(data);
+
+      ackFn(response)
     });
   });
 });
 
 /*=====================================TURN RESOLUTION LOGIC=================================*/
-function resolveTurn(data){
-  let combatLog = [],
-      heroes = data.heroes,
-      actor = data.actor,
-      actorIndex = heroes.findIndex(item => item.id === actor.id),
-      response = {},
-      targetIndex = heroes.findIndex(item => item.id === data.actor.target),
-      target = heroes[targetIndex],
-      skillAction = require('./app/gameplay/skillActions'),
-      gameplay = require('./app/gameplay/gameLogic');
-
-  gameplay.dotCheck(actor, heroes, combatLog)
-  gameplay.hotCheck(actor, heroes, combatLog)
-
-  switch (actor.action){
-    case 'attack':
-        return (gameplay.attack(heroes, actor, target, combatLog));
-      break;
-    case 'skill':
-        return (gameplay.skill(actor, actorIndex, heroes, combatLog));
-      break;
-    case 'defend' :
-        return (gameplay.defend(heroes, actor, actorIndex, combatLog));
-      break;
-    case 'wait' :
-        return (gameplay.wait(heroes, actor, actorIndex, combatLog));
-      break;
-  };
-};
-
 function sortHeroes(arr){
   arr.sort(function(a,b) {
     return b.speed - a.speed
@@ -245,36 +220,6 @@ function sortHeroes(arr){
       arr.splice(newIndex, 0, hero);
     };
   });
-};
-
-function endTurn(data){
-  let combatLog = [],
-      heroes = data.heroes,
-      heroesCopy = data.heroes.slice(0),
-      gameplay = require('./app/gameplay/gameLogic'),
-      response;
-
-
-  heroesCopy.forEach(function(hero, key){
-    gameplay.decreaseBuffCounter(hero, combatLog);
-    gameplay.decreaseDebuffCounter(hero, combatLog);
-
-    //remove dead heroes
-    if (hero.hp <= 0){
-      let index = heroesCopy.indexOf(hero);
-      heroes.splice(index, 1);
-      combatLog.push(hero.class.name + ' has been defeated!')
-    } else {
-      //remove 'defend' buff
-      if(hero.action === 'defend'){
-        hero.def -= 20;
-      }
-    };
-  });
-  combatLog.push('--------End of the Turn---------');
-  response = {heroes: heroes, combatLog: combatLog};
-
-  return response
 };
 
 

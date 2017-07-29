@@ -40,19 +40,23 @@
                   <div class="select is-fullwidth">
                     <select ng-model="hero.skillAction">
                       <option ng-value="hero.activeSkill1"
-                              ng-attr-title="{{hero.activeSkill1.description}}">
+                              ng-attr-title="{{hero.activeSkill1.description}}"
+                              ng-disabled="hero.activeSkill1.cdCounter">
                         {{hero.activeSkill1.name}}
                       </option>
                       <option ng-value="hero.activeSkill2"
-                              ng-attr-title="{{hero.activeSkill2.description}}">
+                              ng-attr-title="{{hero.activeSkill2.description}}"
+                              ng-disabled="hero.activeSkill2.cdCounter">
                         {{hero.activeSkill2.name}}
                       </option>
                       <option ng-value="hero.activeSkill3"
-                              ng-attr-title="{{hero.activeSkill3.description}}">
+                              ng-attr-title="{{hero.activeSkill3.description}}"
+                              ng-disabled="hero.activeSkill3.cdCounter">
                         {{hero.activeSkill3.name}}
                       </option>
                       <option ng-value="hero.activeSkill4"
-                              ng-attr-title="{{hero.activeSkill4.description}}">
+                              ng-attr-title="{{hero.activeSkill4.description}}"
+                              ng-disabled="hero.activeSkill4.cdCounter">
                         {{hero.activeSkill4.name}}
                       </option>
 
