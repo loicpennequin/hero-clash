@@ -48,15 +48,19 @@ SkillAction.prototype.setTarget = function(){
 };
 
 SkillAction.prototype.damage = function(){
-  let that = this;
+  let that = this,
+      skillPower = that.skill.damagevalue + (that.actor.matk * that.skill.damageratio),
+      damageDealt;
 
-  let skillPower = that.skill.damagevalue + (that.actor.matk * that.skill.damageratio);
   that.combatLog = that.combatLog.slice(0, -1);
   that.combatLog += ', dealing';
   for (let i = 0 ; i < that.targets.length ; i++){
-    let tIndex = that.heroes.findIndex(item => item.id === that.targets[i].id),
-    damageDealt = skillPower - that.targets[i].mdef;
-    that.heroes[tIndex].hp -= damageDealt;
+    if (that.targets[i].mdef >= 0){
+      damageDealt = skillPower * ( 100 / (100 + that.targets[i].mdef));
+    } else {
+      damageDealt = skillPower * ( 2 - (100 / (100 - that.targets[i].mdef)));
+    }
+    that.targets[i].hp -= damageDealt;
     that.combatLog += ' ' + damageDealt + ' damage to ' + that.targets[i].class.name + ',';
     if (i == that.targets.length){
       that.combatLog = that.combatLog.slice(0, -1);
@@ -83,13 +87,17 @@ SkillAction.prototype.heal = function(){
 }
 
 SkillAction.prototype.dot = function(){
-  let that = this;
+  let that = this,
+      skillPower = that.skill.dotvalue + (that.actor.matk * that.skill.dotratio);
+      damageDealt;
+
   for ( let i = 0 ; i < that.targets.length; i++){
-    let skillPower = that.skill.dotvalue + (that.actor.matk * that.skill.dotratio),
-        damageDealt = skillPower - (that.targets[i].mdef / 2);
-    if ( damageDealt < 10){
-      damageDealt = 10;
+    if (that.targets[i].mdef >= 0){
+      damageDealt = skillPower * ( 100 / (100 + that.targets[i].mdef));
+    } else {
+      damageDealt = skillPower * ( 2 - (100 / (100 - that.targets[i].mdef)));
     };
+    
     that.targets[i].dotCounter = that.skill.dotduration;
     that.targets[i].dotOrigin = that.skill.name;
     that.targets[i].dotDmg = damageDealt;
@@ -167,6 +175,35 @@ SkillAction.prototype.debuff = function(){
   that.combatLog = that.combatLog.slice(0, -1);
   that.combatLog += '.'
 };
+
+SkillAction.prototype.protect = function(){
+
+};
+
+SkillAction.prototype.taunt = function(){
+
+};
+
+SkillAction.prototype.silence = function(){
+
+};
+
+SkillAction.prototype.stun = function(){
+
+};
+
+SkillAction.prototype.lifesteal = function(){
+
+};
+
+SkillAction.prototype.morph = function(){
+
+};
+
+SkillAction.prototype.summon = function(){
+
+};
+
 
 exports.skill = function(skill, actor, heroes){
   let action = new SkillAction(skill, actor, heroes),

@@ -1,16 +1,7 @@
 let skillAction = require('./skillActions');
 
-exports.resolveAction = function(heroes, hero){
-    let actionData = {actor: hero , heroes: heroes},
-        turn = resolveTurn(actionData);
-    heroes = turn.heroes
 
-    return turn
-};
-
-exports.dotCheck = function(actor, actorIndex, heroes, combatLog){
-  dotCheck(actor, heroes, combatLog);
-};
+/*==================================DOT CHECK================================*/
 
 function dotCheck(actor, actorIndex, heroes, combatLog){
   if (actor.dotCounter){
@@ -19,9 +10,7 @@ function dotCheck(actor, actorIndex, heroes, combatLog){
   };
 };
 
-exports.hotCheck = function(actor, actorIndex, heroes, combatLog){
-  hotCheck(actor, heroes, combatLog);
-};
+/*==================================HOT CHECK================================*/
 
 function hotCheck(actor, actorIndex, heroes, combatLog){
   if (actor.hotCounter){
@@ -30,25 +19,22 @@ function hotCheck(actor, actorIndex, heroes, combatLog){
   };
 };
 
-exports.attack = function(heroes, actor, target, combatLog){
-  attack(heroes, actor, target, combatLog);
-};
+/*==================================ATTACK================================*/
 
 function attack(heroes, actor, target, combatLog){
-  let dmg = actor.atk - target.def;
-
-  if(dmg < 10){
-    dmg = 10;
-  };
+  let dmg;
+  if (target.def >= 0){
+    dmg = actor.atk * (100 / (100 + target.def));
+  }else{
+    dmg = actor.atk * (2 - (100 / (100 + target.def)));
+  }
 
   target.hp -= dmg;
   combatLog.push(actor.class.name + ' attacked ' + target.class.name + ', dealing ' + dmg + ' damage.');
   return {heroes: heroes, combatLog: combatLog};
 };
 
-exports.skill = function(actor, actorIndex, heroes, combatLog){
-  skill(actor, actorIndex, heroes, combatLog);
-};
+/*==================================SKILL================================*/
 
 function skill(actor, actorIndex, heroes, combatLog){
   let response = {},
@@ -75,9 +61,7 @@ function skill(actor, actorIndex, heroes, combatLog){
   return response;
 };
 
-exports.defend = function(heroes, actor, actorIndex, combatLog){
-  defend(heroes,actor, actorIndex, combatLog);
-};
+/*==================================DEFEND================================*/
 
 function defend(heroes, actor, actorIndex, combatLog){
   heroes[actorIndex].def += 20;
@@ -86,9 +70,7 @@ function defend(heroes, actor, actorIndex, combatLog){
   return response;
 };
 
-exports.wait = function(heroes, actor, actorIndex, combatLog){
-  wait(heroes, actor, actorIndex, combatLog);
-};
+/*==================================WAIT================================*/
 
 function wait(heroes, actor, actorIndex, combatLog){
   heroes[actorIndex].mp += 10;
@@ -99,9 +81,7 @@ function wait(heroes, actor, actorIndex, combatLog){
   return {heroes: heroes, combatLog: combatLog}
 };
 
-exports.decreaseBuffCounter = function(hero, combatLog){
-  decreaseBuffCounter(hero, combatLog);
-};
+/*=============================DECREASE BUFF COUNTER==========================*/
 
 function decreaseBuffCounter(hero, combatLog){
   if (hero.buffCounter){
@@ -119,9 +99,7 @@ function decreaseBuffCounter(hero, combatLog){
   };
 };
 
-exports.decreaseDebuffCounter = function(hero, combatLog){
-  decreaseDebuffCounter(hero, combatLog);
-};
+/*=============================DECREASE DEBUFF COUNTER==========================*/
 
 function decreaseDebuffCounter(hero, combatLog){
   if (hero.debuffCounter){
@@ -139,9 +117,6 @@ function decreaseDebuffCounter(hero, combatLog){
   };
 };
 
-exports.resolveTurn = function(data){
-  return resolveTurn(data);
-}
 
 function resolveTurn(data){
   let combatLog = [],
@@ -175,9 +150,6 @@ function resolveTurn(data){
   return response
 };
 
-exports.endTurn = function(data){
-  return endTurn(data);
-}
 
 function endTurn(data){
   let combatLog = [],
@@ -223,3 +195,55 @@ function endTurn(data){
 
   return response
 };
+
+
+
+/*===============================EXPORTS ==================================*/
+
+exports.resolveAction = function(heroes, hero){
+  let actionData = {actor: hero , heroes: heroes},
+  turn = resolveTurn(actionData);
+  heroes = turn.heroes
+
+  return turn
+};
+
+exports.dotCheck = function(actor, actorIndex, heroes, combatLog){
+  dotCheck(actor, heroes, combatLog);
+};
+
+exports.hotCheck = function(actor, actorIndex, heroes, combatLog){
+  hotCheck(actor, heroes, combatLog);
+};
+
+exports.skill = function(actor, actorIndex, heroes, combatLog){
+  skill(actor, actorIndex, heroes, combatLog);
+};
+
+exports.attack = function(heroes, actor, target, combatLog){
+  attack(heroes, actor, target, combatLog);
+};
+
+exports.defend = function(heroes, actor, actorIndex, combatLog){
+  defend(heroes,actor, actorIndex, combatLog);
+};
+
+exports.wait = function(heroes, actor, actorIndex, combatLog){
+  wait(heroes, actor, actorIndex, combatLog);
+};
+
+exports.decreaseBuffCounter = function(hero, combatLog){
+  decreaseBuffCounter(hero, combatLog);
+};
+
+exports.decreaseDebuffCounter = function(hero, combatLog){
+  decreaseDebuffCounter(hero, combatLog);
+};
+
+exports.resolveTurn = function(data){
+  return resolveTurn(data);
+}
+
+exports.endTurn = function(data){
+  return endTurn(data);
+}
