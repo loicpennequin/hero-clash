@@ -1,4 +1,4 @@
-module.exports = function(skill, actor, heroes, logs, combatLog, targets){
+exports.setHot = function(skill, actor, heroes, logs, combatLog, targets){
 
   let skillPower = skill.hotvalue + (actor.matk * skill.hotratio);
 
@@ -14,13 +14,16 @@ module.exports = function(skill, actor, heroes, logs, combatLog, targets){
   };
 };
 
+exports.applyHot = function(target, log){
+  applyHot(target,log)
+}
 
 function applyHot(target, log){
   target.hp += target.hotHeal;
   if(target.hp > target.class.health){
     target.hp = target.class.health;
   };
-  log.push(target.class.name + ' is healed for ' + target.hotDmg + ' by ' + target.hotOrigin + '.' );
+  log.push(target.class.name + ' is healed for ' + target.hotHeal + ' by ' + target.hotOrigin + '.' );
   target.hotCounter--;
   if (target.hotCounter == 0){
     delete target.hotCounter;

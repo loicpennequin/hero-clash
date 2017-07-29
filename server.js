@@ -190,7 +190,7 @@ io.on('connection', function(socket){
 
   socket.on('action', function (data, ackFn) {
     let gameplay = require('./app/gameplay/gameLogic');
-        
+
     ackFn(gameplay.resolveTurn(data))
   });
 
@@ -198,10 +198,10 @@ io.on('connection', function(socket){
 
   socket.on('endTurn', function (data, ackFn){
     socket.handshake.session.reload(function(err) {
-      let gameplay = require('./app/gameplay/gameLogic'),
-          response = gameplay.endTurn(data);
+      let gameplay = require('./app/gameplay/gameLogic');
 
-      ackFn(response)
+
+      ackFn(gameplay.endTurn(data))
     });
   });
 });

@@ -21,4 +21,6 @@ module.exports = function(skill, actor, heroes, logs, combatLog, targets){
 
   combatLog = combatLog.slice(0, -1);
   combatLog += '.'
+
+  return combatLog;
 };

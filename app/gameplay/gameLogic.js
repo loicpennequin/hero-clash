@@ -102,6 +102,7 @@ function decreaseBuffCounter(hero, combatLog){
 /*=============================DECREASE DEBUFF COUNTER==========================*/
 
 function decreaseDebuffCounter(hero, combatLog){
+  console.log('test debuff');
   if (hero.debuffCounter){
     hero.debuffCounter --;
     if (hero.debuffCounter <= 0){
@@ -109,7 +110,7 @@ function decreaseDebuffCounter(hero, combatLog){
       delete hero.debuffCounter;
       delete hero.debuffOrigin;
       for (let i = 1 ; i <= 4 ; i++){
-        hero[hero['debuff' + i + 'stat']] -= hero['debuff' + i + 'value'];
+        hero[hero['debuff' + i + 'stat']] += hero['debuff' + i + 'value'];
         delete hero['debuff' + i + 'stat'];
         delete hero['debuff' + i + 'value'];
       }
@@ -237,7 +238,7 @@ exports.decreaseBuffCounter = function(hero, combatLog){
 };
 
 exports.decreaseDebuffCounter = function(hero, combatLog){
-  decreaseDebuffCounter(hero, combatLog);
+  decreaseBuffCounter(hero, combatLog);
 };
 
 exports.resolveTurn = function(data){

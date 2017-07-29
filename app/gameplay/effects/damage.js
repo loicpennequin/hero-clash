@@ -18,4 +18,6 @@ module.exports = function(skill, actor, heroes, logs, combatLog, targets){
       combatLog += '.';
     };
   };
+
+  return combatLog;
 };

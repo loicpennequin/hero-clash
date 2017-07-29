@@ -41,22 +41,26 @@
                     <select ng-model="hero.skillAction">
                       <option ng-value="hero.activeSkill1"
                               ng-attr-title="{{hero.activeSkill1.description}}"
-                              ng-disabled="hero.activeSkill1.cdCounter">
+                              ng-disabled="hero.activeSkill1.cdCounter"
+                              ng-if="hero.activeSkill1">
                         {{hero.activeSkill1.name}}
                       </option>
                       <option ng-value="hero.activeSkill2"
                               ng-attr-title="{{hero.activeSkill2.description}}"
-                              ng-disabled="hero.activeSkill2.cdCounter">
+                              ng-disabled="hero.activeSkill2.cdCounter"
+                              ng-if="hero.activeSkill2">
                         {{hero.activeSkill2.name}}
                       </option>
                       <option ng-value="hero.activeSkill3"
                               ng-attr-title="{{hero.activeSkill3.description}}"
-                              ng-disabled="hero.activeSkill3.cdCounter">
+                              ng-disabled="hero.activeSkill3.cdCounter"
+                              ng-if="hero.activeSkill3">
                         {{hero.activeSkill3.name}}
                       </option>
                       <option ng-value="hero.activeSkill4"
                               ng-attr-title="{{hero.activeSkill4.description}}"
-                              ng-disabled="hero.activeSkill4.cdCounter">
+                              ng-disabled="hero.activeSkill4.cdCounter"
+                              ng-if="hero.activeSkill4">
                         {{hero.activeSkill4.name}}
                       </option>
 

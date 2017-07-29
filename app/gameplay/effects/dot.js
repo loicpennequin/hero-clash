@@ -1,6 +1,6 @@
-module.exports = function(skill, actor, heroes, logs, combatLog, targets){
+exports.setDot = function(skill, actor, heroes, logs, combatLog, targets){
 
-  let skillPower = skill.dotvalue + (actor.matk * skill.dotratio);
+  let skillPower = skill.dotvalue + (actor.matk * skill.dotratio),
       damageDealt;
 
   for ( let i = 0 ; i < targets.length; i++){
@@ -20,9 +20,13 @@ module.exports = function(skill, actor, heroes, logs, combatLog, targets){
 
     };
   };
+
+  return combatLog;
 };
 
-
+exports.applyDot = function(target, log){
+  applyDot(target,log)
+}
 
 function applyDot(target, log){
   target.hp -= target.dotDmg;
