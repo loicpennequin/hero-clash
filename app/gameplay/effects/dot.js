@@ -5,9 +5,9 @@ exports.setDot = function(skill, actor, heroes, logs, combatLog, targets){
 
   for ( let i = 0 ; i < targets.length; i++){
     if (targets[i].mdef >= 0){
-      damageDealt = skillPower * ( 100 / (100 + targets[i].mdef));
+      damageDealt = Math.round(skillPower * ( 100 / (100 + targets[i].mdef)));
     } else {
-      damageDealt = skillPower * ( 2 - (100 / (100 - targets[i].mdef)));
+      damageDealt = Math.round(skillPower * ( 2 - (100 / (100 - targets[i].mdef))));
     };
 
     targets[i].dotCounter = skill.dotduration;

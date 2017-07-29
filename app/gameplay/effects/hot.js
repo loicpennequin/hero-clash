@@ -1,6 +1,6 @@
 exports.setHot = function(skill, actor, heroes, logs, combatLog, targets){
 
-  let skillPower = skill.hotvalue + (actor.matk * skill.hotratio);
+  let skillPower = Math.round(skill.hotvalue + (actor.matk * skill.hotratio));
 
   for ( let i = 0 ; i < targets.length; i++){
 

@@ -5,7 +5,7 @@ module.exports = function(skill, actor, heroes, logs, combatLog, targets){
 
   for (let i = 1 ; i <= 4 ; i++){
     if ( skill['buff' + i + 'value'] != null){
-      let skillPower = skill['buff' + i + 'value'] + (actor.matk * skill.statmodifierratio);
+      let skillPower = Math.round(skill['buff' + i + 'value'] + (actor.matk * skill.statmodifierratio));
       combatLog += ' ' + (skill['buff' + i + 'stat'].toUpperCase()) + ' by ' + skillPower + ',';
       targets.forEach(function(target, index){
         let stat = skill['buff' + i + 'stat'];

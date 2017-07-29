@@ -4974,13 +4974,6 @@ label.panel-block {
     display: flex;
     flex-direction: row;
     align-items: center; }
-  .battlefield .team-member, .battlefield .team-member.ng-leave {
-    transition: all 1s ease-in-out; }
-  .battlefield .team-member.ng-leave {
-    opacity: 1; }
-  .battlefield .team-member.ng-leave.ng-leave-active {
-    opacity: 0;
-    transform: scale(10); }
   .battlefield img {
     width: 100px;
     height: 100px;

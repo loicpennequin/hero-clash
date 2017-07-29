@@ -171,7 +171,8 @@ app.controller('battleCtrl', function($scope, $q, classFactory, userFactory, ski
 
   socket.on('rdyToResolve', function(){
     $scope.waitingForOpp = false;
-    socket.emit('resolveTurn', {turnData : $scope.userTeam, room : $rootScope.gameData.room})
+    let data = angular.toJson({turnData : $scope.userTeam, room : $rootScope.gameData.room}, true);
+    socket.emit('resolveTurn', data);
   });
 
   socket.on('actionResolved', function(response){
@@ -195,7 +196,6 @@ app.controller('battleCtrl', function($scope, $q, classFactory, userFactory, ski
 
   socket.on('endTurn', function(data){
     $scope.roster = data.heroes;
-    console.log($scope.roster);
 
     let userTeam = [],
         oppTeam = [];

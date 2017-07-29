@@ -22,15 +22,26 @@ function hotCheck(actor, actorIndex, heroes, combatLog){
 /*==================================ATTACK================================*/
 
 function attack(heroes, actor, target, combatLog){
-  let dmg;
+  let dmg,
+  log = actor.class.name + ' attacked ' + target.class.name + '.'
+  if (target.protected){
+    let newTargetID = heroes.findIndex(item => item.id === target.protected),
+        newTarget = heroes[newTargetID];
+    target = newTarget;
+    log = log.slice(0, -1);
+    log += ', but ' + newTarget.class.name + ' protected him !';
+    delete target['protected'];
+  };
   if (target.def >= 0){
-    dmg = actor.atk * (100 / (100 + target.def));
+    dmg = Math.round(actor.atk * (100 / (100 + target.def)));
   }else{
-    dmg = actor.atk * (2 - (100 / (100 + target.def)));
+    dmg = Math.round(actor.atk * (2 - (100 / (100 + target.def))));
   }
 
   target.hp -= dmg;
-  combatLog.push(actor.class.name + ' attacked ' + target.class.name + ', dealing ' + dmg + ' damage.');
+  log = log.slice(0, -1);
+  log += ', dealing ' + dmg + ' damage.';
+  combatLog.push(log);
   return {heroes: heroes, combatLog: combatLog};
 };
 
@@ -102,7 +113,6 @@ function decreaseBuffCounter(hero, combatLog){
 /*=============================DECREASE DEBUFF COUNTER==========================*/
 
 function decreaseDebuffCounter(hero, combatLog){
-  console.log('test debuff');
   if (hero.debuffCounter){
     hero.debuffCounter --;
     if (hero.debuffCounter <= 0){
@@ -118,6 +128,7 @@ function decreaseDebuffCounter(hero, combatLog){
   };
 };
 
+/*============================RESOLVE TURN========================================*/
 
 function resolveTurn(data){
   let combatLog = [],
@@ -151,6 +162,8 @@ function resolveTurn(data){
   return response
 };
 
+
+/*=================================END TURN=======================================*/
 
 function endTurn(data){
   let combatLog = [],

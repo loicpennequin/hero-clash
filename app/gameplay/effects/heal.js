@@ -1,6 +1,6 @@
 module.exports = function(skill, actor, heroes, logs, combatLog, targets){
 
-  let skillPower = skill.healvalue + (actor.matk * skill.healratio);
+  let skillPower = Math.round(skill.healvalue + (actor.matk * skill.healratio));
 
   combatLog = combatLog.slice(0, -1);
   combatLog += ', healing';

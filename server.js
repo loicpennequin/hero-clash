@@ -154,9 +154,10 @@ io.on('connection', function(socket){
 
   });
 
-  socket.on('resolveTurn', function(data){
+  socket.on('resolveTurn', function(jsonData){
     socket.user = socket.handshake.session.user;
-    socket.turnData = data.turnData;
+    let data = JSON.parse(jsonData);
+    socket.turnData = data.turnData
     socket.handshake.session.save();
     let gameRoom = io.sockets.adapter.rooms[data.room],
         gameRoomPlayers = Object.keys(gameRoom.sockets),
@@ -169,19 +170,19 @@ io.on('connection', function(socket){
 
     if (!gameRoomPlayers.some(waitingForPlayerTurns)){
       gameRoomPlayers.forEach(function(player, index){
-      heroes = heroes.concat(io.sockets.connected[player].turnData)
-    })
+        heroes = heroes.concat(io.sockets.connected[player].turnData)
+      });
 
-    sortHeroes(heroes);
-    heroes.forEach(function(hero, index){
-      io.to(data.room).emit('actionResolved', gameplay.resolveAction(heroes, hero));
-    })
+      sortHeroes(heroes);
+      heroes.forEach(function(hero, index){
+        io.to(data.room).emit('actionResolved', gameplay.resolveAction(heroes, hero));
+      })
 
-    gameRoomPlayers.forEach(function(player, index){
-      delete io.sockets.connected[player]['turnData'];
-    });
+      gameRoomPlayers.forEach(function(player, index){
+        delete io.sockets.connected[player]['turnData'];
+      });
 
-    io.to(data.room).emit('endTurn', gameplay.endTurn({heroes : heroes}));
+      io.to(data.room).emit('endTurn', gameplay.endTurn({heroes : heroes}));
     };
   });
 
@@ -220,6 +221,18 @@ function sortHeroes(arr){
       arr.splice(newIndex, 0, hero);
     };
   });
+
+  arrCopy.forEach(function(hero, index){
+    if(Object.keys(hero.skillAction).length > 0) {
+      if(hero.skillAction.effects.indexOf("protect") > -1){
+        let oldIndex = arrCopy.indexOf(hero),
+        newIndex = 0;
+        arr.splice(oldIndex, 1);
+        arr.splice(newIndex, 0, hero);
+      };
+    };
+  });
+
 };
 
 
