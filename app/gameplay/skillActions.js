@@ -22,12 +22,20 @@ SkillAction.prototype.buff = function(){
   this.combatLog = effect.buff(this.skill, this.actor, this.heroes, this.logs, this.combatLog, this.targets);
 };
 
+SkillAction.prototype.charm = function(){
+  this.combatLog = effect.charm(this.skill, this.actor, this.heroes, this.logs, this.combatLog, this.targets);
+};
+
 SkillAction.prototype.damage = function(){
   this.combatLog = effect.damage(this.skill, this.actor, this.heroes, this.logs, this.combatLog, this.targets);
 };
 
 SkillAction.prototype.debuff = function(){
   this.combatLog = effect.debuff(this.skill, this.actor, this.heroes, this.logs, this.combatLog, this.targets);
+};
+
+SkillAction.prototype.disarm = function(){
+  this.combatLog = effect.disarm(this.skill, this.actor, this.heroes, this.logs, this.combatLog, this.targets);
 };
 
 SkillAction.prototype.dot = function(){

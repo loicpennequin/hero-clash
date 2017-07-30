@@ -213,6 +213,9 @@ function sortHeroes(arr){
     return b.speed - a.speed
   });
   let arrCopy = arr.slice(0);
+
+  //puts taunters, protectors and defenders first
+  
   arrCopy.forEach(function(hero, index){
     if(hero.action === 'defend'){
       let oldIndex = arrCopy.indexOf(hero),
