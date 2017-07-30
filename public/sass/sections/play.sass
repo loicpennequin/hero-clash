@@ -1,17 +1,29 @@
 .battlefield
   display: flex
-  background: linear-gradient(rgba(0,0,0,0.5), $primary)
+  background: linear-gradient(rgba(0,0,0,0.5), $black)
   border: solid 4px $black-ter
+  animation-name: battlefield
+  animation-duration: 15s
+  animation-direction: alternate
+  animation-iteration-count: infinite
 
   .column
-    height: 600px
+    height: 700px
 
   section
     margin: 10px auto
     min-height: 135px
 
+  .confirm-turn
+    transition: all 0.3s
+    transform: translateY(-3px)
+    box-shadow: 0 8px 2px -4px $dark
+    &[disabled]
+      border: none
+      transform: none
+
   .menu
-    padding: 5px
+    padding: 10px
     border: solid $dark 1px
     margin-right: 5px
     width: 250px
@@ -36,6 +48,7 @@
     border-radius: 5px
     &:hover ~ .hero-stats .wrapper
       transform: none
+
 
   .hero-infos
     position: relative

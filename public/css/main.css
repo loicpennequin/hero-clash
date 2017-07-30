@@ -4960,15 +4960,26 @@ label.panel-block {
 
 .battlefield {
   display: flex;
-  background: linear-gradient(rgba(0, 0, 0, 0.5), #00aed1);
-  border: solid 4px #242424; }
+  background: linear-gradient(rgba(0, 0, 0, 0.5), #0a0a0a);
+  border: solid 4px #242424;
+  animation-name: battlefield;
+  animation-duration: 15s;
+  animation-direction: alternate;
+  animation-iteration-count: infinite; }
   .battlefield .column {
-    height: 600px; }
+    height: 700px; }
   .battlefield section {
     margin: 10px auto;
     min-height: 135px; }
+  .battlefield .confirm-turn {
+    transition: all 0.3s;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 2px -4px #363636; }
+    .battlefield .confirm-turn[disabled] {
+      border: none;
+      transform: none; }
   .battlefield .menu {
-    padding: 5px;
+    padding: 10px;
     border: solid #363636 1px;
     margin-right: 5px;
     width: 250px;
