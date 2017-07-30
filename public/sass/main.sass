@@ -20,12 +20,11 @@ html, body
   background-attachment: fixed
 
 main
-  padding: 20px
-  padding-top: 55px
   max-width: 1200px
+  margin-top: 80px
   margin-left: auto
   margin-right: auto
-  background: rgba(245,245,245, 0.5)
+  background: rgba(245,245,245, 0.6)
   background-position: center
   background-size: cover
   background-blend-mode: luminosity
@@ -39,7 +38,8 @@ main
     color: $white-ter
     text-shadow: 5px 5px 0 $grey, -5px -5px $grey-dark
     border-bottom: solid 2px $black
-    
+    border-top: solid 2px $black
+
 .navbar
   position: fixed
   top: 0
@@ -48,3 +48,6 @@ main
   z-index: 999
   .navbar-brand
     padding: 5px
+
+.color-primary
+  color: $primary

@@ -11,7 +11,7 @@
 .team
   display: flex
   flex-direction: row
-  justify-content: space-around
+  justify-content: center
 
 .team-member
   position: relative
@@ -62,6 +62,9 @@
     border-radius: 10px
     margin-right: 10px
     align-self: center
+    width: 200px
+    +mobile
+      width: 100px
 
   .stats
     display: flex
@@ -75,13 +78,23 @@
         min-width: 80px
 
   .skills
-    min-width: 250px
+    min-width: 300px
+    .skill
+      background-color: $white-ter
+      padding: 5px
+      border-radius: 5px
+    .buy-skill
+      @extend .skill
+      background-color: $dark
+      color: $white-ter
     li
       position: relative
+      margin-bottom: 15px
       +mobile
         font-size: 1.1em
     i
       cursor: pointer
+
 
     .skill-description
       background-color: white
@@ -105,4 +118,4 @@
       width: 150px
 
 .not-owned
-  opacity: 0.5
+  opacity: 0.7

@@ -2,19 +2,17 @@
 <main ng-controller="profileCtrl">
   <h1 class="title is-1 has-text-centered">{{user.login}}</h1>
   <div class="has-text-centered subtitle">
-    <div class="subtitle">
-      ELO : {{user.elo}}
-    </div>
   </div>
   <div class="profile-section">
-    <h2 class="title is-2">Your Stats</h2>
+    <h2 class="title is-3">Your Stats</h2>
+    <div>ELO : {{user.elo}}</div>
     <div>Games played : {{user.games}}</div>
     <div>Games won : {{user.wins}}</div>
     <div>Games lost : {{user.losses}}</div>
   </div>
 
   <div class="profile-section user-team">
-    <h2 class="title is-2">Your Team</h2>
+    <h2 class="title is-3">Your Team</h2>
     <div class="team">
       <div class="team-member">
         <div class="team-member-btn"
@@ -53,7 +51,7 @@
   </div>
 
   <div class="profile-section">
-    <h2 class="title is-2">Your Heroes</h2>
+    <h2 class="title is-3">Your Heroes</h2>
     <div class="field is-horizontal">
       <div class="control has-icons-left">
         <input ng-model="heroFilter" class="input" type="text" placeholder='Search'>
@@ -83,12 +81,12 @@
         <h4 class="title is-4">Skills</h4>
         <ul>
           <li ng-repeat="skill in hero.class.skills">
-            <span ng-class="{'not-owned' : !isOwnedSkill(skill, hero)}">{{skill.name}}</span>
+            <span class="skill" ng-class="{'not-owned' : !isOwnedSkill(skill, hero)}">{{skill.name}}</span>
             <i class="fa fa-info-circle"
                ng-mouseover="infos = true"
                ng-mouseleave="infos = false"></i>
-            <span ng-if="!isOwnedSkill(skill, hero)" ng-click="buySkill(skill, hero)">
-              <span style="cursor: pointer;">Buy({{skill.price}}<i class="fa fa-diamond">)</i></span>
+            <span  class="buy-skill" ng-if="!isOwnedSkill(skill, hero)" ng-click="buySkill(skill, hero)">
+              <span style="cursor: pointer; font-weight: bold;">Buy({{skill.price}}<i class="fa fa-diamond color-primary"></i>)</span>
             </span>
             <div ng-if="infos" class="skill-description" ng-bind-html="skill.description"></div>
           </li>
@@ -99,36 +97,52 @@
           <h4 class="title is-4">Active Skills</h4>
         </div>
         <div class="column is-half">
-          <select ng-model="activeSkill1"
-                  ng-change="setActiveSkill(hero, activeSkill1, 1)"
-                  ng-init="activeSkill1 = hero.activeSkill1">
-            <option value="">-</option>
-            <option ng-value="skill" ng-repeat="skill in hero.skills">{{skill.name}}</option>
-          </select>
+          <div class="control">
+            <div class="select">
+              <select ng-model="activeSkill1"
+              ng-change="setActiveSkill(hero, activeSkill1, 1)"
+              ng-init="activeSkill1 = hero.activeSkill1">
+              <option value="">-</option>
+              <option ng-value="skill" ng-repeat="skill in hero.skills">{{skill.name}}</option>
+            </select>
+            </div>
+          </div>
         </div>
         <div class="column is-half">
-          <select ng-model="activeSkill2"
-                  ng-change="setActiveSkill(hero, activeSkill2, 2)"
-                  ng-init="activeSkill2 = hero.activeSkill2">
-            <option ng-value="skill" ng-repeat="skill in hero.skills">{{skill.name}}</option>
-            <option value="">-</option>
-          </select>
+          <div class="control">
+            <div class="select">
+              <select ng-model="activeSkill2"
+              ng-change="setActiveSkill(hero, activeSkill2, 2)"
+              ng-init="activeSkill2 = hero.activeSkill2">
+              <option ng-value="skill" ng-repeat="skill in hero.skills">{{skill.name}}</option>
+              <option value="">-</option>
+            </select>
+            </div>
+          </div>
         </div>
         <div class="column is-half">
-          <select ng-model="activeSkill3"
-                  ng-change="setActiveSkill(hero, activeSkill3, 3)"
-                  ng-init="activeSkill3 = hero.activeSkill3">
-            <option ng-value="skill" ng-repeat="skill in hero.skills">{{skill.name}}</option>
-            <option value="">-</option>
-          </select>
+          <div class="control">
+            <div class="select">
+              <select ng-model="activeSkill3"
+              ng-change="setActiveSkill(hero, activeSkill3, 3)"
+              ng-init="activeSkill3 = hero.activeSkill3">
+              <option ng-value="skill" ng-repeat="skill in hero.skills">{{skill.name}}</option>
+              <option value="">-</option>
+            </select>
+            </div>
+          </div>
         </div>
         <div class="column is-half">
-          <select ng-model="activeSkill4"
-                  ng-change="setActiveSkill(hero, activeSkill4, 4)"
-                  ng-init="activeSkill4 = hero.activeSkill4">
-            <option ng-value="skill" ng-repeat="skill in hero.skills">{{skill.name}}</option>
-            <option value="">-</option>
-          </select>
+          <div class="control">
+            <div class="select">
+              <select ng-model="activeSkill4"
+              ng-change="setActiveSkill(hero, activeSkill4, 4)"
+              ng-init="activeSkill4 = hero.activeSkill4">
+              <option ng-value="skill" ng-repeat="skill in hero.skills">{{skill.name}}</option>
+              <option value="">-</option>
+            </select>
+            </div>
+          </div>
         </div>
       </div>
     </div>

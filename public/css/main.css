@@ -112,8 +112,7 @@ body {
   color: #242424;
   font-size: 1rem;
   font-weight: 400;
-  line-height: 1.5;
-  overflow-x: hidden; }
+  line-height: 1.5; }
 
 a {
   color: #00aed1;
@@ -4835,7 +4834,7 @@ label.panel-block {
 .team {
   display: flex;
   flex-direction: row;
-  justify-content: space-around; }
+  justify-content: center; }
 
 .team-member {
   position: relative; }
@@ -4884,7 +4883,11 @@ label.panel-block {
     border: solid #363636 1px;
     border-radius: 10px;
     margin-right: 10px;
-    align-self: center; }
+    align-self: center;
+    width: 200px; }
+    @media screen and (max-width: 768px) {
+      .profile-hero .portrait {
+        width: 100px; } }
   .profile-hero .stats {
     display: flex;
     flex-direction: row; }
@@ -4897,9 +4900,17 @@ label.panel-block {
       .profile-hero .stats ul li {
         min-width: 80px; }
   .profile-hero .skills {
-    min-width: 250px; }
+    min-width: 300px; }
+    .profile-hero .skills .skill, .profile-hero .skills .buy-skill {
+      background-color: whitesmoke;
+      padding: 5px;
+      border-radius: 5px; }
+    .profile-hero .skills .buy-skill {
+      background-color: #363636;
+      color: whitesmoke; }
     .profile-hero .skills li {
-      position: relative; }
+      position: relative;
+      margin-bottom: 15px; }
       @media screen and (max-width: 768px) {
         .profile-hero .skills li {
           font-size: 1.1em; } }
@@ -4926,7 +4937,7 @@ label.panel-block {
     width: 150px; }
 
 .not-owned {
-  opacity: 0.5; }
+  opacity: 0.7; }
 
 .classes-wrapper {
   display: flex;
@@ -4937,12 +4948,49 @@ label.panel-block {
   .classes-wrapper .class-wrapper {
     background: linear-gradient(130DEG, white, #b5b5b5);
     padding: 15px;
-    border: outset #4a4a4a 4px;
-    box-shadow: 5px 0 0 2px #00aed1;
     border-radius: 10px;
-    margin: 15px; }
+    margin: 15px;
+    transition: all 0.5s ease-in-out; }
+    .classes-wrapper .class-wrapper:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 5px 5px #363636; }
+    .classes-wrapper .class-wrapper .wrapper {
+      position: relative;
+      perspective: 200px; }
+      .classes-wrapper .class-wrapper .wrapper:hover img {
+        transform: rotateY(180DEG);
+        opacity: 0; }
+      .classes-wrapper .class-wrapper .wrapper:hover .hero-infos-button {
+        opacity: 1;
+        transform: none; }
+    .classes-wrapper .class-wrapper .hero-infos-button {
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #363636;
+      color: white;
+      font-weight: bold;
+      width: 104px;
+      height: 104px;
+      z-index: 2;
+      opacity: 0;
+      transform: rotateY(-180DEG);
+      transition: 0.5s; }
     .classes-wrapper .class-wrapper img {
-      border: solid #363636 2px; }
+      border: solid #363636 2px;
+      position: relative;
+      z-index: 3;
+      transition: 0.5s;
+      cursor: pointer; }
+      .classes-wrapper .class-wrapper img:hover {
+        transform: rotateY(180DEG);
+        opacity: 0; }
+      .classes-wrapper .class-wrapper img:hover ~ .hero-infos-button {
+        opacity: 1;
+        transform: none; }
   .classes-wrapper .class-wrapper img[disabled] {
     filter: grayscale(80%); }
 
@@ -4965,19 +5013,17 @@ label.panel-block {
   animation-name: battlefield;
   animation-duration: 15s;
   animation-direction: alternate;
-  animation-iteration-count: infinite; }
+  animation-iteration-count: infinite;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto; }
   .battlefield .column {
     height: 700px; }
   .battlefield section {
     margin: 10px auto;
     min-height: 135px; }
   .battlefield .confirm-turn {
-    transition: all 0.3s;
-    transform: translateY(-3px);
-    box-shadow: 0 8px 2px -4px #363636; }
-    .battlefield .confirm-turn[disabled] {
-      border: none;
-      transform: none; }
+    transition: all 0.3s; }
   .battlefield .menu {
     padding: 10px;
     border: solid #363636 1px;
@@ -5076,12 +5122,11 @@ html, body {
   background-attachment: fixed; }
 
 main {
-  padding: 20px;
-  padding-top: 55px;
   max-width: 1200px;
+  margin-top: 80px;
   margin-left: auto;
   margin-right: auto;
-  background: rgba(245, 245, 245, 0.5);
+  background: rgba(245, 245, 245, 0.6);
   background-position: center;
   background-size: cover;
   background-blend-mode: luminosity;
@@ -5093,7 +5138,8 @@ main {
     padding: 15px;
     color: whitesmoke;
     text-shadow: 5px 5px 0 #7a7a7a, -5px -5px #4a4a4a;
-    border-bottom: solid 2px #0a0a0a; }
+    border-bottom: solid 2px #0a0a0a;
+    border-top: solid 2px #0a0a0a; }
 
 .navbar {
   position: fixed;
@@ -5103,5 +5149,8 @@ main {
   z-index: 999; }
   .navbar .navbar-brand {
     padding: 5px; }
+
+.color-primary {
+  color: #00aed1; }
 
 /*# sourceMappingURL=main.css.map */
