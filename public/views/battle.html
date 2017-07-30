@@ -2,7 +2,7 @@
 <main>
   <h1 class="title is-1 has-text-centered">{{gameType}}</h1>
   <div class="battlefield columns is-multiline">
-    <div class="column is-5 is-offset-1 user-team">
+    <div class="column is-5 user-team">
       <h2 class="title is-2 has-text-centered" ng-if="!training">{{user.login}}</h2>
       <section class="team-member" ng-repeat="hero in userTeam | orderBy : 'class.name' ">
         <div class="menu">
@@ -119,9 +119,15 @@
           </div>
         </div>
       </section>
+      <button class="button is-large is-info"
+              ng-click="confirmTurn()"
+              ng-disabled="isTurnInvalid()">
+              Confirm turn
+      </button>
+      <div ng-if="waitingForOpp">Waiting for Opponent...</div>
     </div>
-    <div class="column is-3 is-offset-2 opponent">
-      <h2 class="title is-2 has-text-centered">{{opp.login}}</h2>
+    <div class="column is-3 is-offset-1 opponent">
+      <h2 class="title is-2 has-text-centered" ng-if="!training">{{opp.login}}</h2>
       <section class="team-member" ng-repeat="hero in oppTeam track by $index">
         <div class="hero-infos">
           <h4>
@@ -150,17 +156,11 @@
         </div>
       </section>
     </div>
-    <div class="column is-offset-1">
-      <button class="button is-large is-info"
-              ng-click="confirmTurn()"
-              ng-disabled="isTurnInvalid()">
-              Confirm turn
-      </button>
-      <div ng-if="waitingForOpp">Waiting for Opponent...</div>
+    <div id="combat-log" class="column is-3">
+      <h3 class="title is-3 has-text-center">Combat log</h3>
+      <p ng-repeat="log in combatLog track by $index">{{log}}</p>
     </div>
   </div>
 
-  <div id="combat-log">
-    <p ng-repeat="log in combatLog track by $index">{{log}}</p>
-  </div>
+
 </main>

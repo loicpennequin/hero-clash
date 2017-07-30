@@ -21,11 +21,11 @@ html, body
 
 main
   padding: 20px
-  padding-top: 80px
+  padding-top: 55px
   max-width: 1200px
   margin-left: auto
   margin-right: auto
-  background: $white-ter
+  background: rgba(245,245,245, 0.5)
   background-position: center
   background-size: cover
   background-blend-mode: luminosity
@@ -33,9 +33,13 @@ main
   border-left: solid $dark 3px
   border-right: solid $dark 3px
 
-
-
-
+  h1.title
+    background: linear-gradient(to right, transparent, $black, transparent)
+    padding: 15px
+    color: $white-ter
+    text-shadow: 5px 5px 0 $grey, -5px -5px $grey-dark
+    border-bottom: solid 2px $black
+    
 .navbar
   position: fixed
   top: 0

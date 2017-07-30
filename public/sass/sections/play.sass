@@ -1,5 +1,10 @@
 .battlefield
   display: flex
+  background: linear-gradient(rgba(0,0,0,0.5), $primary)
+  border: solid 4px $black-ter
+
+  .column
+    height: 600px
 
   section
     margin: 10px auto
@@ -11,7 +16,6 @@
     margin-right: 5px
     width: 250px
     background-color: $white-bis
-
 
     button.is-active
       filter: brightness(200%)
@@ -35,6 +39,7 @@
 
   .hero-infos
     position: relative
+    color: $white-ter
 
     .hero-stats
       position: absolute
@@ -51,8 +56,9 @@
         transform: translateX(-200%)
         transition: all 0.3s
         padding: 5px
-        border: solid $dark 1px
+        border: solid $white-ter 1px
         border-radius: 5px
+        font-size: 0.8em
 
       ul
         margin-right: 10px
@@ -73,8 +79,13 @@
   background: linear-gradient(to right, black, #555), $info
 
 #combat-log
-  display: flex
-  flex-direction: column-reverse
+  background-color: $white-ter
+  padding: 10px
+  overflow: scroll
+  border-left: solid 2px $black-ter
+  p
+    margin: 10px 0
+
 
 .dot-alert
   color: $danger

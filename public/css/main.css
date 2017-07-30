@@ -125,7 +125,7 @@ a {
 
 code {
   background-color: whitesmoke;
-  color: #ff38a2;
+  color: #ff3860;
   font-size: 0.8em;
   font-weight: normal;
   padding: 0.25em 0.5em 0.25em; }
@@ -413,10 +413,10 @@ a.has-text-warning:hover, a.has-text-warning:focus {
   color: #ffd324; }
 
 .has-text-danger {
-  color: #ff38a2; }
+  color: #ff3860; }
 
 a.has-text-danger:hover, a.has-text-danger:focus {
-  color: #ff058a; }
+  color: #ff0537; }
 
 .is-hidden {
   display: none !important; }
@@ -1030,60 +1030,60 @@ a.box:active {
         box-shadow: none;
         color: rgba(0, 0, 0, 0.7); }
   .button.is-danger {
-    background-color: #ff38a2;
+    background-color: #ff3860;
     border-color: transparent;
     color: #fff; }
     .button.is-danger:hover, .button.is-danger.is-hovered {
-      background-color: #ff2b9c;
+      background-color: #ff2b56;
       border-color: transparent;
       color: #fff; }
     .button.is-danger:focus, .button.is-danger.is-focused {
       border-color: transparent;
-      box-shadow: 0 0 0.5em rgba(255, 56, 162, 0.25);
+      box-shadow: 0 0 0.5em rgba(255, 56, 96, 0.25);
       color: #fff; }
     .button.is-danger:active, .button.is-danger.is-active {
-      background-color: #ff1f96;
+      background-color: #ff1f4b;
       border-color: transparent;
       box-shadow: inset 0 1px 2px rgba(10, 10, 10, 0.2);
       color: #fff; }
     .button.is-danger[disabled] {
-      background-color: #ff38a2;
+      background-color: #ff3860;
       border-color: transparent;
       box-shadow: none; }
     .button.is-danger.is-inverted {
       background-color: #fff;
-      color: #ff38a2; }
+      color: #ff3860; }
       .button.is-danger.is-inverted:hover {
         background-color: #f2f2f2; }
       .button.is-danger.is-inverted[disabled] {
         background-color: #fff;
         border-color: transparent;
         box-shadow: none;
-        color: #ff38a2; }
+        color: #ff3860; }
     .button.is-danger.is-loading:after {
       border-color: transparent transparent #fff #fff !important; }
     .button.is-danger.is-outlined {
       background-color: transparent;
-      border-color: #ff38a2;
-      color: #ff38a2; }
+      border-color: #ff3860;
+      color: #ff3860; }
       .button.is-danger.is-outlined:hover, .button.is-danger.is-outlined:focus {
-        background-color: #ff38a2;
-        border-color: #ff38a2;
+        background-color: #ff3860;
+        border-color: #ff3860;
         color: #fff; }
       .button.is-danger.is-outlined.is-loading:after {
-        border-color: transparent transparent #ff38a2 #ff38a2 !important; }
+        border-color: transparent transparent #ff3860 #ff3860 !important; }
       .button.is-danger.is-outlined[disabled] {
         background-color: transparent;
-        border-color: #ff38a2;
+        border-color: #ff3860;
         box-shadow: none;
-        color: #ff38a2; }
+        color: #ff3860; }
     .button.is-danger.is-inverted.is-outlined {
       background-color: transparent;
       border-color: #fff;
       color: #fff; }
       .button.is-danger.is-inverted.is-outlined:hover, .button.is-danger.is-inverted.is-outlined:focus {
         background-color: #fff;
-        color: #ff38a2; }
+        color: #ff3860; }
       .button.is-danger.is-inverted.is-outlined[disabled] {
         background-color: transparent;
         border-color: #fff;
@@ -1338,7 +1338,7 @@ input[type="submit"].button {
     border-color: #ffdd57; }
   .input.is-danger,
   .textarea.is-danger {
-    border-color: #ff38a2; }
+    border-color: #ff3860; }
   .input.is-small,
   .textarea.is-small {
     border-radius: 2px;
@@ -1481,7 +1481,7 @@ input[type="submit"].button {
   .select.is-warning select {
     border-color: #ffdd57; }
   .select.is-danger select {
-    border-color: #ff38a2; }
+    border-color: #ff3860; }
   .select.is-small {
     border-radius: 2px;
     font-size: 0.75rem; }
@@ -1553,7 +1553,7 @@ input[type="submit"].button {
   .help.is-warning {
     color: #ffdd57; }
   .help.is-danger {
-    color: #ff38a2; }
+    color: #ff3860; }
 
 .field:not(:last-child) {
   margin-bottom: 0.75rem; }
@@ -1870,7 +1870,7 @@ input[type="submit"].button {
     background-color: #ffdd57;
     color: rgba(0, 0, 0, 0.7); }
   .notification.is-danger {
-    background-color: #ff38a2;
+    background-color: #ff3860;
     color: #fff; }
 
 .progress {
@@ -1924,9 +1924,9 @@ input[type="submit"].button {
   .progress.is-warning::-moz-progress-bar {
     background-color: #ffdd57; }
   .progress.is-danger::-webkit-progress-value {
-    background-color: #ff38a2; }
+    background-color: #ff3860; }
   .progress.is-danger::-moz-progress-bar {
-    background-color: #ff38a2; }
+    background-color: #ff3860; }
   .progress.is-small {
     height: 0.75rem; }
   .progress.is-medium {
@@ -2030,7 +2030,7 @@ input[type="submit"].button {
     background-color: #ffdd57;
     color: rgba(0, 0, 0, 0.7); }
   .tag.is-danger {
-    background-color: #ff38a2;
+    background-color: #ff3860;
     color: #fff; }
   .tag.is-medium {
     font-size: 1rem; }
@@ -2568,13 +2568,13 @@ input[type="submit"].button {
       border-color: #ffdd57;
       color: #3c3108; }
   .message.is-danger {
-    background-color: #fff5fa; }
+    background-color: #fff5f7; }
     .message.is-danger .message-header {
-      background-color: #ff38a2;
+      background-color: #ff3860;
       color: #fff; }
     .message.is-danger .message-body {
-      border-color: #ff38a2;
-      color: #c6096e; }
+      border-color: #ff3860;
+      color: #cd0930; }
 
 .message-header {
   align-items: center;
@@ -4723,7 +4723,7 @@ label.panel-block {
       .hero.is-warning .nav-menu .nav-item {
         border-top-color: rgba(0, 0, 0, 0.2); } }
   .hero.is-danger {
-    background-color: #ff38a2;
+    background-color: #ff3860;
     color: #fff; }
     .hero.is-danger a:not(.button),
     .hero.is-danger strong {
@@ -4739,7 +4739,7 @@ label.panel-block {
       box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2); }
     @media screen and (max-width: 768px) {
       .hero.is-danger .nav-menu {
-        background-color: #ff38a2; } }
+        background-color: #ff3860; } }
     .hero.is-danger a.nav-item,
     .hero.is-danger .nav-item a:not(.button) {
       color: rgba(255, 255, 255, 0.7); }
@@ -4761,12 +4761,12 @@ label.panel-block {
     .hero.is-danger .tabs.is-boxed li.is-active a, .hero.is-danger .tabs.is-boxed li.is-active a:hover, .hero.is-danger .tabs.is-toggle li.is-active a, .hero.is-danger .tabs.is-toggle li.is-active a:hover {
       background-color: #fff;
       border-color: #fff;
-      color: #ff38a2; }
+      color: #ff3860; }
     .hero.is-danger.is-bold {
-      background-image: linear-gradient(141deg, #ff05b4 0%, #ff38a2 71%, #ff5291 100%); }
+      background-image: linear-gradient(141deg, #ff0561 0%, #ff3860 71%, #ff5257 100%); }
       @media screen and (max-width: 768px) {
         .hero.is-danger.is-bold .nav-menu {
-          background-image: linear-gradient(141deg, #ff05b4 0%, #ff38a2 71%, #ff5291 100%); } }
+          background-image: linear-gradient(141deg, #ff0561 0%, #ff3860 71%, #ff5257 100%); } }
     @media screen and (max-width: 768px) {
       .hero.is-danger .nav-toggle span {
         background-color: #fff; }
@@ -4825,6 +4825,12 @@ label.panel-block {
 
 .profile-section {
   padding: 15px; }
+  .profile-section h2 {
+    background-color: #fafafa;
+    padding: 10px;
+    border-top-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border: solid 2px #363636; }
 
 .team {
   display: flex;
@@ -4927,13 +4933,12 @@ label.panel-block {
   flex-direction: row;
   justify-content: center;
   flex-wrap: wrap;
-  background-color: #fafafa;
   padding: 20px; }
   .classes-wrapper .class-wrapper {
     background: linear-gradient(130DEG, white, #b5b5b5);
     padding: 15px;
     border: outset #4a4a4a 4px;
-    box-shadow: 5px 0 0 2px #f58d3d;
+    box-shadow: 5px 0 0 2px #00aed1;
     border-radius: 10px;
     margin: 15px; }
     .classes-wrapper .class-wrapper img {
@@ -4944,7 +4949,7 @@ label.panel-block {
 .lb-portrait {
   display: inline-block;
   border: solid 1px #363636;
-  width: 60px; }
+  width: 80px; }
 
 .lb-table thead {
   background-color: #363636; }
@@ -4954,7 +4959,11 @@ label.panel-block {
   vertical-align: middle; }
 
 .battlefield {
-  display: flex; }
+  display: flex;
+  background: linear-gradient(rgba(0, 0, 0, 0.5), #00aed1);
+  border: solid 4px #242424; }
+  .battlefield .column {
+    height: 600px; }
   .battlefield section {
     margin: 10px auto;
     min-height: 135px; }
@@ -4982,7 +4991,8 @@ label.panel-block {
     .battlefield img:hover ~ .hero-stats .wrapper {
       transform: none; }
   .battlefield .hero-infos {
-    position: relative; }
+    position: relative;
+    color: whitesmoke; }
     .battlefield .hero-infos .hero-stats {
       position: absolute;
       top: 50%;
@@ -4997,8 +5007,9 @@ label.panel-block {
         transform: translateX(-200%);
         transition: all 0.3s;
         padding: 5px;
-        border: solid #363636 1px;
-        border-radius: 5px; }
+        border: solid whitesmoke 1px;
+        border-radius: 5px;
+        font-size: 0.8em; }
       .battlefield .hero-infos .hero-stats ul {
         margin-right: 10px; }
   .battlefield .opponent img {
@@ -5016,11 +5027,15 @@ label.panel-block {
   background: linear-gradient(to right, black, #555), #3257dc; }
 
 #combat-log {
-  display: flex;
-  flex-direction: column-reverse; }
+  background-color: whitesmoke;
+  padding: 10px;
+  overflow: scroll;
+  border-left: solid 2px #242424; }
+  #combat-log p {
+    margin: 10px 0; }
 
 .dot-alert {
-  color: #ff38a2;
+  color: #ff3860;
   font-weight: bold;
   padding: 5px; }
 
@@ -5033,7 +5048,7 @@ label.panel-block {
   color: #23d160; }
 
 .target-enemy {
-  color: #ff38a2; }
+  color: #ff3860; }
 
 .lobby .modal-content {
   background-color: #fafafa;
@@ -5051,17 +5066,23 @@ html, body {
 
 main {
   padding: 20px;
-  padding-top: 80px;
+  padding-top: 55px;
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
-  background: whitesmoke;
+  background: rgba(245, 245, 245, 0.5);
   background-position: center;
   background-size: cover;
   background-blend-mode: luminosity;
   min-height: 100vh;
   border-left: solid #363636 3px;
   border-right: solid #363636 3px; }
+  main h1.title {
+    background: linear-gradient(to right, transparent, #0a0a0a, transparent);
+    padding: 15px;
+    color: whitesmoke;
+    text-shadow: 5px 5px 0 #7a7a7a, -5px -5px #4a4a4a;
+    border-bottom: solid 2px #0a0a0a; }
 
 .navbar {
   position: fixed;
