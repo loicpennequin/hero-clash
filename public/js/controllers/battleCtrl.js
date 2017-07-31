@@ -20,23 +20,24 @@ app.controller('battleCtrl', function($scope, $q, classFactory, userFactory, ski
 
   $scope.timer = 60;
 
-  let countdown,
-      countdownDecrease = function(){
-        $interval(function(){
-          if ($scope.timer >0) $scope.timer -= 0.05;
-          if ($scope.timer < 10) $scope.timerWarning = true;
-          if ($scope.timer <= 0){
-            $interval.cancel(countdown);
-            countdown = undefined;
-            setDefaultTurn();
-          }
-          $scope.getTimerWidth();
-        }, 50);
-      };
+  $scope.countdown;
+  $scope.setCountdown = function(){
+    $scope.countdown = $interval(function(){
+      $scope.timer -= 0.05;
+      if ($scope.timer < 10) $scope.timerWarning = true;
+      if ($scope.timer < 0){
+        $interval.cancel($scope.countdown);
+        $scope.countdown = undefined;
+        setDefaultTurn();
+      }
+      console.log($scope.timer);
+      $scope.getTimerWidth();
+    }, 50);
+  }
 
-$scope.getTimerWidth = function(){
-    return { width : (100 * $scope.timer) / 60 + '%' };
-}
+  $scope.getTimerWidth = function(){
+      return { width : (100 * $scope.timer) / 60 + '%' };
+  }
 
   userFactory.loginCheck()
     .then(function(response){
@@ -73,7 +74,7 @@ $scope.getTimerWidth = function(){
     let users = data.users,
         sessionID = data.sessionID;
     console.log('no game to load, starting new game');
-    // ccountdown = countdownDecrease();
+    $scope.setCountdown();
     users.forEach(function(user, index){
       userFactory.getUser(user.id)
         .then(function(response){
@@ -185,7 +186,7 @@ $scope.getTimerWidth = function(){
   function setDefaultTurn(){
     $scope.userTeam.forEach(function(hero, index){
       hero.action = 'wait';
-      socket.emit('confirmTurn', $rootScope.gameData.room);
+      $scope.confirmTurn()
     })
   }
 
@@ -245,12 +246,6 @@ $scope.getTimerWidth = function(){
     $scope.userTeam = userTeam;
     $scope.oppTeam = oppTeam;
 
-    function hasAction(hero){
-      return hero.action.length == 0;
-    };
-
-    console.log($scope.userTeam.some(hasAction));
-
     data.combatLog.forEach(function(log, index){
       $scope.combatLog.push(log)
     });
@@ -262,6 +257,8 @@ $scope.getTimerWidth = function(){
     battleFactory.setGameState($scope.roster, "mp")
       .then(function(response){
         console.log('game saved');
+        $scope.timer = 60;
+        $scope.setCountdown();
       }, function(error){
         console.log(error);
       })

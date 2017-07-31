@@ -130,6 +130,7 @@ io.on('connection', function(socket){
   });
 
   socket.on('confirmTurn', function(room){
+    console.log('recieved confirmTurn');
     socket.handshake.session.reload(function(err) {
       socket.user = socket.handshake.session.user;
       socket.user.turnConfirmed = true;
@@ -215,7 +216,7 @@ function sortHeroes(arr){
   let arrCopy = arr.slice(0);
 
   //puts taunters, protectors and defenders first
-  
+
   arrCopy.forEach(function(hero, index){
     if(hero.action === 'defend'){
       let oldIndex = arrCopy.indexOf(hero),
