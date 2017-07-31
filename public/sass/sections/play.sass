@@ -1,7 +1,37 @@
+.timer-wrapper
+  padding: 0 10px
+  margin-bottom: 25px
+
+.timer
+  height: 20px
+  width: 100%
+  background: linear-gradient(to right, black, #777), $primary
+  background-blend-mode: screen
+  border: solid $dark 1px
+
+.timer-warning
+  animation-name: timer-warning
+  animation-duration: 1s
+  animation-direction: alternate
+  animation-iteration-count: infinite
+  background: linear-gradient(to right, black, #777), $danger
+
+
+@keyframes timer-warning
+  from
+    opacity: 1
+    box-shadow: 0 0 5px 5px $white
+  to
+    opacity: 0
+    box-shadow: none
+
+
+
 .battlefield
   display: flex
   background: linear-gradient(rgba(0,0,0,0.5), $black)
-  border: solid 4px $black-ter
+  border-top: solid 4px $black-ter
+  border-bottom: solid 4px $black-ter
   animation-name: battlefield
   animation-duration: 15s
   animation-direction: alternate
@@ -108,7 +138,14 @@
   font-weight: bold
   padding: 5px
 
-.target-ally
+.is-user
   color: $success
-.target-enemy
+
+.is-opp
   color: $danger
+
+.user-name
+  text-shadow: 2px 2px 3px $success
+
+.opp-name
+  text-shadow: 2px 2px 3px $danger

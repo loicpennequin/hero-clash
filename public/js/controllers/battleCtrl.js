@@ -1,4 +1,4 @@
-app.controller('battleCtrl', function($scope, $q, classFactory, userFactory, skillFactory, heroFactory, battleFactory, socket, $rootScope){
+app.controller('battleCtrl', function($scope, $q, classFactory, userFactory, skillFactory, heroFactory, battleFactory, socket, $rootScope, $interval){
   $scope.gameType = "Ranked Game";
   $scope.user = {};
   $scope.opp = {};
@@ -8,6 +8,8 @@ app.controller('battleCtrl', function($scope, $q, classFactory, userFactory, ski
   $scope.combatLog = [];
 
   $scope.waitingForOpp = false;
+  $scope.turnConfirmed = false;
+  $scope.timerWarning = false;
 
   $scope.ally1 = {};
   $scope.ally2 = {};
@@ -16,9 +18,53 @@ app.controller('battleCtrl', function($scope, $q, classFactory, userFactory, ski
   $scope.enemy2 = {};
   $scope.enemy3 = {};
 
+  $scope.timer = 60;
+
+  let countdown,
+      countdownDecrease = function(){
+        $interval(function(){
+          if ($scope.timer >0) $scope.timer -= 0.05;
+          if ($scope.timer < 10) $scope.timerWarning = true;
+          if ($scope.timer <= 0){
+            $interval.cancel(countdown);
+            countdown = undefined;
+            setDefaultTurn();
+          }
+          $scope.getTimerWidth();
+        }, 50);
+      };
+
+$scope.getTimerWidth = function(){
+    return { width : (100 * $scope.timer) / 60 + '%' };
+}
+
   userFactory.loginCheck()
     .then(function(response){
-      socket.emit('rdyToInit', $rootScope.gameData);
+      battleFactory.getGameState("mp")
+        .then(function(response){
+          if (response.data.state == false){
+            socket.emit('rdyToInit', $rootScope.gameData);
+          }else {
+            $scope.roster = response.data.game;
+            $scope.roster.forEach(function(hero, index){
+              if (hero.user_id == $scope.user.id){
+                $scope.userTeam.push(hero);
+              } else{
+                $scope.oppTeam.push(hero)
+              };
+            });
+            $scope.ally1 = {name : $scope.userTeam[0].class.name, id: $scope.userTeam[0].id};
+            $scope.ally2 = {name : $scope.userTeam[1].class.name, id: $scope.userTeam[1].id};
+            $scope.ally3 = {name : $scope.userTeam[2].class.name, id: $scope.userTeam[2].id};
+            $scope.enemy1 = {name : $scope.oppTeam[0].class.name, id: $scope.oppTeam[0].id};
+            $scope.enemy2 = {name : $scope.oppTeam[1].class.name, id: $scope.oppTeam[1].id};
+            $scope.enemy3 = {name : $scope.oppTeam[2].class.name, id: $scope.oppTeam[2].id};
+            console.log('game loaded');
+          }
+        }, function(error){
+          console.log(error);
+        });
+
     }, function(error){
       console.log(error);
     });
@@ -26,52 +72,27 @@ app.controller('battleCtrl', function($scope, $q, classFactory, userFactory, ski
   socket.on('init', function(data){
     let users = data.users,
         sessionID = data.sessionID;
-        battleFactory.getGameState("mp")
-          .then(function(response){
-            if (response.data.state == false){
-              console.log('no game to load, starting new game');
-              users.forEach(function(user, index){
-                userFactory.getUser(user.id)
-                  .then(function(response){
-                    if(response.data.id == sessionID){
-                      $scope.user = response.data;
-                      setMembersAndSkills($scope.user);
-                      setTeams($scope.user, $scope.userTeam);
-                      $scope.roster = $scope.roster.concat($scope.userTeam);
-                    }else{
-                      $scope.opp = response.data;
-                      setMembersAndSkills($scope.opp, $scope.oppTeam);
-                      setTeams($scope.opp, $scope.oppTeam);
-                      $scope.roster = $scope.roster.concat($scope.oppTeam)
-                    };
-                  }, function(error){
-                    console.log(error);
-                  });
-              });
-
-            } else {
-
-              $scope.roster = response.data.game;
-              $scope.roster.forEach(function(hero, index){
-                if (hero.user_id == $scope.user.id){
-                  $scope.userTeam.push(hero);
-                } else{
-                  $scope.oppTeam.push(hero)
-                };
-              });
-              $scope.ally1 = {name : $scope.userTeam[0].class.name, id: $scope.userTeam[0].id};
-              $scope.ally2 = {name : $scope.userTeam[1].class.name, id: $scope.userTeam[1].id};
-              $scope.ally3 = {name : $scope.userTeam[2].class.name, id: $scope.userTeam[2].id};
-              $scope.enemy1 = {name : $scope.oppTeam[0].class.name, id: $scope.oppTeam[0].id};
-              $scope.enemy2 = {name : $scope.oppTeam[1].class.name, id: $scope.oppTeam[1].id};
-              $scope.enemy3 = {name : $scope.oppTeam[2].class.name, id: $scope.oppTeam[2].id};
-              console.log('game loaded');
-
-            };
-          }, function(error){
-            console.log(error);
-          });
-  })
+    console.log('no game to load, starting new game');
+    // ccountdown = countdownDecrease();
+    users.forEach(function(user, index){
+      userFactory.getUser(user.id)
+        .then(function(response){
+          if(response.data.id == sessionID){
+            $scope.user = response.data;
+            setMembersAndSkills($scope.user);
+            setTeams($scope.user, $scope.userTeam);
+            $scope.roster = $scope.roster.concat($scope.userTeam);
+          }else{
+            $scope.opp = response.data;
+            setMembersAndSkills($scope.opp, $scope.oppTeam);
+            setTeams($scope.opp, $scope.oppTeam);
+            $scope.roster = $scope.roster.concat($scope.oppTeam)
+          };
+        }, function(error){
+          console.log(error);
+        });
+    });
+  });
 
   function setMembersAndSkills(user){
     let heroes = user.heroes,
@@ -157,12 +178,25 @@ app.controller('battleCtrl', function($scope, $q, classFactory, userFactory, ski
             $scope.userTeam.some(needsSkill));
   }
 
-  $scope.setAction = function(button, hero, command, skill = 0){
+  $scope.setAction = function(hero, command){
     hero.action = command;
   };
 
+  function setDefaultTurn(){
+    $scope.userTeam.forEach(function(hero, index){
+      hero.action = 'wait';
+      socket.emit('confirmTurn', $rootScope.gameData.room);
+    })
+  }
+
   $scope.confirmTurn = function(){
-    socket.emit('confirmTurn', $rootScope.gameData.room);
+    if ($scope.turnConfirmed == false){
+      socket.emit('confirmTurn', $rootScope.gameData.room);
+      $scope.turnConfirmed = true;
+    }else{
+      console.log('turn confirmed already !');
+    }
+
   };
 
   socket.on('waitingForOpp', function(){
@@ -201,6 +235,7 @@ app.controller('battleCtrl', function($scope, $q, classFactory, userFactory, ski
         oppTeam = [];
 
     $scope.roster.forEach(function(hero, index){
+      hero.action = "";
       if (hero.user_id == $scope.user.id){
         userTeam.push(hero);
       } else {
@@ -210,9 +245,20 @@ app.controller('battleCtrl', function($scope, $q, classFactory, userFactory, ski
     $scope.userTeam = userTeam;
     $scope.oppTeam = oppTeam;
 
+    function hasAction(hero){
+      return hero.action.length == 0;
+    };
+
+    console.log($scope.userTeam.some(hasAction));
+
     data.combatLog.forEach(function(log, index){
       $scope.combatLog.push(log)
     });
+
+    $scope.turnConfirmed = false;
+    $scope.timerWarning = false;
+    $scope.waitingForOpp = false;
+
     battleFactory.setGameState($scope.roster, "mp")
       .then(function(response){
         console.log('game saved');

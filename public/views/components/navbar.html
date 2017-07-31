@@ -1,8 +1,15 @@
 <nav class="navbar">
   <div class="navbar-brand">
     <h1 class="title is-2">Hero Clash !</h1>
+
+    <div class="navbar-burger burger" ng-click="toggleMenu = !toggleMenu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
   </div>
-  <div class="navbar-menu">
+  <div class="navbar-menu" ng-class="{'is-active' : toggleMenu}">
     <div class="navbar-start">
       <a href="#!/shop" class="navbar-item">Hero Shop</a>
       <div class="navbar-item has-dropdown is-hoverable">

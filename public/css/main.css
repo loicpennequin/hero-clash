@@ -2790,8 +2790,6 @@ input[type="submit"].button {
       margin-top: -1px; }
     .nav-toggle span:nth-child(3) {
       margin-top: 4px; }
-  .nav-toggle:hover {
-    background-color: whitesmoke; }
   .nav-toggle.is-active span {
     background-color: #00aed1; }
     .nav-toggle.is-active span:nth-child(1) {
@@ -2956,8 +2954,6 @@ a.nav-item:not(.button) {
       margin-top: -1px; }
     .navbar-burger span:nth-child(3) {
       margin-top: 4px; }
-  .navbar-burger:hover {
-    background-color: whitesmoke; }
   .navbar-burger.is-active span {
     background-color: #00aed1; }
     .navbar-burger.is-active span:nth-child(1) {
@@ -5006,10 +5002,36 @@ label.panel-block {
 .lb-table td {
   vertical-align: middle; }
 
+.timer-wrapper {
+  padding: 0 10px;
+  margin-bottom: 25px; }
+
+.timer {
+  height: 20px;
+  width: 100%;
+  background: linear-gradient(to right, black, #777), #00aed1;
+  background-blend-mode: screen;
+  border: solid #363636 1px; }
+
+.timer-warning {
+  animation-name: timer-warning;
+  animation-duration: 1s;
+  animation-direction: alternate;
+  animation-iteration-count: infinite;
+  background: linear-gradient(to right, black, #777), #ff3860; }
+
+@keyframes timer-warning {
+  from {
+    opacity: 1;
+    box-shadow: 0 0 5px 5px white; }
+  to {
+    opacity: 0;
+    box-shadow: none; } }
 .battlefield {
   display: flex;
   background: linear-gradient(rgba(0, 0, 0, 0.5), #0a0a0a);
-  border: solid 4px #242424;
+  border-top: solid 4px #242424;
+  border-bottom: solid 4px #242424;
   animation-name: battlefield;
   animation-duration: 15s;
   animation-direction: alternate;
@@ -5101,11 +5123,17 @@ label.panel-block {
   font-weight: bold;
   padding: 5px; }
 
-.target-ally {
+.is-user {
   color: #23d160; }
 
-.target-enemy {
+.is-opp {
   color: #ff3860; }
+
+.user-name {
+  text-shadow: 2px 2px 3px #23d160; }
+
+.opp-name {
+  text-shadow: 2px 2px 3px #ff3860; }
 
 .lobby .modal-content {
   background-color: #fafafa;

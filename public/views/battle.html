@@ -1,9 +1,14 @@
-<div ng-include="'views/components/navbar.html'"></div>
 <main>
   <h1 class="title is-1 has-text-centered">{{gameType}}</h1>
+  <div class="timer-wrapper">
+    <div class="timer"
+         ng-if="!training"
+         ng-style="getTimerWidth()"
+         ng-class="{'timer-warning' : timerWarning}"></div>
+  </div>
   <div class="battlefield columns is-multiline">
-    <div class="column is-5 user-team">
-      <h2 class="title is-2 has-text-centered" ng-if="!training">{{user.login}}</h2>
+    <div class="column is-6 user-team">
+      <h2 class="title is-2 user-name" ng-if="!training">{{user.login}}</h2>
       <section class="team-member" ng-repeat="hero in userTeam | orderBy : 'class.name' ">
         <div class="menu">
           <div class="field is-horizontal">
@@ -18,12 +23,12 @@
                       <!-- <option ng-repeat="target in roster track by $index" ng-value="target.id">
                         {{target.class.name}}
                       </option> -->
-                      <option class="target-ally" ng-value="ally1.id">{{ally1.name}}</option>
-                      <option class="target-ally" ng-value="ally2.id">{{ally2.name}}</option>
-                      <option class="target-ally" ng-value="ally3.id">{{ally3.name}}</option>
-                      <option class="target-enemy" ng-value="enemy1.id">{{enemy1.name}}</option>
-                      <option class="target-enemy" ng-value="enemy2.id">{{enemy2.name}}</option>
-                      <option class="target-enemy" ng-value="enemy3.id">{{enemy3.name}}</option>
+                      <option class="is-user" ng-value="ally1.id">{{ally1.name}}</option>
+                      <option class="is-user" ng-value="ally2.id">{{ally2.name}}</option>
+                      <option class="is-user" ng-value="ally3.id">{{ally3.name}}</option>
+                      <option class="is-opp" ng-value="enemy1.id">{{enemy1.name}}</option>
+                      <option class="is-opp" ng-value="enemy2.id">{{enemy2.name}}</option>
+                      <option class="is-opp" ng-value="enemy3.id">{{enemy3.name}}</option>
                     </select>
                   </div>
                 </div>
@@ -72,22 +77,22 @@
           </div>
           <div class="actions-wrapper">
             <button class="button is-small is-dark action-btn"
-                    ng-click="setAction(this, hero, 'attack'); atkActive = true; skillActive = false; defActive = false; waitActive = false"
+                    ng-click="setAction(hero, 'attack'); atkActive = true; skillActive = false; defActive = false; waitActive = false"
                     ng-class="{'is-active': atkActive}">
                     Attack
             </button>
             <button class="button is-small is-dark action-btn"
-                    ng-click="setAction(this, hero, 'skill', hero.skillAction); atkActive = false; skillActive = true; defActive = false; waitActive = false"
+                    ng-click="setAction(hero, 'skill'); atkActive = false; skillActive = true; defActive = false; waitActive = false"
                     ng-class="{'is-active': skillActive}">
                     Skill
             </button>
             <button class="button is-small is-dark action-btn"
-                    ng-click="setAction(this, hero, 'defend'); atkActive = false; skillActive = false; defActive = true; waitActive = false"
+                    ng-click="setAction(hero, 'defend'); atkActive = false; skillActive = false; defActive = true; waitActive = false"
                     ng-class="{'is-active': defActive}">
                     Defend
             </button>
             <button class="button is-small is-dark action-btn"
-                    ng-click="setAction(this, hero, 'wait'); atkActive = false; skillActive = false; defActive = false; waitActive = true"
+                    ng-click="setAction(hero, 'wait'); atkActive = false; skillActive = false; defActive = false; waitActive = true"
                     ng-class="{'is-active': waitActive}">
                     Wait
             </button>
@@ -121,13 +126,14 @@
       </section>
       <button class="button is-large is-info confirm-turn"
               ng-click="confirmTurn()"
-              ng-disabled="isTurnInvalid()">
+              ng-disabled="isTurnInvalid()"
+              ng-class="{'is-loading' : waitingForOpp}">
               Confirm turn
       </button>
       <div ng-if="waitingForOpp">Waiting for Opponent...</div>
     </div>
-    <div class="column is-3 is-offset-1 opponent">
-      <h2 class="title is-2 has-text-centered" ng-if="!training">{{opp.login}}</h2>
+    <div class="column is-3 opponent">
+      <h2 class="title is-2 opp-name" ng-if="!training">{{opp.login}}</h2>
       <section class="team-member" ng-repeat="hero in oppTeam track by $index">
         <div class="hero-infos">
           <h4>
@@ -155,6 +161,9 @@
           </div>
         </div>
       </section>
+      <a  href="#!/" class="button is-large is-danger confirm-turn" ng-click="confirmTurn()">
+              Concede
+      </a>
     </div>
     <div id="combat-log" class="column is-3">
       <h3 class="title is-3 has-text-center">Combat log</h3>

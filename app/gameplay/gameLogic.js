@@ -1,5 +1,9 @@
 let skillAction = require('./skillActions');
 
+/*===========================================================================*/
+/*===================================CHECKS==================================*/
+/*===========================================================================*/
+
 
 /*==================================DOT CHECK================================*/
 
@@ -19,7 +23,50 @@ function hotCheck(actor, actorIndex, heroes, combatLog){
   };
 };
 
-/*==================================ATTACK================================*/
+/*=================================BUFF COUNTER============================*/
+
+function decreaseBuffCounter(hero, combatLog){
+  if (hero.buffCounter){
+    hero.buffCounter --;
+    if (hero.buffCounter <= 0){
+      combatLog.push(hero.buffOrigin + ' has ended on ' + hero.class.name + '.')
+      delete hero.buffCounter;
+      delete hero.buffOrigin;
+      for (let i = 1 ; i <= 4 ; i++){
+        hero[hero['buff' + i + 'stat']] -= hero['buff' + i + 'value'];
+        delete hero['buff' + i + 'stat'];
+        delete hero['buff' + i + 'value'];
+      }
+    }
+  };
+};
+
+/*=============================DEBUFF COUNTER==============================*/
+
+function decreaseDebuffCounter(hero, combatLog){
+  if (hero.debuffCounter){
+    hero.debuffCounter --;
+    if (hero.debuffCounter <= 0){
+      combatLog.push(hero.debuffOrigin + ' has ended on ' + hero.class.name + '.')
+      delete hero.debuffCounter;
+      delete hero.debuffOrigin;
+      for (let i = 1 ; i <= 4 ; i++){
+        hero[hero['debuff' + i + 'stat']] += hero['debuff' + i + 'value'];
+        delete hero['debuff' + i + 'stat'];
+        delete hero['debuff' + i + 'value'];
+      }
+    }
+  };
+};
+
+
+
+
+/*===========================================================================*/
+/*================================ACTION COMMANDS============================*/
+/*===========================================================================*/
+
+/*===================================ATTACK==================================*/
 
 function attack(heroes, actor, target, combatLog){
   let dmg,
@@ -42,17 +89,20 @@ function attack(heroes, actor, target, combatLog){
   log = log.slice(0, -1);
   log += ', dealing ' + dmg + ' damage.';
   combatLog.push(log);
+
   return {heroes: heroes, combatLog: combatLog};
 };
 
-/*==================================SKILL================================*/
+/*==================================SKILL==================================*/
 
 function skill(actor, actorIndex, heroes, combatLog){
   let response = {},
       result = skillAction.skill(actor.skillAction, actor, heroes);
+
   result.combatLog.forEach(function(log, index){
     combatLog.push(log)
   });
+
   switch (heroes[actorIndex].skillAction.id){
     case heroes[actorIndex].skill1:
       heroes[actorIndex].activeSkill1.cdCounter = actor.skillAction.cooldown;
@@ -67,21 +117,24 @@ function skill(actor, actorIndex, heroes, combatLog){
       heroes[actorIndex].activeSkill4.cdCounter = actor.skillAction.cooldown;
     break
   };
+
   response.heroes = result.heroes;
   response.combatLog = combatLog;
+
   return response;
 };
 
-/*==================================DEFEND================================*/
+/*=====================================DEFEND================================*/
 
 function defend(heroes, actor, actorIndex, combatLog){
   heroes[actorIndex].def += 20;
   combatLog.push(actor.class.name + ' defends, gaining 20 DEF for the turn.');
   let response = {heroes: heroes, combatLog: combatLog}
+
   return response;
 };
 
-/*==================================WAIT================================*/
+/*=====================================WAIT=================================*/
 
 function wait(heroes, actor, actorIndex, combatLog){
   heroes[actorIndex].mp += 10;
@@ -92,43 +145,14 @@ function wait(heroes, actor, actorIndex, combatLog){
   return {heroes: heroes, combatLog: combatLog}
 };
 
-/*=============================DECREASE BUFF COUNTER==========================*/
 
-function decreaseBuffCounter(hero, combatLog){
-  if (hero.buffCounter){
-    hero.buffCounter --;
-    if (hero.buffCounter <= 0){
-      combatLog.push(hero.buffOrigin + ' has ended on ' + hero.class.name + '.')
-      delete hero.buffCounter;
-      delete hero.buffOrigin;
-      for (let i = 1 ; i <= 4 ; i++){
-        hero[hero['buff' + i + 'stat']] -= hero['buff' + i + 'value'];
-        delete hero['buff' + i + 'stat'];
-        delete hero['buff' + i + 'value'];
-      }
-    }
-  };
-};
 
-/*=============================DECREASE DEBUFF COUNTER==========================*/
 
-function decreaseDebuffCounter(hero, combatLog){
-  if (hero.debuffCounter){
-    hero.debuffCounter --;
-    if (hero.debuffCounter <= 0){
-      combatLog.push(hero.debuffOrigin + ' has ended on ' + hero.class.name + '.')
-      delete hero.debuffCounter;
-      delete hero.debuffOrigin;
-      for (let i = 1 ; i <= 4 ; i++){
-        hero[hero['debuff' + i + 'stat']] += hero['debuff' + i + 'value'];
-        delete hero['debuff' + i + 'stat'];
-        delete hero['debuff' + i + 'value'];
-      }
-    }
-  };
-};
+/*===========================================================================*/
+/*===================================TURN RESOLUTION=========================*/
+/*===========================================================================*/
 
-/*============================RESOLVE TURN========================================*/
+/*=================================RESOLVE TURN===============================*/
 
 function resolveTurn(data){
   let combatLog = [],
@@ -163,7 +187,7 @@ function resolveTurn(data){
 };
 
 
-/*=================================END TURN=======================================*/
+/*=================================END TURN=====================================*/
 
 function endTurn(data){
   let combatLog = [],
@@ -209,6 +233,9 @@ function endTurn(data){
 
   return response
 };
+
+
+
 
 
 
