@@ -14,6 +14,7 @@ app.controller('trainingCtrl', function($scope, $q, classFactory, userFactory, s
   $scope.enemy3 = {};
   $scope.training = true;
 
+  console.log('you are in the training controller');
   userFactory.loginCheck()
     .then(function(response){
       Init(response.data.user.id);
@@ -166,7 +167,7 @@ app.controller('trainingCtrl', function($scope, $q, classFactory, userFactory, s
             $scope.userTeam.some(needsSkill));
   }
 
-  $scope.setAction = function(button, hero, command, skill = 0){
+  $scope.setAction = function(hero, command, skill = 0){
     hero.action = command;
   };
 
