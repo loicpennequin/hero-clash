@@ -26,11 +26,8 @@ app.controller('battleCtrl', function($scope, $q, classFactory, userFactory, ski
       $scope.timer -= 0.05;
       if ($scope.timer < 10) $scope.timerWarning = true;
       if ($scope.timer < 0){
-        $interval.cancel($scope.countdown);
-        $scope.countdown = undefined;
         setDefaultTurn();
       }
-      console.log($scope.timer);
       $scope.getTimerWidth();
     }, 50);
   }
@@ -192,6 +189,8 @@ app.controller('battleCtrl', function($scope, $q, classFactory, userFactory, ski
 
   $scope.confirmTurn = function(){
     if ($scope.turnConfirmed == false){
+      $interval.cancel($scope.countdown);
+      $scope.countdown = undefined;
       socket.emit('confirmTurn', $rootScope.gameData.room);
       $scope.turnConfirmed = true;
     }else{

@@ -100,7 +100,18 @@ exports.skill = function(skill, actor, heroes){
       action[effect]();
     })
   };
+
   action.logs.push(action.combatLog)
+
+  action.targets.forEach(function(target, index){
+    if (target.hp <= 0){
+      if ( target.action != 'dead'){
+        target.action = 'dead';
+        action.logs.push(target.class.name + ' has been defeated!');
+      };
+    };
+  })
+
   result = {heroes : action.heroes, combatLog : action.logs}
   return result;
 }

@@ -130,7 +130,6 @@ io.on('connection', function(socket){
   });
 
   socket.on('confirmTurn', function(room){
-    console.log('recieved confirmTurn');
     socket.handshake.session.reload(function(err) {
       socket.user = socket.handshake.session.user;
       socket.user.turnConfirmed = true;
@@ -150,9 +149,7 @@ io.on('connection', function(socket){
           delete io.sockets.connected[player].user['turnConfirmed'];
         });
       };
-
     });
-
   });
 
   socket.on('resolveTurn', function(jsonData){
@@ -174,7 +171,8 @@ io.on('connection', function(socket){
         heroes = heroes.concat(io.sockets.connected[player].turnData)
       });
 
-      sortHeroes(heroes);
+      heroes = gameplay.sortHeroes(heroes);
+
       heroes.forEach(function(hero, index){
         io.to(data.room).emit('actionResolved', gameplay.resolveAction(heroes, hero));
       })
@@ -207,38 +205,6 @@ io.on('connection', function(socket){
     });
   });
 });
-
-/*=====================================TURN RESOLUTION LOGIC=================================*/
-function sortHeroes(arr){
-  arr.sort(function(a,b) {
-    return b.speed - a.speed
-  });
-  let arrCopy = arr.slice(0);
-
-  //puts taunters, protectors and defenders first
-
-  arrCopy.forEach(function(hero, index){
-    if(hero.action === 'defend'){
-      let oldIndex = arrCopy.indexOf(hero),
-          newIndex = 0;
-      arr.splice(oldIndex, 1);
-      arr.splice(newIndex, 0, hero);
-    };
-  });
-
-  arrCopy.forEach(function(hero, index){
-    if(Object.keys(hero.skillAction).length > 0) {
-      if(hero.skillAction.effects.indexOf("protect") > -1){
-        let oldIndex = arrCopy.indexOf(hero),
-        newIndex = 0;
-        arr.splice(oldIndex, 1);
-        arr.splice(newIndex, 0, hero);
-      };
-    };
-  });
-
-};
-
 
 //////// 404
 // app.use(function(req, res, next){

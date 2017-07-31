@@ -152,6 +152,42 @@ function wait(heroes, actor, actorIndex, combatLog){
 /*===================================TURN RESOLUTION=========================*/
 /*===========================================================================*/
 
+
+/*=================================SORT HEROES===============================*/
+
+function sortHeroes(arr){
+  arr.sort(function(a,b) {
+    return b.speed - a.speed
+  });
+  let arrCopy = arr.slice(0);
+
+  //puts taunters, protectors and defenders first
+
+  arrCopy.forEach(function(hero, index){
+    if(hero.action === 'defend'){
+      let oldIndex = arrCopy.indexOf(hero),
+          newIndex = 0;
+      arr.splice(oldIndex, 1);
+      arr.splice(newIndex, 0, hero);
+    };
+  });
+
+  arrCopy.forEach(function(hero, index){
+    if(Object.keys(hero.skillAction).length > 0) {
+      if(hero.skillAction.effects.indexOf("protect") > -1){
+        let oldIndex = arrCopy.indexOf(hero),
+        newIndex = 0;
+        arr.splice(oldIndex, 1);
+        arr.splice(newIndex, 0, hero);
+      };
+    };
+  });
+
+  return arr
+
+};
+
+
 /*=================================RESOLVE TURN===============================*/
 
 function resolveTurn(data){
@@ -168,6 +204,13 @@ function resolveTurn(data){
   dotCheck(actor, actorIndex, heroes, combatLog);
   hotCheck(actor, actorIndex, heroes, combatLog);
 
+  if (actor.hp <= 0){
+    if ( actor.action !== 'dead'){
+      heroes[actorIndex].action = 'dead';
+      combatLog.push(actor.class.name + ' has been defeated!')
+    };
+  };
+
   switch (actor.action){
     case 'attack':
         response = attack(heroes, actor, target, combatLog);
@@ -180,6 +223,8 @@ function resolveTurn(data){
       break;
     case 'wait' :
         response =  wait(heroes, actor, actorIndex, combatLog);
+      break;
+    case 'dead' :
       break;
   };
 
@@ -203,7 +248,6 @@ function endTurn(data){
     if (hero.hp <= 0){
       let index = heroesCopy.indexOf(hero);
       heroes.splice(index, 1);
-      combatLog.push(hero.class.name + ' has been defeated!')
     } else {
       //remove 'defend' buff
       if(hero.action === 'defend'){
@@ -287,4 +331,8 @@ exports.resolveTurn = function(data){
 
 exports.endTurn = function(data){
   return endTurn(data);
+}
+
+exports.sortHeroes = function(arr){
+  return sortHeroes(arr)
 }
