@@ -23,7 +23,7 @@ function hotCheck(actor, actorIndex, heroes, combatLog){
   };
 };
 
-/*=================================BUFF COUNTER============================*/
+/*=================================BUFF COUNTER==============================*/
 
 function decreaseBuffCounter(hero, combatLog){
   if (hero.buffCounter){
@@ -256,24 +256,34 @@ function endTurn(data){
     };
   });
 
-  //decrease all cooldown counters
-  heroes.forEach(function(hero, index){
-    for (let i = 1; i <= 4 ; i++){
-      let skill = hero['activeSkill' + i];
-      if (skill){
-        if(skill.cdCounter){
-          skill.cdCounter--;
-          if(skill.cdCounter <= 0){
-            delete skill.cdCounter;
+  //check if the game is over
+  function onlyOnePlayer(element){
+    return element.user_id != heroes[0].user_id;
+  };
+
+  if (!heroes.some(onlyOnePlayer)){
+    response = {winner : heroes[0].user_id}
+  } else {
+
+    //decrease all cooldown counters
+    heroes.forEach(function(hero, index){
+      for (let i = 1; i <= 4 ; i++){
+        let skill = hero['activeSkill' + i];
+        if (skill){
+          if(skill.cdCounter){
+            skill.cdCounter--;
+            if(skill.cdCounter <= 0){
+              delete skill.cdCounter;
+            };
           };
         };
       };
-    };
-  });
+    });
 
-  combatLog.push('--------End of the Turn---------');
+    combatLog.push('--------End of the Turn---------');
 
-  response = {heroes: heroes, combatLog: combatLog};
+    response = {heroes: heroes, combatLog: combatLog};
+  }
 
   return response
 };

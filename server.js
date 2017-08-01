@@ -1,6 +1,6 @@
 'use strict';
 
-let express = require('express'),
+const express = require('express'),
     app = express(),
     http = require('http').Server(app),
     io = require('socket.io')(http),
@@ -181,9 +181,63 @@ io.on('connection', function(socket){
         delete io.sockets.connected[player]['turnData'];
       });
 
-      io.to(data.room).emit('endTurn', gameplay.endTurn({heroes : heroes}));
+      if (gameplay.endTurn({heroes : heroes}).winner){
+        console.log("let's end the game");
+        let winner, loser;
+        gameRoomPlayers.forEach(function(player, index){
+          if (io.sockets.connected[player].user.id == gameplay.endTurn({heroes : heroes}).winner){
+            winner = io.sockets.connected[player];
+          }else{
+            loser = io.sockets.connected[player];
+          }
+        });
+        winnerRewards(winner, loser);
+        loserRewards(winner, loser);
+        winner.emit('gameWon');
+        loser.emit('gameLost');
+      } else {
+        io.to(data.room).emit('endTurn', gameplay.endTurn({heroes : heroes}));
+      }
     };
   });
+
+  function winnerRewards(winner, loser){
+    let User = require('./app/models/user');
+
+    User.forge({id : winner.user.id})
+    .fetch()
+    .then(function(user){
+      user.save({
+        games : user.attributes.games + 1,
+        wins : user.attributes.wins + 1,
+        gold : user.attributes.gold +=25,
+        elo : user.attributes.elo += 15+(Math.round((winner.user.elo - loser.user.elo)/25))
+      })
+      .then(function(){
+        console.log('winner stats updated');
+      })
+    });
+  };
+
+  function loserRewards(winner, loser){
+    let User = require('./app/models/user');
+
+    User.forge({id : loser.user.id})
+    .fetch()
+    .then(function(user){
+      user.save({
+        games : user.attributes.games + 1,
+        wins : user.attributes.wins + 1,
+        gold : user.attributes.gold +=10,
+        elo : user.attributes.elo -= 15+(Math.round((winner.user.elo - loser.user.elo)/25))
+      })
+      .then(function(){
+        console.log('loser stats updated');
+      })
+    });
+  };
+
+
 
 
 /*====================================TRAINING GAME LOGIC=================================*/

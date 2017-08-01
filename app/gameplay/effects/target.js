@@ -1,3 +1,5 @@
+let gameplay = require('../gameLogic');
+
 exports.setTarget = function(skill, actor, heroes, logs, combatLog, targets, target){
   switch(skill.target){
     case 'single':

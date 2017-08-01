@@ -1,6 +1,7 @@
 'use strict';
 let requireDir = require('require-dir'),
-    effect = requireDir('./effects');
+    effect = requireDir('./effects'),
+    gameplay = require('./gameLogic');
 
 const SkillAction = function(skill, actor, heroes){
   this.skill = skill;
