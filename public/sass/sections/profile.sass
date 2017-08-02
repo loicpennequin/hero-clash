@@ -26,6 +26,8 @@
     background-position: center
     background-size: cover
     transition: background-image 0.5s ease-in-out
+    box-shadow: 0 8px 2px -3px $dark
+    margin: 0 10px
 
 .team-member-picker
   display: flex
@@ -55,10 +57,11 @@
   display: flex
   flex-direction: row
   margin-bottom: 20px
+  background-color: $grey-lighter
   +mobile
     flex-direction: column
   .portrait
-    border: solid $dark 1px
+    border: solid $dark 3px
     border-radius: 10px
     margin-right: 10px
     align-self: center
@@ -83,6 +86,7 @@
       background-color: $white-ter
       padding: 5px
       border-radius: 5px
+      border: solid 2px $dark
     .buy-skill
       @extend .skill
       background-color: $dark
@@ -101,10 +105,10 @@
       border: solid $dark 1px
       border-radius: 5px
       padding: 5px
-      font-size: 0.7em
+      font-size: 0.8em
       position: absolute
-      top: -100%
-      left: 75%
+      top: 100%
+      left: 0
       width: 150%
       z-index: 5
       +mobile
