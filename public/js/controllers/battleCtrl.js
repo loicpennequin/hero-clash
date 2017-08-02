@@ -6,10 +6,14 @@ app.controller('battleCtrl', function($scope, $q, classFactory, userFactory, ski
   $scope.userTeam = [];
   $scope.oppTeam = [];
   $scope.combatLog = [];
+  $scope.message = "";
+  $scope.gameover;
+  $scope.gameResult;
 
   $scope.waitingForOpp = false;
   $scope.turnConfirmed = false;
   $scope.timerWarning = false;
+  $scope.notInGame = true;
 
   $scope.ally1 = {};
   $scope.ally2 = {};
@@ -30,47 +34,27 @@ app.controller('battleCtrl', function($scope, $q, classFactory, userFactory, ski
       }
       $scope.getTimerWidth();
     }, 50);
-  }
+  };
 
   $scope.getTimerWidth = function(){
       return { width : (100 * $scope.timer) / 60 + '%' };
-  }
+  };
 
   userFactory.loginCheck()
     .then(function(response){
-      battleFactory.getGameState("mp")
-        .then(function(response){
-          if (response.data.state == false){
-            socket.emit('rdyToInit', $rootScope.gameData);
-          }else {
-            $scope.roster = response.data.game;
-            $scope.roster.forEach(function(hero, index){
-              if (hero.user_id == $scope.user.id){
-                $scope.userTeam.push(hero);
-              } else{
-                $scope.oppTeam.push(hero)
-              };
-            });
-            $scope.ally1 = {name : $scope.userTeam[0].class.name, id: $scope.userTeam[0].id};
-            $scope.ally2 = {name : $scope.userTeam[1].class.name, id: $scope.userTeam[1].id};
-            $scope.ally3 = {name : $scope.userTeam[2].class.name, id: $scope.userTeam[2].id};
-            $scope.enemy1 = {name : $scope.oppTeam[0].class.name, id: $scope.oppTeam[0].id};
-            $scope.enemy2 = {name : $scope.oppTeam[1].class.name, id: $scope.oppTeam[1].id};
-            $scope.enemy3 = {name : $scope.oppTeam[2].class.name, id: $scope.oppTeam[2].id};
-            console.log('game loaded');
-          }
-        }, function(error){
-          console.log(error);
-        });
-
+      console.log(response);
+      if (response.data.user.MPGame.state == true){
+        $scope.notInGame = false;
+        socket.emit('rdyToInit', $rootScope.gameData);
+      }
     }, function(error){
       console.log(error);
     });
 
+
   socket.on('init', function(data){
     let users = data.users,
         sessionID = data.sessionID;
-    console.log('no game to load, starting new game');
     $scope.setCountdown();
     users.forEach(function(user, index){
       userFactory.getUser(user.id)
@@ -253,16 +237,21 @@ app.controller('battleCtrl', function($scope, $q, classFactory, userFactory, ski
     $scope.timerWarning = false;
     $scope.waitingForOpp = false;
 
-    battleFactory.setGameState($scope.roster, "mp")
-      .then(function(response){
-        console.log('game saved');
-        $scope.timer = 60;
-        $scope.setCountdown();
-      }, function(error){
-        console.log(error);
-      })
-  })
+  });
 
+  socket.on('gameWon', function(message){
+    console.log(message);
+    $scope.gameover = true;
+    $scope.message = "VICTORY";
+    $scope.gameResult = true;
+  });
+
+  socket.on('gameLost', function(message){
+    console.log(message);
+    $scope.gameover = true;
+    $scope.message = "DEFEAT"
+    $scope.gameResult = false;
+  });
 
 
 });

@@ -56,11 +56,19 @@ app.post('/api/gamestate/training', game.trainingSave)
 app.get('/api/gamestate/mp', game.mpLoad)
 app.post('/api/gamestate/mp', game.mpSave)
 
-/*========================================SOCKET.IO=========================================*/
-
-io.on('connection', function(socket){
 
 /*========================================LOBBY=============================================*/
+io.on('connection', function(socket){
+
+  socket.on('disconnect', function(){
+    if(socket.handshake.session.user){
+      if(socket.handshake.session.user.MPGame.state === true){
+        loserRewards(false, socket.handshake.session)
+        socket.handshake.session.user.MPGame.state = false;
+        socket.handshake.session.save();
+      };
+    };
+  });
 
   socket.on('joinLobby', function(user){
     socket.handshake.session.reload(function(err) {
@@ -117,14 +125,16 @@ io.on('connection', function(socket){
 
     users.forEach(function(user, index){
       io.sockets.connected[user.socketID].join(room)
+      io.sockets.connected[user.socketID].handshake.session.user.MPGame.state = true;
+      io.sockets.connected[user.socketID].handshake.session.save();
       io.to(user.socketID).emit('gameStart', {users : users, room : room});
     })
   });
 
   socket.on('rdyToInit', function(data){
     let room = data.room,
-        users = data.users;
-    let sessionID = socket.handshake.session.user.id;
+        users = data.users,
+        sessionID = socket.handshake.session.user.id;
 
     io.to(socket.id).emit('init', {users : users, sessionID : sessionID});
   });
@@ -181,28 +191,42 @@ io.on('connection', function(socket){
         delete io.sockets.connected[player]['turnData'];
       });
 
-      if (gameplay.endTurn({heroes : heroes}).winner){
-        console.log("let's end the game");
-        let winner, loser;
-        gameRoomPlayers.forEach(function(player, index){
-          if (io.sockets.connected[player].user.id == gameplay.endTurn({heroes : heroes}).winner){
-            winner = io.sockets.connected[player];
-          }else{
-            loser = io.sockets.connected[player];
-          }
-        });
-        winnerRewards(winner, loser);
-        loserRewards(winner, loser);
-        winner.emit('gameWon');
-        loser.emit('gameLost');
-      } else {
-        io.to(data.room).emit('endTurn', gameplay.endTurn({heroes : heroes}));
-      }
+      endTurn(heroes, gameRoomPlayers, data.room, gameplay);
+
     };
   });
 
+  function endTurn(heroes, players, room, gameplay){
+    if (gameplay.endTurn({heroes : heroes}).winner){
+      console.log("let's end the game");
+      let winner, loser;
+      players.forEach(function(player, index){
+        if (io.sockets.connected[player].user.id == gameplay.endTurn({heroes : heroes}).winner){
+          winner = io.sockets.connected[player];
+        }else{
+          loser = io.sockets.connected[player];
+        }
+        io.sockets.connected[player].handshake.session.user.MPGame.state = false;
+        io.sockets.connected[player].handshake.session.save();
+        io.sockets.connected[player].leave(room);
+      });
+      winnerRewards(winner, loser);
+      if (loser){
+        loserRewards(winner, loser);
+      };
+    } else {
+      io.to(room).emit('endTurn', gameplay.endTurn({heroes : heroes}));
+    };
+  }
+
   function winnerRewards(winner, loser){
-    let User = require('./app/models/user');
+    let User = require('./app/models/user'),
+        eloGain;
+    if (loser){
+      eloGain = 15+(Math.round((winner.user.elo - loser.user.elo)/25))
+    } else {
+      eloGain = 15;
+    };
 
     User.forge({id : winner.user.id})
     .fetch()
@@ -211,16 +235,23 @@ io.on('connection', function(socket){
         games : user.attributes.games + 1,
         wins : user.attributes.wins + 1,
         gold : user.attributes.gold +=25,
-        elo : user.attributes.elo += 15+(Math.round((winner.user.elo - loser.user.elo)/25))
+        elo : user.attributes.elo += eloGain
       })
       .then(function(){
-        console.log('winner stats updated');
+        io.to(winner.user.socketID).emit('gameWon', "you won");
+        console.log('winner : ' + winner.user.socketID);
       })
     });
   };
 
   function loserRewards(winner, loser){
-    let User = require('./app/models/user');
+    let User = require('./app/models/user'),
+        eloGain;
+    if (winner){
+      eloGain = 15+(Math.round((winner.user.elo - loser.user.elo)/25))
+    } else {
+      eloGain = 15;
+    };
 
     User.forge({id : loser.user.id})
     .fetch()
@@ -229,10 +260,11 @@ io.on('connection', function(socket){
         games : user.attributes.games + 1,
         wins : user.attributes.wins + 1,
         gold : user.attributes.gold +=10,
-        elo : user.attributes.elo -= 15+(Math.round((winner.user.elo - loser.user.elo)/25))
+        elo : user.attributes.elo -= eloGain
       })
       .then(function(){
-        console.log('loser stats updated');
+        io.to(loser.user.socketID).emit('gameLost', "you lost");
+        console.log('loser : ' + loser.user.socketID);
       })
     });
   };

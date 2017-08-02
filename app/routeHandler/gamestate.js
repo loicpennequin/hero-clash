@@ -1,17 +1,17 @@
 exports.trainingLoad = function(req,res){
-    res.json({error: false, data: req.session.trainingGame});
+    res.json({error: false, data: req.session.user.trainingGame});
 }
 
 exports.trainingSave = function(req, res){
-  req.session.trainingGame = { game : req.body, state : true}
+  req.session.user.trainingGame = { game : req.body, state : true}
   res.json({error: false, data: {message : "game saved"}});
 }
 
 exports.mpLoad = function(req,res){
-    res.json({error: false, data: req.session.MPGame});
+    res.json({error: false, data: req.session.user.MPGame});
 }
 
 exports.mpSave = function(req, res){
-  req.session.mpGame = { game : req.body, state : true}
-  res.json({error: false, data: {message : "game saved"}});
+  req.session.user.MPGame = { game : req.body.game, state : true, room : req.body.room}
+  res.json({error: false, data: req.session.user.MPGame});
 }

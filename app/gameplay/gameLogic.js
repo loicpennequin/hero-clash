@@ -238,15 +238,14 @@ function endTurn(data){
   let combatLog = [],
       heroes = data.heroes,
       heroesCopy = data.heroes.slice(0),
-      response;
+      response = {};
 
   heroesCopy.forEach(function(hero, key){
     decreaseBuffCounter(hero, combatLog);
     decreaseDebuffCounter(hero, combatLog);
-
     //remove dead heroes
     if (hero.hp <= 0){
-      let index = heroesCopy.indexOf(hero);
+      let index = heroes.findIndex(item => item.id === hero.id)
       heroes.splice(index, 1);
     } else {
       //remove 'defend' buff
@@ -256,15 +255,13 @@ function endTurn(data){
     };
   });
 
-  //check if the game is over
-  function onlyOnePlayer(element){
-    return element.user_id != heroes[0].user_id;
-  };
-
-  if (!heroes.some(onlyOnePlayer)){
-    response = {winner : heroes[0].user_id}
-  } else {
-
+  function onlyOnePlayer(el){
+    return el.user_id != heroes[0].user_id;
+  }
+  if (!heroes.some(onlyOnePlayer)) {
+    console.log('only one player left. Game should resolve');
+    response.winner = heroes[0].user_id;
+  }else {
     //decrease all cooldown counters
     heroes.forEach(function(hero, index){
       for (let i = 1; i <= 4 ; i++){

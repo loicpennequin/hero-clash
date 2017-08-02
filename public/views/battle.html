@@ -1,4 +1,16 @@
-<main>
+<div class="game-result" ng-if="gameover">
+
+  <div class="left-side" ng-class="{'victory' : gameResult, 'defeat' : !gameResult}"></div>
+  <div class="right-side" ng-class="{'victory' : gameResult, 'defeat' : !gameResult}"></div>
+  <div class="game-message">{{message}}</div>
+  <a href="#!/play/lobby"><button class="button is-dark">Back</button></a>
+
+</div>
+
+<main ng-if="notInGame">
+  You're not actually in a game or you tried to refresh your browser during a game (in which case you lost the game...sorry about that !). click <a href="#!/play/lobby">HERE</a> to return to the game lobby.
+</main>
+<main ng-class="{'blurred' : gameover}" ng-if="!notInGame">
   <h1 class="title is-1 has-text-centered">{{gameType}}</h1>
   <div class="timer-wrapper">
     <div class="timer"
@@ -134,7 +146,7 @@
     </div>
     <div class="column is-3 opponent">
       <h2 class="title is-2 opp-name" ng-if="!training">{{opp.login}}</h2>
-      <section class="team-member" ng-repeat="hero in oppTeam track by $index">
+      <section class="team-member" ng-repeat="hero in oppTeam | orderBy : 'class.name'">
         <div class="hero-infos">
           <h4>
             {{hero.class.name}}

@@ -25,8 +25,6 @@
     opacity: 0.2
     box-shadow: none
 
-
-
 .battlefield
   display: flex
   background: linear-gradient(rgba(0,0,0,0.5), $black)
@@ -39,6 +37,7 @@
   width: 100%
   margin-left: auto
   margin-right: auto
+  transition: all 1.5s
 
   .column
     height: 700px
@@ -149,3 +148,78 @@
 
 .opp-name
   text-shadow: 2px 2px 3px $danger
+
+.game-result
+  position: fixed
+  top: 0
+  left: 0
+  width: 100vw
+  height: 100vh
+  background-color: rgba(0,0,0,0.5)
+  z-index: 99
+  display: flex
+  justify-content: center
+  align-items: center
+  flex-direction: column
+
+  .game-message
+    position: relative
+    z-index: 100
+    font-size: 4.5rem
+    font-family: $font1
+    color: $white-bis
+    text-shadow: 3px 5px 2px $black
+  .button
+    font-size: 3rem
+    animation-name: fade-in
+    animation-duration: 2s
+    animation-delay: 1.5s
+    animation-fill-mode: forwards
+    opacity: 0
+    border: solid 5px $black
+
+  .left-side
+    position: absolute
+    top: 0
+    left: 0
+    height: 100%
+    width: 50%
+    border: solid $black 15px
+    animation-name: left-side
+    animation-duration: 1.5s
+    animation-timing-function: ease-in
+
+  .right-side
+    @extend .left-side
+    left: 50%
+    animation-name: right-side
+
+  .victory
+    background: linear-gradient(rgba(0,0,0,0) 25%, $success)
+  .defeat
+    background: linear-gradient(rgba(0,0,0,0) 25%, $danger)
+
+.blurred
+  filter: blur(5px)
+
+@keyframes fade-in
+  from
+    opacity: 0
+  to
+    opacity: 1
+
+@keyframes left-side
+  from
+    left: -50%
+  80%, to
+    left: 0
+  85%,90%
+    left: -3%
+
+@keyframes right-side
+  from
+    left: 100%
+  80%, to
+    left: 50%
+  85%,90%
+    left: 53%
