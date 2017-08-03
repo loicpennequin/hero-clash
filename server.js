@@ -258,7 +258,7 @@ io.on('connection', function(socket){
     .then(function(user){
       user.save({
         games : user.attributes.games + 1,
-        wins : user.attributes.wins + 1,
+        losses : user.attributes.losses + 1,
         gold : user.attributes.gold +=10,
         elo : user.attributes.elo -= eloGain
       })
