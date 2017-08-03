@@ -21,7 +21,7 @@ const express = require('express'),
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(cookieParser());
-app.use(sessionParams)
+app.use(sessionParams);
 app.use(express.static('public'));
 io.use(ios(sessionParams));
 

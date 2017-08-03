@@ -2,10 +2,8 @@
 <main ng-controller="lobbyCtrl">
     <section class="lobby">
 
-      <div class="modal" ng-class="{'is-active': challengePending}">
-        <div class="modal-background"></div>
-        <div class="modal-content has-text-centered">
-          {{challenger.login}} challenges you to a game !  </br>
+      <div class="notification is-info" ng-if="challengePending">
+        {{challenger.login}} challenges you to a game !  </br>
           <button class="button is-dark" ng-click="acceptChallenge()">ACCEPT</button>
           <button class="button is-dark" ng-click="declineChallenge()">DECLINE</button>
         </div>
@@ -29,7 +27,7 @@
             <td>{{u.login}}</td>
             <td>{{u.elo}}</td>
             <td>
-              <button class="button is-dark" ng-click="challenge(u)" ng-if="u.login != user.login">CHALLENGE</button>
+              <button ng-class="{'is-loading' : challengeSent}" class="button is-dark" ng-disabled="challengeSent" ng-click="challenge(u)" ng-if="u.login != user.login">CHALLENGE</button>
             </td>
           </tr>
         </tbody>

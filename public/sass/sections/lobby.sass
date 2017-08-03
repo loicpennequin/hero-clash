@@ -2,3 +2,29 @@
   .modal-content
     background-color: $white-bis
     padding: 15px
+
+.notification
+  position: fixed
+  top: 0
+  left: 0
+  width: 100%
+  z-index: 9999
+
+.notification, .notification.ng-enter, .notification.ng-leave
+  transition: all 1s ease-in-out
+
+.notification.ng-enter
+  transform: translateX(100%)
+  opacity: 0
+
+.notification.ng-enter-active
+  transform: none
+  opacity: 1
+
+.notification.ng-leave
+  transform: none
+  opacity: 1
+
+.notification.ng-leave-active
+  transform: translateX(-100%)
+  opacity: 0

@@ -297,49 +297,27 @@ exports.resolveAction = function(heroes, hero){
   turn = resolveTurn(actionData);
   heroes = turn.heroes
 
-  return turn
+  return turn;
 };
 
-exports.dotCheck = function(actor, actorIndex, heroes, combatLog){
-  dotCheck(actor, heroes, combatLog);
-};
+exports.dotCheck = function(actor, actorIndex, heroes, combatLog){dotCheck(actor, heroes, combatLog);};
 
-exports.hotCheck = function(actor, actorIndex, heroes, combatLog){
-  hotCheck(actor, heroes, combatLog);
-};
+exports.hotCheck = function(actor, actorIndex, heroes, combatLog){hotCheck(actor, heroes, combatLog);};
 
-exports.skill = function(actor, actorIndex, heroes, combatLog){
-  skill(actor, actorIndex, heroes, combatLog);
-};
+exports.skill = function(actor, actorIndex, heroes, combatLog){skill(actor, actorIndex, heroes, combatLog);};
 
-exports.attack = function(heroes, actor, target, combatLog){
-  attack(heroes, actor, target, combatLog);
-};
+exports.attack = function(heroes, actor, target, combatLog){attack(heroes, actor, target, combatLog);};
 
-exports.defend = function(heroes, actor, actorIndex, combatLog){
-  defend(heroes,actor, actorIndex, combatLog);
-};
+exports.defend = function(heroes, actor, actorIndex, combatLog){defend(heroes,actor, actorIndex, combatLog);};
 
-exports.wait = function(heroes, actor, actorIndex, combatLog){
-  wait(heroes, actor, actorIndex, combatLog);
-};
+exports.wait = function(heroes, actor, actorIndex, combatLog){wait(heroes, actor, actorIndex, combatLog);};
 
-exports.decreaseBuffCounter = function(hero, combatLog){
-  decreaseBuffCounter(hero, combatLog);
-};
+exports.decreaseBuffCounter = function(hero, combatLog){decreaseBuffCounter(hero, combatLog);};
 
-exports.decreaseDebuffCounter = function(hero, combatLog){
-  decreaseBuffCounter(hero, combatLog);
-};
+exports.decreaseDebuffCounter = function(hero, combatLog){decreaseBuffCounter(hero, combatLog);};
 
-exports.resolveTurn = function(data){
-  return resolveTurn(data);
-}
+exports.resolveTurn = function(data){return resolveTurn(data);}
 
-exports.endTurn = function(data){
-  return endTurn(data);
-}
+exports.endTurn = function(data){return endTurn(data);}
 
-exports.sortHeroes = function(arr){
-  return sortHeroes(arr)
-}
+exports.sortHeroes = function(arr){return sortHeroes(arr)}

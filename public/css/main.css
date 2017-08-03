@@ -5115,7 +5115,7 @@ label.panel-block {
 #combat-log {
   background-color: whitesmoke;
   padding: 10px;
-  overflow: scroll;
+  overflow: auto;
   border-left: solid 2px #242424; }
   #combat-log p {
     margin: 10px 0; }
@@ -5213,6 +5213,32 @@ label.panel-block {
   background-color: #fafafa;
   padding: 15px; }
 
+.notification {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 9999; }
+
+.notification, .notification.ng-enter, .notification.ng-leave {
+  transition: all 1s ease-in-out; }
+
+.notification.ng-enter {
+  transform: translateX(100%);
+  opacity: 0; }
+
+.notification.ng-enter-active {
+  transform: none;
+  opacity: 1; }
+
+.notification.ng-leave {
+  transform: none;
+  opacity: 1; }
+
+.notification.ng-leave-active {
+  transform: translateX(-100%);
+  opacity: 0; }
+
 * {
   box-sizing: border-box; }
 
@@ -5224,6 +5250,8 @@ html, body {
   background-attachment: fixed; }
 
 main {
+  position: relative;
+  overflow-x: hidden;
   max-width: 1200px;
   margin-top: 80px;
   margin-left: auto;

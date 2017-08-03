@@ -6,6 +6,7 @@ app.controller('lobbyCtrl', function($scope, $q, classFactory, userFactory, skil
   $scope.combatLog = [];
   $scope.challenger = "";
   $scope.challengePending = false;
+  $scope.challengeSent = false;
   $scope.notification = ""
   $scope.notificationDisplay = false;
 
@@ -52,6 +53,7 @@ app.controller('lobbyCtrl', function($scope, $q, classFactory, userFactory, skil
 
   $scope.challenge = function(user){
     socket.emit('challenge', {challenger : $scope.user, challenged : user})
+    $scope.challengeSent = true;
   };
 
   socket.on('challengePending', function(user){
@@ -73,6 +75,7 @@ app.controller('lobbyCtrl', function($scope, $q, classFactory, userFactory, skil
   socket.on('challengeDeclined', function(data){
     $scope.notification = data.message
     $scope.notificationDisplay = true;
+    $scope.challengeSent = false;
   });
 
   socket.on('gameStart', function(response){
