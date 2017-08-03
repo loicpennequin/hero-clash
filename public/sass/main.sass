@@ -23,7 +23,6 @@ main
   position: relative
   overflow-x: hidden
   max-width: 1200px
-  margin-top: 80px
   margin-left: auto
   margin-right: auto
   background: rgba(245,245,245,0.6)
@@ -31,14 +30,16 @@ main
   background-size: cover
   background-blend-mode: luminosity
   min-height: 100vh
+  padding: 15px
 
-  h1.title
-    background: linear-gradient(to right, transparent, $black, transparent)
-    padding: 15px
-    color: $white-ter
-    text-shadow: 5px 5px 0 $grey, -5px -5px $grey-dark
-    border-bottom: solid 2px $black
-    border-top: solid 2px $black
+h1.title
+  background: linear-gradient(to right, transparent, $black, transparent)
+  padding: 15px
+  color: $white-ter
+  text-shadow: 5px 5px 0 $grey, -5px -5px $grey-dark
+  border-bottom: solid 2px $black
+  border-top: solid 2px $black
+  margin-top: 80px
 
 .navbar
   position: fixed
@@ -47,7 +48,10 @@ main
   border-bottom: solid 1px $grey
   z-index: 999
   .navbar-brand
-    padding: 5px
+    padding: 0 5px 5px
+  .nav-title
+    font-size: 2.5rem
+    font-family: 'Philosopher'
 
 .color-primary
   color: $primary

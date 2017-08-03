@@ -10,8 +10,8 @@
 <main ng-if="notInGame">
   You're not actually in a game or you tried to refresh your browser during a game (in which case you lost the game...sorry about that !). click <a href="#!/play/lobby">HERE</a> to return to the game lobby.
 </main>
+<h1 class="title is-1 has-text-centered">{{gameType}}</h1>
 <main ng-class="{'blurred' : gameover}" ng-if="!notInGame">
-  <h1 class="title is-1 has-text-centered">{{gameType}}</h1>
   <div class="timer-wrapper">
     <div class="timer"
          ng-if="!training"

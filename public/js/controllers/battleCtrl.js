@@ -236,6 +236,8 @@ app.controller('battleCtrl', function($scope, $q, classFactory, userFactory, ski
     $scope.turnConfirmed = false;
     $scope.timerWarning = false;
     $scope.waitingForOpp = false;
+    $scope.timer = 60;
+    $scope.setCountdown();
 
   });
 

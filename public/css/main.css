@@ -4895,19 +4895,18 @@ label.panel-block {
   .right:hover ~ .bg {
     transform: translateX(3%); }
 
-.profile-section {
-  padding: 15px; }
-  .profile-section h2 {
-    background-color: #fafafa;
-    padding: 10px;
-    border-top-left-radius: 10px;
-    border-bottom-right-radius: 10px;
-    border: solid 2px #242424; }
+.profile-section h2 {
+  background-color: #fafafa;
+  padding: 10px;
+  border-top-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  border: solid 2px #242424; }
 
 .team {
   display: flex;
   flex-direction: row;
-  justify-content: center; }
+  justify-content: center;
+  margin-bottom: 40px; }
 
 .team-member {
   position: relative; }
@@ -5333,21 +5332,23 @@ main {
   position: relative;
   overflow-x: hidden;
   max-width: 1200px;
-  margin-top: 80px;
   margin-left: auto;
   margin-right: auto;
   background: rgba(245, 245, 245, 0.6);
   background-position: center;
   background-size: cover;
   background-blend-mode: luminosity;
-  min-height: 100vh; }
-  main h1.title {
-    background: linear-gradient(to right, transparent, #0a0a0a, transparent);
-    padding: 15px;
-    color: whitesmoke;
-    text-shadow: 5px 5px 0 #7a7a7a, -5px -5px #4a4a4a;
-    border-bottom: solid 2px #0a0a0a;
-    border-top: solid 2px #0a0a0a; }
+  min-height: 100vh;
+  padding: 15px; }
+
+h1.title {
+  background: linear-gradient(to right, transparent, #0a0a0a, transparent);
+  padding: 15px;
+  color: whitesmoke;
+  text-shadow: 5px 5px 0 #7a7a7a, -5px -5px #4a4a4a;
+  border-bottom: solid 2px #0a0a0a;
+  border-top: solid 2px #0a0a0a;
+  margin-top: 80px; }
 
 .navbar {
   position: fixed;
@@ -5356,7 +5357,10 @@ main {
   border-bottom: solid 1px #7a7a7a;
   z-index: 999; }
   .navbar .navbar-brand {
-    padding: 5px; }
+    padding: 0 5px 5px; }
+  .navbar .nav-title {
+    font-size: 2.5rem;
+    font-family: "Philosopher"; }
 
 .color-primary {
   color: #363636; }
