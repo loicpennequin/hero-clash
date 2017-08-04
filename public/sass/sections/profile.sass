@@ -1,10 +1,11 @@
 .profile-section
   h2
-    background-color: $white-bis
+    background-color: $danger
+    color: $white-ter
     padding: 10px
     border-top-left-radius: 10px
     border-bottom-right-radius: 10px
-    border: solid 2px $dark
+    border: solid 2px $white-ter
 
 .team
   display: flex
@@ -51,7 +52,7 @@
 
 .profile-hero
   padding: 15px
-  border: solid $dark 2px
+  // border: solid $dark 2px
   border-radius: 10px
   display: flex
   flex-direction: row
@@ -60,7 +61,8 @@
   +mobile
     flex-direction: column
   .portrait
-    border: solid $dark 3px
+    box-shadow: 0 8px 2px -3px $dark
+    border: solid $dark 2px
     border-radius: 10px
     margin-right: 10px
     align-self: center
@@ -82,10 +84,10 @@
   .skills
     min-width: 300px
     .skill
-      background-color: $white-ter
+      background-color: $danger
+      color: $white-ter
       padding: 5px
       border-radius: 5px
-      border: solid 2px $dark
     .buy-skill
       @extend .skill
       background-color: $dark

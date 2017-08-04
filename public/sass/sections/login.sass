@@ -4,6 +4,7 @@
   align-items: center
   height: 100vh
   overflow: hidden
+  position: relative
   .bg
     width: 110vw
     height: 110vh
@@ -23,7 +24,7 @@
     position: absolute
     top: 10%
     left: 10%
-    border: solid 1px white
+    border: solid 1px rgba(245,245,245,0.7)
     z-index: 2
 
   section
@@ -38,7 +39,8 @@
 
   .title
     font-weight: bolder
-    text-shadow: 2px 4px 0 $black, -2px -4px 0 $white
+    text-shadow: 2px 4px 0 $danger, -2px -4px 0 $dark
+    color: $white-ter
 
 .login-title
   position: absolute
@@ -61,7 +63,7 @@
   width: 100%
   z-index: 10
   &:hover ~ .bg
-    transform: translateY(-3%)
+    transform: translateY(3%)
 
 .bottom
   position: absolute
@@ -71,7 +73,7 @@
   width: 100%
   z-index: 10
   &:hover ~ .bg
-    transform: translateY(3%)
+    transform: translateY(-3%)
 
 
 .left
@@ -82,7 +84,7 @@
   width: 10vw
   z-index: 10
   &:hover ~ .bg
-    transform: translateX(-3%)
+    transform: translateX(3%)
 
 .right
   position: absolute
@@ -92,4 +94,4 @@
   width: 10vw
   z-index: 10
   &:hover ~ .bg
-    transform: translateX(3%)
+    transform: translateX(-3%)

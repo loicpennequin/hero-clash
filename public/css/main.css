@@ -1951,8 +1951,6 @@ input[type="submit"].button {
   .table th {
     color: #363636;
     text-align: left; }
-  .table tr:hover {
-    background-color: #fafafa; }
   .table tr.is-selected {
     background-color: #363636;
     color: #fff; }
@@ -4808,7 +4806,8 @@ label.panel-block {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  overflow: hidden; }
+  overflow: hidden;
+  position: relative; }
   .login-screen .bg {
     width: 110vw;
     height: 110vh;
@@ -4827,7 +4826,7 @@ label.panel-block {
     position: absolute;
     top: 10%;
     left: 10%;
-    border: solid 1px white;
+    border: solid 1px rgba(245, 245, 245, 0.7);
     z-index: 2; }
   .login-screen section {
     background-color: rgba(245, 245, 245, 0.5);
@@ -4840,7 +4839,8 @@ label.panel-block {
     box-shadow: 2px 5px 10px 1px #e83030; }
   .login-screen .title {
     font-weight: bolder;
-    text-shadow: 2px 4px 0 #0a0a0a, -2px -4px 0 white; }
+    text-shadow: 2px 4px 0 #e83030, -2px -4px 0 #242424;
+    color: whitesmoke; }
 
 .login-title {
   position: absolute;
@@ -4863,7 +4863,7 @@ label.panel-block {
   width: 100%;
   z-index: 10; }
   .top:hover ~ .bg {
-    transform: translateY(-3%); }
+    transform: translateY(3%); }
 
 .bottom {
   position: absolute;
@@ -4873,7 +4873,7 @@ label.panel-block {
   width: 100%;
   z-index: 10; }
   .bottom:hover ~ .bg {
-    transform: translateY(3%); }
+    transform: translateY(-3%); }
 
 .left {
   position: absolute;
@@ -4883,7 +4883,7 @@ label.panel-block {
   width: 10vw;
   z-index: 10; }
   .left:hover ~ .bg {
-    transform: translateX(-3%); }
+    transform: translateX(3%); }
 
 .right {
   position: absolute;
@@ -4893,14 +4893,15 @@ label.panel-block {
   width: 10vw;
   z-index: 10; }
   .right:hover ~ .bg {
-    transform: translateX(3%); }
+    transform: translateX(-3%); }
 
 .profile-section h2 {
-  background-color: #fafafa;
+  background-color: #e83030;
+  color: whitesmoke;
   padding: 10px;
   border-top-left-radius: 10px;
   border-bottom-right-radius: 10px;
-  border: solid 2px #242424; }
+  border: solid 2px whitesmoke; }
 
 .team {
   display: flex;
@@ -4945,7 +4946,6 @@ label.panel-block {
 
 .profile-hero {
   padding: 15px;
-  border: solid #242424 2px;
   border-radius: 10px;
   display: flex;
   flex-direction: row;
@@ -4955,7 +4955,8 @@ label.panel-block {
     .profile-hero {
       flex-direction: column; } }
   .profile-hero .portrait {
-    border: solid #242424 3px;
+    box-shadow: 0 8px 2px -3px #242424;
+    border: solid #242424 2px;
     border-radius: 10px;
     margin-right: 10px;
     align-self: center;
@@ -4977,10 +4978,10 @@ label.panel-block {
   .profile-hero .skills {
     min-width: 300px; }
     .profile-hero .skills .skill, .profile-hero .skills .buy-skill {
-      background-color: whitesmoke;
+      background-color: #e83030;
+      color: whitesmoke;
       padding: 5px;
-      border-radius: 5px;
-      border: solid 2px #242424; }
+      border-radius: 5px; }
     .profile-hero .skills .buy-skill {
       background-color: #242424;
       color: whitesmoke; }
@@ -5113,8 +5114,7 @@ label.panel-block {
 .battlefield {
   display: flex;
   background: linear-gradient(rgba(0, 0, 0, 0.5), #0a0a0a);
-  border-top: solid 4px #242424;
-  border-bottom: solid 4px #242424;
+  border: solid 4px #242424;
   animation-name: battlefield;
   animation-duration: 15s;
   animation-direction: alternate;
@@ -5195,7 +5195,8 @@ label.panel-block {
   overflow: auto;
   border-left: solid 2px #242424; }
   #combat-log p {
-    margin: 10px 0; }
+    margin: 10px 0;
+    font-family: monospace; }
 
 .dot-alert {
   color: #e83030;
@@ -5339,7 +5340,8 @@ main {
   background-size: cover;
   background-blend-mode: luminosity;
   min-height: 100vh;
-  padding: 15px; }
+  padding: 15px;
+  border: solid 1px whitesmoke; }
 
 h1.title {
   background: linear-gradient(to right, transparent, #0a0a0a, transparent);
@@ -5352,17 +5354,23 @@ h1.title {
 
 .navbar {
   position: fixed;
-  top: 0;
+  top: 2%;
   width: 100%;
-  border-bottom: solid 1px #7a7a7a;
+  border-top: solid 1px #e83030;
+  border-bottom: solid 1px #e83030;
   z-index: 999; }
   .navbar .navbar-brand {
-    padding: 0 5px 5px; }
+    padding: 0 5px 5px;
+    transform: translateY(-5px);
+    background: linear-gradient(#242424, #e83030);
+    color: transparent;
+    -webkit-background-clip: text;
+    -webkit-text-stroke: 1px #242424; }
   .navbar .nav-title {
     font-size: 2.5rem;
     font-family: "Philosopher"; }
 
-.color-primary {
-  color: #363636; }
+.color-warning {
+  color: #ffdd57; }
 
 /*# sourceMappingURL=main.css.map */

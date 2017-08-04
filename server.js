@@ -15,6 +15,7 @@ const express = require('express'),
 
     Bookshelf = require('./database'),
     fs = require('fs'),
+    Elo = require( 'elo-js' ),
 
     port = 8080;
 
@@ -124,7 +125,8 @@ io.on('connection', function(socket){
         users = data.users;
 
     users.forEach(function(user, index){
-      io.sockets.connected[user.socketID].join(room)
+      io.sockets.connected[user.socketID].leave('lobby');
+      io.sockets.connected[user.socketID].join(room);
       io.sockets.connected[user.socketID].handshake.session.user.MPGame.state = true;
       io.sockets.connected[user.socketID].handshake.session.save();
       io.to(user.socketID).emit('gameStart', {users : users, room : room});
@@ -220,12 +222,14 @@ io.on('connection', function(socket){
   }
 
   function winnerRewards(winner, loser){
-    let User = require('./app/models/user'),
-        eloGain;
+    let elo = new Elo();
+    let User = require('./app/models/user');
     if (loser){
-      eloGain = 15+(Math.round((winner.user.elo - loser.user.elo)/25))
+      var winnerRating = winner.user.elo,
+          loserRating = loser.user.elo,
+          winnerNewRating = elo.ifWins( winnerRating, loserRating );
     } else {
-      eloGain = 15;
+      winnerNewRating = winnerRating + 15;
     };
 
     User.forge({id : winner.user.id})
@@ -235,9 +239,12 @@ io.on('connection', function(socket){
         games : user.attributes.games + 1,
         wins : user.attributes.wins + 1,
         gold : user.attributes.gold +=25,
-        elo : user.attributes.elo += eloGain
+        elo : winnerNewRating
       })
-      .then(function(){
+      .then(function(newUser){
+        let socketSession = io.sockets.connected[winner.user.socketID].handshake.session;
+        socketSession.user.elo = newUSer.attributes.elo
+        socketSession.save();
         io.to(winner.user.socketID).emit('gameWon', "you won");
         console.log('winner : ' + winner.user.socketID);
       })
@@ -245,12 +252,14 @@ io.on('connection', function(socket){
   };
 
   function loserRewards(winner, loser){
-    let User = require('./app/models/user'),
-        eloGain;
-    if (winner){
-      eloGain = 15+(Math.round((winner.user.elo - loser.user.elo)/25))
+    let elo = new Elo();
+    let User = require('./app/models/user');
+    if (loser){
+      var winnerRating = winner.user.elo,
+          loserRating = loser.user.elo,
+          loserNewRating = elo.ifLoses( loserRating, winnerRating );
     } else {
-      eloGain = 15;
+      LoserNewRating = loserRating - 15;
     };
 
     User.forge({id : loser.user.id})
@@ -260,9 +269,12 @@ io.on('connection', function(socket){
         games : user.attributes.games + 1,
         losses : user.attributes.losses + 1,
         gold : user.attributes.gold +=10,
-        elo : user.attributes.elo -= eloGain
+        elo : loserNewRating
       })
       .then(function(){
+        let socketSession = io.sockets.connected[winner.user.socketID].handshake.session;
+        socketSession.user.elo = newUSer.attributes.elo
+        socketSession.save();
         io.to(loser.user.socketID).emit('gameLost', "you lost");
         console.log('loser : ' + loser.user.socketID);
       })

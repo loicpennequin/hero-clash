@@ -2,17 +2,19 @@
 <h1 class="title is-1 has-text-centered">Leaderboards</h1>
 <main ng-controller="lbCtrl">
   <div class="columns">
-    <div class="column is-6 is-offset-3">
+    <div class="column is-8 is-offset-2">
       <table class="table lb-table is-bordered is-striped">
         <thead>
           <td>Name</td>
           <td>ELO</td>
+          <td>Games Played</td>
           <td>Team</td>
         </thead>
         <tbody>
           <tr ng-repeat="u in usersArray | orderBy : '-elo'">
             <td>{{u.login}}</td>
             <td>{{u.elo}}</td>
+            <td>{{u.games}}</td>
             <td>
               <img class="lb-portrait" ng-src="{{u.teamHero1.class.portrait}}"/>
               <img class="lb-portrait" ng-src="{{u.teamHero2.class.portrait}}"/>

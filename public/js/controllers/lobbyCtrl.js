@@ -39,7 +39,7 @@ app.controller('lobbyCtrl', function($scope, $q, classFactory, userFactory, skil
   });
 
   socket.on('userLeftLobby', function(data){
-      $scope.users = data;
+    $scope.users = data;
   });
 
   socket.on('lobbyJoined', function(data){

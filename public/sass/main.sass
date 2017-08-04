@@ -31,6 +31,7 @@ main
   background-blend-mode: luminosity
   min-height: 100vh
   padding: 15px
+  border: solid 1px $white-ter
 
 h1.title
   background: linear-gradient(to right, transparent, $black, transparent)
@@ -43,15 +44,23 @@ h1.title
 
 .navbar
   position: fixed
-  top: 0
+  top: 2%
   width: 100%
-  border-bottom: solid 1px $grey
+  border-top: solid 1px $danger
+  border-bottom: solid 1px $danger
   z-index: 999
+
   .navbar-brand
     padding: 0 5px 5px
+    transform: translateY(-5px)
+    background: linear-gradient($dark, $danger)
+    color: transparent
+    -webkit-background-clip: text
+    -webkit-text-stroke: 1px $dark
+
   .nav-title
     font-size: 2.5rem
     font-family: 'Philosopher'
 
-.color-primary
-  color: $primary
+.color-warning
+  color: $warning
